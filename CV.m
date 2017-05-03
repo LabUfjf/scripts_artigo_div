@@ -1,0 +1,31 @@
+function [IND,TARGET] = CV(NEVT,NBLOCKS)
+
+P.TR = 0.25;
+P.TST = 0.50;
+
+N.TR=ceil(P.TR*NBLOCKS);
+N.TST=ceil(P.TST*NBLOCKS);
+N.VAL = NBLOCKS - (N.TR+N.TST);
+
+BLOCK.MASTER = randperm(NEVT);
+BLOCK.DIV = ceil(NEVT/NBLOCKS);
+BLOCK.SLICE = reshape(BLOCK.MASTER,[BLOCK.DIV,NBLOCKS]);
+TARGETMASTER = [ones(1,NEVT/2) zeros(1,NEVT/2)];
+
+for i=1:NBLOCKS
+    ROTATE=circshift([1:NBLOCKS]',i-1);
+    
+    BLOCK.CV.TR = BLOCK.SLICE(:,ROTATE(1:N.TR));
+    BLOCK.CV.TST = BLOCK.SLICE(:,ROTATE(N.TR+1:N.TST+N.TR));
+    BLOCK.CV.VAL = BLOCK.SLICE(:,ROTATE(N.TST+N.TR+1:end));
+    
+    IND.TR(i,:) = BLOCK.CV.TR(:);
+    IND.TST(i,:) = BLOCK.CV.TST(:);
+    IND.VAL(i,:) = BLOCK.CV.VAL(:);
+    
+    TARGET.TR(i,:) = TARGETMASTER(BLOCK.CV.TR(:));
+    TARGET.TST(i,:) = TARGETMASTER(BLOCK.CV.TST(:));
+    TARGET.VAL(i,:) = TARGETMASTER(BLOCK.CV.VAL(:));
+    
+end
+end
