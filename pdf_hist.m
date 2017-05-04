@@ -65,15 +65,15 @@ for bin = bins;
     VDIV.SG(i,:)=mean(DIV.SG) ;
     VDIV.BG(i,:)=mean(DIV.BG) ;
     
-            figure(2)
-            subplot(2,2,1:2);plot(range.SG,y.ptr.sg,'k',range.SG,y.ptst.sg,'r')
-            subplot(2,2,3);bar(range.SG,abs(y.ptr.sg-y.ptst.sg))
-            subplot(2,2,4);bar(sum(y.ptr.sg-y.ptst.sg)/length(range.SG))
-    
-            figure(3)
-            subplot(1,4,1);plot(Vbin,VBM.SG,'o:r'); title('Bias')
-            subplot(1,4,2);plot(Vbin,VVM.SG,'o:k');  title('Variance')
-            subplot(1,4,3);plot(Vbin,AMISE.SG,'o:b'); title('Bias² + Variance')
+%             figure(2)
+%             subplot(2,2,1:2);plot(range.SG,y.ptr.sg,'k',range.SG,y.ptst.sg,'r')
+%             subplot(2,2,3);bar(range.SG,abs(y.ptr.sg-y.ptst.sg))
+%             subplot(2,2,4);bar(sum(y.ptr.sg-y.ptst.sg)/length(range.SG))
+%     
+%             figure(3)
+%             subplot(1,4,1);plot(Vbin,VBM.SG,'o:r'); title('Bias')
+%             subplot(1,4,2);plot(Vbin,VVM.SG,'o:k');  title('Variance')
+%             subplot(1,4,3);plot(Vbin,AMISE.SG,'o:b'); title('Bias² + Variance')
 %             pause
             waitbar(i/length(bins))
 end
