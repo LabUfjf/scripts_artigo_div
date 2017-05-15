@@ -39,16 +39,16 @@ bg.rayleigh = rmfield(bg.rayleigh,'evt');
 bg.logn = rmfield(bg.logn,'evt');
 bg.gamma = rmfield(bg.gamma,'evt');
 
-[bg.gauss.newrange.x,bg.gauss.newrange.y] = reg_choice(bg.gauss.pdf.x.all,bg.gauss.pdf.y.all,N.DIV);
-[bg.normal.newrange.x,bg.normal.newrange.y] = reg_choice(bg.normal.pdf.x.all,bg.normal.pdf.y.all,N.DIV);
-[bg.rayleigh.newrange.x,bg.rayleigh.newrange.y] = reg_choice(bg.rayleigh.pdf.x.all,bg.rayleigh.pdf.y.all,N.DIV);
-[bg.logn.newrange.x,bg.logn.newrange.y] = reg_choice(bg.logn.pdf.x.all,bg.logn.pdf.y.all,N.DIV);
-[bg.gamma.newrange.x,bg.gamma.newrange.y] = reg_choice(bg.gamma.pdf.x.all,bg.gamma.pdf.y.all,N.DIV);
+[bg.gauss.RoI.x,bg.gauss.RoI.y] = reg_choice(bg.gauss.pdf.x.all,bg.gauss.pdf.y.all,N.DIV);
+[bg.normal.RoI.x,bg.normal.RoI.y] = reg_choice(bg.normal.pdf.x.all,bg.normal.pdf.y.all,N.DIV);
+[bg.rayleigh.RoI.x,bg.rayleigh.RoI.y] = reg_choice(bg.rayleigh.pdf.x.all,bg.rayleigh.pdf.y.all,N.DIV);
+[bg.logn.RoI.x,bg.logn.RoI.y] = reg_choice(bg.logn.pdf.x.all,bg.logn.pdf.y.all,N.DIV);
+[bg.gamma.RoI.x,bg.gamma.RoI.y] = reg_choice(bg.gamma.pdf.x.all,bg.gamma.pdf.y.all,N.DIV);
 
-[sg.gauss.newrange.x,sg.gauss.newrange.y] = reg_choice(sg.gauss.pdf.x.all,sg.gauss.pdf.y.all,N.DIV);
-[sg.normal.newrange.x,sg.normal.newrange.y] = reg_choice(sg.normal.pdf.x.all,sg.normal.pdf.y.all,N.DIV);
-[sg.rayleigh.newrange.x,sg.rayleigh.newrange.y] = reg_choice(sg.rayleigh.pdf.x.all,sg.rayleigh.pdf.y.all,N.DIV);
-[sg.logn.newrange.x,sg.logn.newrange.y] = reg_choice(sg.logn.pdf.x.all,sg.logn.pdf.y.all,N.DIV);
-[sg.gamma.newrange.x,sg.gamma.newrange.y] = reg_choice(sg.gamma.pdf.x.all,sg.gamma.pdf.y.all,N.DIV);
+[sg.gauss.RoI.x,sg.gauss.RoI.y] = reg_choice(sg.gauss.pdf.x.all,sg.gauss.pdf.y.all,N.DIV);
+[sg.normal.RoI.x,sg.normal.RoI.y] = reg_choice(sg.normal.pdf.x.all,sg.normal.pdf.y.all,N.DIV);
+[sg.rayleigh.RoI.x,sg.rayleigh.RoI.y] = reg_choice(sg.rayleigh.pdf.x.all,sg.rayleigh.pdf.y.all,N.DIV);
+[sg.logn.RoI.x,sg.logn.RoI.y] = reg_choice(sg.logn.pdf.x.all,sg.logn.pdf.y.all,N.DIV);
+[sg.gamma.RoI.x,sg.gamma.RoI.y] = reg_choice(sg.gamma.pdf.x.all,sg.gamma.pdf.y.all,N.DIV);
 
 end

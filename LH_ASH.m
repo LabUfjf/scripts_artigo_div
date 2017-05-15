@@ -18,8 +18,8 @@ for i = 1:length(opt.SG);
             range.SG = linspace(min([DATASG.TR]) ,max([DATASG.TR]),npts);
             range.BG = linspace(min([DATABG.TR]) ,max([DATABG.TR]),npts);
       
-            [x.tr.sg,y.tr.sg]=ashNorm(DATASG.TR,M,opt.SG(nv,i));
-            [x.tr.bg,y.tr.bg]=ashNorm(DATABG.TR,M,opt.BG(nv,i));
+            [x.tr.sg,y.tr.sg]=ashNorm(DATASG.TR,M,opt.SG(nv));
+            [x.tr.bg,y.tr.bg]=ashNorm(DATABG.TR,M,opt.BG(nv));
             
             y.hist.sg = interp1(x.tr.sg,y.tr.sg,range.SG,'nearest','extrap');
             y.hist.bg = interp1(x.tr.bg,y.tr.bg,range.BG,'nearest','extrap');

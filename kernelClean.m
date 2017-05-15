@@ -1,4 +1,4 @@
-function [X,pdf] = kernelClean(data,nPoint,f)
+function [X,pdf] = kernelClean(data,nPoint,optN,f)
 disp(['[KDE][OPTIMIZER][..]']); %display de controle
 %==========================================================================
 % KERNEL Optimizer para problemas de 1 Dimensão:
@@ -47,7 +47,7 @@ h=h*f;
 % disp(['[h=' num2str(h1) '] [h_r=' num2str(h) '][OK]']);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % h=h*0.5;
-[y,x]=hist(data,calcnbins(data,'fd'));   %extraindo x e y do histograma "ótimo"
+[y,x]=hist(data,optN);   %extraindo x e y do histograma "ótimo"
 xrange = linspace(min(data),max(data),nPoint);
 y = interp1(x,y,xrange,'nearest','extrap');
 x = xrange;
