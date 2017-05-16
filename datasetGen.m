@@ -39,16 +39,16 @@ bg.rayleigh = rmfield(bg.rayleigh,'evt');
 bg.logn = rmfield(bg.logn,'evt');
 bg.gamma = rmfield(bg.gamma,'evt');
 
-[bg.gauss.RoI.x,bg.gauss.RoI.y] = reg_choice(bg.gauss.pdf.x.all,bg.gauss.pdf.y.all,N.DIV);
-[bg.normal.RoI.x,bg.normal.RoI.y] = reg_choice(bg.normal.pdf.x.all,bg.normal.pdf.y.all,N.DIV);
-[bg.rayleigh.RoI.x,bg.rayleigh.RoI.y] = reg_choice(bg.rayleigh.pdf.x.all,bg.rayleigh.pdf.y.all,N.DIV);
-[bg.logn.RoI.x,bg.logn.RoI.y] = reg_choice(bg.logn.pdf.x.all,bg.logn.pdf.y.all,N.DIV);
-[bg.gamma.RoI.x,bg.gamma.RoI.y] = reg_choice(bg.gamma.pdf.x.all,bg.gamma.pdf.y.all,N.DIV);
-
-[sg.gauss.RoI.x,sg.gauss.RoI.y] = reg_choice(sg.gauss.pdf.x.all,sg.gauss.pdf.y.all,N.DIV);
-[sg.normal.RoI.x,sg.normal.RoI.y] = reg_choice(sg.normal.pdf.x.all,sg.normal.pdf.y.all,N.DIV);
-[sg.rayleigh.RoI.x,sg.rayleigh.RoI.y] = reg_choice(sg.rayleigh.pdf.x.all,sg.rayleigh.pdf.y.all,N.DIV);
-[sg.logn.RoI.x,sg.logn.RoI.y] = reg_choice(sg.logn.pdf.x.all,sg.logn.pdf.y.all,N.DIV);
-[sg.gamma.RoI.x,sg.gamma.RoI.y] = reg_choice(sg.gamma.pdf.x.all,sg.gamma.pdf.y.all,N.DIV);
+% [bg.gauss.RoI.x,bg.gauss.RoI.y] = reg_choice(bg.gauss.pdf.x.all,bg.gauss.pdf.y.all,N.DIV);
+% [bg.normal.RoI.x,bg.normal.RoI.y] = reg_choice(bg.normal.pdf.x.all,bg.normal.pdf.y.all,N.DIV);
+% [bg.rayleigh.RoI.x,bg.rayleigh.RoI.y] = reg_choice(bg.rayleigh.pdf.x.all,bg.rayleigh.pdf.y.all,N.DIV);
+% [bg.logn.RoI.x,bg.logn.RoI.y] = reg_choice(bg.logn.pdf.x.all,bg.logn.pdf.y.all,N.DIV);
+% [bg.gamma.RoI.x,bg.gamma.RoI.y] = reg_choice(bg.gamma.pdf.x.all,bg.gamma.pdf.y.all,N.DIV);
+% 
+% [sg.gauss.RoI.x,sg.gauss.RoI.y] = reg_choice(sg.gauss.pdf.x.all,sg.gauss.pdf.y.all,N.DIV);
+% [sg.normal.RoI.x,sg.normal.RoI.y] = reg_choice(sg.normal.pdf.x.all,sg.normal.pdf.y.all,N.DIV);
+% [sg.rayleigh.RoI.x,sg.rayleigh.RoI.y] = reg_choice(sg.rayleigh.pdf.x.all,sg.rayleigh.pdf.y.all,N.DIV);
+% [sg.logn.RoI.x,sg.logn.RoI.y] = reg_choice(sg.logn.pdf.x.all,sg.logn.pdf.y.all,N.DIV);
+% [sg.gamma.RoI.x,sg.gamma.RoI.y] = reg_choice(sg.gamma.pdf.x.all,sg.gamma.pdf.y.all,N.DIV);
 
 end

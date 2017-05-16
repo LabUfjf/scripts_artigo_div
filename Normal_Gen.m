@@ -13,8 +13,8 @@ bg.gauss.n.x = 1000000;
 % plot(xrange,sg.gauss.pdf.y);
 
 
-sg.gauss.pdf.x = linspace(-3,3,sg.gauss.n.x);
-bg.gauss.pdf.x = linspace(-3,4,bg.gauss.n.x);
+sg.gauss.pdf.x = linspace(-10,10,sg.gauss.n.x);
+bg.gauss.pdf.x = linspace(-10,10,bg.gauss.n.x);
 
 sg.gauss.g1.mu = 0;
 bg.gauss.g1.mu = 0;
