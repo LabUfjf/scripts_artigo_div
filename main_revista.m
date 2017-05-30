@@ -1,7 +1,7 @@
 clear variables; close all; clc
 
 
-N.EVT = 40000;
+N.EVT = 100000;
 N.DIV = 10;
 N.BLOCKS = 20;
 
@@ -11,10 +11,36 @@ N.BLOCKS = 20;
 
 % [opt] = bin_choice(DATA.mix,IND,TARGET,N);
 
-TH = 0.1;
-[le,ld] = tail_choice_pdf(sg.normal.pdf.x.all,sg.normal.pdf.y.all,TH);
-[le.data,ld.data,T] = tail_choice_data(DATA.sg(2,:),TH/2);
-plot(le.data,0,'sc',ld.data,0,'sc','DisplayName','Data')
+% M.sg=[sg.gauss.evt ; ...
+%     sg.normal.evt ; ...
+%    sg.rayleigh.evt ; ...
+%    sg.logn.evt ; ...
+%    sg.gamma.evt];
+
+DATASET = DATA.sg(4,:);
+
+TH = 1;
+
+[le,ld] = tail_choice_pdf(sg.logn.pdf.x.all,sg.logn.pdf.y.all,TH);
+hold on
+[le,ld] = tail_choice_data(DATASET,TH);
+% legend show
+
+
+[pe,pd,gridx] = cdfdata(DATASET,0.1,100)
+% [pe,pd,gridx] = cdfdata(el_fcCand2_rhad,0.1,100)
+% [le.data,ld.data,T] = tail_choice_data(DATA.sg(1,:));
+
+plot(pe,0,'sc',pd,0,'sc','DisplayName','CDF')
 legend show
+% figure
+% plot(T.v)
 %   [DIV.SG(cvtr,:)] = DFSelect(y.ptr.sg,y.ptst.sg);
 %   [DIV.BG(cvtr,:)] = DFSelect(y.ptr.bg,y.ptst.bg);
+
+
+% [pe,pd,gridx] = cdfdata(DATASET,TH,100)
+
+% testar variaveis 6 - eratio ; jato (test)
+                 % 1 - rhad ; both
+                 % 3 - elétron

@@ -3,8 +3,8 @@ function [sg,bg] = LogN_Gen(sg,bg,n)
 sg.logn.n.x = 1000000;
 bg.logn.n.x = 1000000;
 
-sg.logn.pdf.x = linspace(0,30,sg.logn.n.x);
-bg.logn.pdf.x = linspace(0,30,bg.logn.n.x);
+sg.logn.pdf.x = linspace(0,50,sg.logn.n.x);
+bg.logn.pdf.x = linspace(0,50,bg.logn.n.x);
 
 sg.logn.mu = log(2);
 bg.logn.mu = log(1);

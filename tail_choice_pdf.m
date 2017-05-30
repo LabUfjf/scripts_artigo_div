@@ -12,13 +12,13 @@ ind.dy = find(dy<TH);
 ind.dyn = find(dyn<TH);
 ind.py = find(py<TH);
 
-le.dy=xrange(ind.py((find(diff(ind.py)>2))));
-le.dyn=xrange(ind.dyn((find(diff(ind.dyn)>2)))); le.dyn = le.dyn(1);
-le.py=xrange(ind.py((find(diff(ind.py)>2))));
+le.dy=xrange(ind.dy((find(diff(ind.dy)>2)))); le.dy = min(le.dy);
+le.dyn=xrange(ind.dyn((find(diff(ind.dyn)>2)))); le.dyn = min(le.dyn);
+le.py=xrange(ind.py((find(diff(ind.py)>2)))); le.py = min(le.py);
 
-ld.dy=xrange(ind.py((find(diff(ind.py)>2))+1));
-ld.dyn=xrange(ind.dyn((find(diff(ind.dyn)>2))+1)); ld.dyn = ld.dyn(end);
-ld.py=xrange(ind.py((find(diff(ind.py)>2))+1));
+ld.dy=xrange(ind.dy((find(diff(ind.dy)>2))+1)); ld.dy = max(ld.dy);
+ld.dyn=xrange(ind.dyn((find(diff(ind.dyn)>2))+1)); ld.dyn = max(ld.dyn);
+ld.py=xrange(ind.py((find(diff(ind.py)>2))+1)); ld.py = max(ld.py);
 
 if isempty(le.dy)
     le.dy = min(xrange);
