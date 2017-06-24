@@ -8,7 +8,6 @@ N.BLOCKS = 20;
 
 [sg,bg,DATA] = datasetGen(N);
 % [IND,TARGET] = CV(N.EVT+N.EVT,N.BLOCKS);
-
 % [opt] = bin_choice(DATA.mix,IND,TARGET,N);
 
 % M.sg=[sg.gauss.evt ; ...
@@ -17,11 +16,11 @@ N.BLOCKS = 20;
 %    sg.logn.evt ; ...
 %    sg.gamma.evt];
 
-DATASET = DATA.sg(4,:);
+DATASET = DATA.sg(3,:);
 
 TH = 1;
 
-[le,ld] = tail_choice_pdf(sg.logn.pdf.x.all,sg.logn.pdf.y.all,TH);
+[le,ld] = tail_choice_pdf(sg.rayleigh.pdf.x.all,sg.rayleigh.pdf.y.all,TH);
 hold on
 [le,ld] = tail_choice_data(DATASET,TH);
 % legend show

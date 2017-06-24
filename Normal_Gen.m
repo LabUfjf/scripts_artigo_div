@@ -53,7 +53,7 @@ bg.gauss.n.evt = n;
 [sg.gauss.hist.x,sg.gauss.hist.y]=data_normalized(sg.gauss.evt,calcnbins(sg.gauss.evt,'fd'));
 [bg.gauss.hist.x,bg.gauss.hist.y]=data_normalized(bg.gauss.evt,calcnbins(bg.gauss.evt,'fd'));
 
-
+cdf
 % [sg.gauss.evt.tr,sg.gauss.pdf] = randfit(sg.gauss.x,sg.gauss.y,sg.gauss.n.evt);
 % [sg.gauss.evt.tst,sg.gauss.pdf] = randfit(sg.gauss.x,sg.gauss.y,sg.gauss.n.evt);
 % [sg.gauss.evt.val,sg.gauss.pdf] = randfit(sg.gauss.x,sg.gauss.y,sg.gauss.n.evt);
