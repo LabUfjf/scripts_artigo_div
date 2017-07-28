@@ -23,9 +23,9 @@ if strcmp(type,'scan')
     M = 15;
     
      if length(data.evt)>=69998
-        DIV = data.DIV.L;
+        DIV = data.Div.L;
     else
-        DIV = data.DIV.S;
+        DIV = data.Div.S;
     end
     
     
