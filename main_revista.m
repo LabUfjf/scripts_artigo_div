@@ -1,46 +1,65 @@
 clear variables; close all; clc
 
+% PARÂMETROS DE ENTRADA:
+N.EVT = 1000000;
+N.DIV = 10;    % número de divisões
+N.PTS = 10000; % truth
 
-N.EVT = 100000;
-N.DIV = 10;
-N.BLOCKS = 20;
+% CRIAR BANCO DE DADOS: 
+[sg,bg] = datasetGenSingle(N,'Bimodal');
 
+% GERAR PDFS:
+[sg,bg] = PDFGEN(sg,bg);
 
-[sg,bg,DATA] = datasetGen(N);
-% [IND,TARGET] = CV(N.EVT+N.EVT,N.BLOCKS);
+% PREPARAR COMPARAÇÕES
+[sg.COMP]= COMPFIX(sg,'scan');
+[bg.COMP]= COMPFIX(bg,'scan');
 
-% [opt] = bin_choice(DATA.mix,IND,TARGET,N);
-
-% M.sg=[sg.gauss.evt ; ...
-%     sg.normal.evt ; ...
-%    sg.rayleigh.evt ; ...
-%    sg.logn.evt ; ...
-%    sg.gamma.evt];
-
-DATASET = DATA.sg(4,:);
-
-TH = 1;
-
-[le,ld] = tail_choice_pdf(sg.logn.pdf.x.all,sg.logn.pdf.y.all,TH);
-hold on
-[le,ld] = tail_choice_data(DATASET,TH);
-% legend show
+% CALCULAR DIVERGÊNCIAS
+[sg,bg] = DIVFIX(sg,bg)
 
 
-[pe,pd,gridx] = cdfdata(DATASET,0.1,100)
-% [pe,pd,gridx] = cdfdata(el_fcCand2_rhad,0.1,100)
-% [le.data,ld.data,T] = tail_choice_data(DATA.sg(1,:));
-
-plot(pe,0,'sc',pd,0,'sc','DisplayName','CDF')
-legend show
-% figure
-% plot(T.v)
-%   [DIV.SG(cvtr,:)] = DFSelect(y.ptr.sg,y.ptst.sg);
-%   [DIV.BG(cvtr,:)] = DFSelect(y.ptr.bg,y.ptst.bg);
 
 
-% [pe,pd,gridx] = cdfdata(DATASET,TH,100)
 
-% testar variaveis 6 - eratio ; jato (test)
-                 % 1 - rhad ; both
-                 % 3 - elétron
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% plot(sg.pdf.truth.x,sg.COMP.hist.y,'r',sg.pdf.truth.x,sg.COMP.ash.y,'k',sg.pdf.truth.x,sg.COMP.kde.y.fix,'b',sg.pdf.truth.x,sg.COMP.kde.y.var,'g')
+% hold on
+% plot(sg.pdf.truth.x,sg.pdf.truth.y,':k')
+
+
+% tic
+% wb = waitbar(0,'Aguarde ...');
+% for i = 1:1
+%     [sg,bg] = datasetGenSingle(N,'Bimodal');
+%     [sg,bg] = PDFGEN(sg,bg);
+% %     [V(i,:)] = DFSelect(sg.pdf.truth.y,sg.pdf.hist.y);
+%     waitbar(i/1000)
+% end
+% close(wb)
+% toc
+
+% for i=1: length(sg.RoI.x.dy)
+% subplot(1,2,1);plot(sg.RoI.x.dy{i},sg.RoI.y.dy{i},'.'); hold on
+% subplot(1,2,1);plot(bg.RoI.x.dy{i},bg.RoI.y.dy{i},'.'); hold on
+% subplot(1,2,2);plot(sg.RoI.x.py{i},sg.RoI.y.py{i},'.'); hold on
+% subplot(1,2,2);plot(bg.RoI.x.py{i},bg.RoI.y.py{i},'.'); hold on
+% end

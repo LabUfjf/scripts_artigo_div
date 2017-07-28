@@ -3,16 +3,6 @@ function [sg,bg] = Normal_Gen(sg,bg,n)
 sg.gauss.n.x = 1000000;
 bg.gauss.n.x = 1000000;
 
-
-
-% xrange = linspace(-20*sg.gauss.g1.std,20*sg.gauss.g1.std,1000000);
-% sg.gauss.pdf.y = normpdf(xrange,sg.gauss.g1.mu,sg.gauss.g1.std);
-% h = diff(xrange); h = h(1);
-% dy = abs(diff(sg.gauss.pdf.y)/h);
-% find(dy<0.0000000001)
-% plot(xrange,sg.gauss.pdf.y);
-
-
 sg.gauss.pdf.x = linspace(-10,10,sg.gauss.n.x);
 bg.gauss.pdf.x = linspace(-10,10,bg.gauss.n.x);
 

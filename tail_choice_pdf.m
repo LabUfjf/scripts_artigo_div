@@ -1,7 +1,5 @@
 function [le,ld] = tail_choice_pdf(xrange,yrange,TH)
 
-TH = TH/100;
-
 h = diff(xrange); h = h(1);
 
 dy = abs(diff(yrange)/h);
@@ -40,14 +38,14 @@ if isempty(ld.py)
     ld.py = max(xrange);
 end
 
-figure
-plot(xrange,yrange,'-k','DisplayName','PDF'); hold on
-plot(le.dy,0,'*r',ld.dy,0,'*r','DisplayName','Diff')
-plot(le.dyn,0,'*g',ld.dyn,0,'*g','DisplayName','Normalized Diff')
-plot(le.py,0,'ob',ld.py,0,'ob','DisplayName','Probability')
-% legend show
-axis tight
-grid on
-set(gca, 'GridLineStyle',':')
+% figure
+% plot(xrange,yrange,'-k','DisplayName','PDF'); hold on
+% plot(le.dy,0,'*r',ld.dy,0,'*r','DisplayName','Diff')
+% plot(le.dyn,0,'*g',ld.dyn,0,'*g','DisplayName','Normalized Diff')
+% plot(le.py,0,'ob',ld.py,0,'ob','DisplayName','Probability')
+% % legend show
+% axis tight
+% grid on
+% set(gca, 'GridLineStyle',':')
 
 end

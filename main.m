@@ -17,9 +17,6 @@ opt.BG = repmat(linspace(1,100000,14),4,1);
 [ash.ef,ash.fa,ash.auc] = LH_ASH(DATA,IND,TARGET,opt,N);
 [kde.ef,kde.fa,kde.auc,kde.sp] = LH_KDE(DATA,IND,TARGET,opt,N);
 
-
-
-
 % boxplot([histo.auc.mean; analitica.auc.mean]',{'LP-LInf','LP-L2 Norm','L1-Sorensen','L1-Gower','IP-Innerproduct','IP-Harmonic','IP-Cosine','SQ-Hellinger','L2-Squared','L2-AddSym','SH-Kullback','CO-Kumar','Fd','AMISE','Analitica'})
 % xticklabel_rotate([],90,[],'Fontsize',10)
 % xlabel('Divergences')
