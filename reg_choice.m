@@ -58,17 +58,17 @@ for i = 1:length(TH)-1
     clear xddy xdpy
     
     %  disp(['Derivada:' num2str(length(Idy)/2) ' Probabilidade:' num2str(length(Ipy)/2)])
-    %  subplot(2,2,1);plot(xpdf(ind.dy{i}),dy(ind.dy{i}),'.'); hold on
-    %  subplot(2,2,2);plot(xpdf(ind.dy{i}),py(ind.dy{i}),'.'); hold on
-    %  subplot(2,2,2);plot(xpdf(Idy),py(Idy),'o');
-    %  pause
-    %  subplot(2,2,3);plot(xpdf(ind.py{i}),py(ind.py{i}),'.'); hold on
-    %  subplot(2,2,4);plot(xpdf(ind.py{i}),py(ind.py{i}),'.'); hold on
-    %  subplot(2,2,4);plot(xpdf(Ipy),py(Ipy),'o');
-    %  pause
+    %      subplot(2,2,1);plot(xpdf(ind.dy{i}),dy(ind.dy{i}),'.'); hold on
+    %      subplot(2,2,2);plot(xpdf(ind.dy{i}),py(ind.dy{i}),'.'); hold on
+    %      subplot(2,2,2);plot(xpdf(Idy),py(Idy),'o');
+    % %      pause
+    %      subplot(2,2,3);plot(xpdf(ind.py{i}),py(ind.py{i}),'.'); hold on
+    %      subplot(2,2,4);plot(xpdf(ind.py{i}),py(ind.py{i}),'.'); hold on
+    %      subplot(2,2,4);plot(xpdf(Ipy),py(Ipy),'o');
+    %      pause
 end
 
-
+% pause
 
 end
 

@@ -6,6 +6,7 @@ bg.nPoint=calcnbins(bg.evt,'fd');
 
 %% AJUSTANDO NÚMERO DE PONTOS DE ACORDO COM O FAST-KERNEL
 sg.Div.L=10; sg.Div.S=2; sg.Div.D=5; % Garantir que os parâmetros estejam iguais ao fastKDE
+bg.Div.L=10; bg.Div.S=2; bg.Div.D=5; % Garantir que os parâmetros estejam iguais ao fastKDE
 [sg.nPoint] = nPointFix(sg.nPoint,sg.Div,size(sg.evt,2),size(sg.evt,1));
 [bg.nPoint] = nPointFix(bg.nPoint,sg.Div,size(bg.evt,2),size(bg.evt,1));
 

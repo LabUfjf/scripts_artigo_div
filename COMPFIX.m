@@ -8,6 +8,8 @@ if strcmp(type,'hist')
     COMP.kde.y.fix = interp1(data.pdf.kde.x.fix,data.pdf.kde.y.fix,COMP.hist.x,interp,'extrap');
     COMP.kde.y.var = interp1(data.pdf.kde.x.var,data.pdf.kde.y.var,COMP.hist.x,interp,'extrap');
     COMP.truth.y = interp1(data.pdf.truth.x,data.pdf.truth.y,COMP.hist.x,interp,'extrap');
+    COMP.x = COMP.hist.x;
+    COMP.hist = rmfield(COMP.hist,'x');
 end
 
 if strcmp(type,'truth')
@@ -16,6 +18,7 @@ if strcmp(type,'truth')
     COMP.ash.y = interp1(data.pdf.ash.x,data.pdf.ash.y,data.pdf.truth.x,interp,'extrap');
     COMP.kde.y.fix = interp1(data.pdf.kde.x.fix,data.pdf.kde.y.fix,data.pdf.truth.x,interp,'extrap');
     COMP.kde.y.var = interp1(data.pdf.kde.x.var,data.pdf.kde.y.var,data.pdf.truth.x,interp,'extrap');
+    COMP.x = data.pdf.truth.x;
 end
 
 if strcmp(type,'scan')
@@ -28,8 +31,8 @@ if strcmp(type,'scan')
         DIV = data.Div.S;
     end
     
-    
-    for bin = DIV:DIV:100
+    nbin = DIV:DIV:200;
+    for bin = nbin
         i= i+1;
         data.nPoint = bin;        
         [data.pdf.ash.x,data.pdf.ash.y] = ashGEN(data,M);
@@ -41,6 +44,9 @@ if strcmp(type,'scan')
         COMP.kde.y.fix{i} = interp1(data.pdf.kde.x.fix,data.pdf.kde.y.fix,COMP.hist.x{i},interp,'extrap');
         COMP.kde.y.var{i} = interp1(data.pdf.kde.x.var,data.pdf.kde.y.var,COMP.hist.x{i},interp,'extrap');        
         COMP.truth.y{i} = interp1(data.pdf.truth.x,data.pdf.truth.y,COMP.hist.x{i},interp,'extrap');
+        COMP.x{i} = COMP.hist.x{i};
+        COMP.hist = rmfield(COMP.hist,'x');
+        COMP.bin = nbin;
     end
 end
 
