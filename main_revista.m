@@ -11,8 +11,8 @@ N.PTS = 10000; % truth
 % GERAR PDFS:
 [sg,bg] = PDFGEN(sg,bg);
 % PREPARAR COMPARAÇÕES
-[sg.COMP]= COMPFIX(sg,'scan');
-[bg.COMP]= COMPFIX(bg,'scan');
+[sg.COMP]= COMPFIX(sg,'hist');
+[bg.COMP]= COMPFIX(bg,'hist');
 
 % CALCULAR DIVERGÊNCIAS
-[sg,bg] = DIVFIX(sg,bg)
+[sg,bg] = DIVFIX(sg,bg);
