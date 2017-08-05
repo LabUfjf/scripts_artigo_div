@@ -8,7 +8,29 @@ py = abs(ypdf/max(ypdf));
 
 TH = linspace(0,1,div+1);
 Nsec = round(Npt/div);
-
+if div ==1
+    i=1;
+    x.dy{i} = xpdf;
+    y.dy{i} = ypdf;
+    x.py{i} = xpdf;
+    y.py{i} = ypdf;    
+    x.eq.dy{i} = xpdf;
+    x.eq.py{i} = xpdf;  
+    
+%    %     disp(['Derivada:' num2str(length(Idy)/2) ' Probabilidade:' num2str(length(Ipy)/2)])
+%          subplot(2,2,1);plot(xpdf(1:end-1),dy,'.'); hold on
+%          subplot(2,2,2);plot(xpdf,py,'.'); hold on
+%          subplot(2,2,2);plot(xpdf([1 end]),py([1 end]),'o');
+%     %    pause
+%          subplot(2,2,3);plot(xpdf,py,'.'); hold on
+%          subplot(2,2,4);plot(xpdf,py,'.'); hold on
+%          subplot(2,2,4);plot(xpdf([1 end]),py([1 end]),'o');
+%          pause
+    
+    
+else
+    
+    
 for i = 1:length(TH)-1
     
     ind.dy{i} = find(dy>TH(i) & dy<TH(i+1));
@@ -57,17 +79,17 @@ for i = 1:length(TH)-1
     x.eq.py{i} = x.eq.py{i}(1:Nsec);
     clear xddy xdpy
     
-    %  disp(['Derivada:' num2str(length(Idy)/2) ' Probabilidade:' num2str(length(Ipy)/2)])
-    %      subplot(2,2,1);plot(xpdf(ind.dy{i}),dy(ind.dy{i}),'.'); hold on
-    %      subplot(2,2,2);plot(xpdf(ind.dy{i}),py(ind.dy{i}),'.'); hold on
-    %      subplot(2,2,2);plot(xpdf(Idy),py(Idy),'o');
-    % %      pause
-    %      subplot(2,2,3);plot(xpdf(ind.py{i}),py(ind.py{i}),'.'); hold on
-    %      subplot(2,2,4);plot(xpdf(ind.py{i}),py(ind.py{i}),'.'); hold on
-    %      subplot(2,2,4);plot(xpdf(Ipy),py(Ipy),'o');
-    %      pause
+%      disp(['Derivada:' num2str(length(Idy)/2) ' Probabilidade:' num2str(length(Ipy)/2)])
+%          subplot(2,2,1);plot(xpdf(ind.dy{i}),dy(ind.dy{i}),'.'); hold on
+%          subplot(2,2,2);plot(xpdf(ind.dy{i}),py(ind.dy{i}),'.'); hold on
+%          subplot(2,2,2);plot(xpdf(Idy),py(Idy),'o');
+%     %    pause
+%          subplot(2,2,3);plot(xpdf(ind.py{i}),py(ind.py{i}),'.'); hold on
+%          subplot(2,2,4);plot(xpdf(ind.py{i}),py(ind.py{i}),'.'); hold on
+%          subplot(2,2,4);plot(xpdf(Ipy),py(Ipy),'o');
+%     %    pause
 end
-
+end
 % pause
 
 end

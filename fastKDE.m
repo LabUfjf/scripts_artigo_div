@@ -1,10 +1,10 @@
-function [X,pdf] = fastKDE(data,nPoint,f,type)
+function [X,pdf] = fastKDE(setup,data,nPoint,f,type)
 % l=1;
 doNorm = 0;
 tic
 [nd,n,data]= format_data(data);
 
-Div.L=10; Div.S=2; Div.D=5;
+setup.Div.L=10; setup.Div.S=2; setup.Div.D=5;
 
 if nd ==1
     [hist_pdf,Xedges,~] = histcounts(data,'Normalization', 'pdf','BinMethod','fd');
@@ -39,13 +39,13 @@ if nd ==1
     %% Dimensões = 1
     if length(data)>=69998
         pdf=[];
-        for j=1:Div.L          
-            pdf=[pdf ((1/n)*sum((repmat((Hi.^(-1/2)),nPoint/Div.L,1).*Kn(repmat((Hi.^(-1/2)),nPoint/Div.L,1).*((repmat(X((1+(nPoint/Div.L)*(j-1)):(nPoint/Div.L)*(j)),length(data),1)')-repmat(data,nPoint/Div.L,1)))),2))'];
+        for j=1:setup.Div.L          
+            pdf=[pdf ((1/n)*sum((repmat((Hi.^(-1/2)),nPoint/setup.Div.L,1).*Kn(repmat((Hi.^(-1/2)),nPoint/setup.Div.L,1).*((repmat(X((1+(nPoint/setup.Div.L)*(j-1)):(nPoint/setup.Div.L)*(j)),length(data),1)')-repmat(data,nPoint/setup.Div.L,1)))),2))'];
         end
     else
         pdf=[];
-        for j=1:Div.S
-            pdf=[pdf ((1/n)*sum((repmat((Hi.^(-1/2)),nPoint/Div.S,1).*Kn(repmat((Hi.^(-1/2)),nPoint/Div.S,1).*((repmat(X((1+(nPoint/Div.S)*(j-1)):(nPoint/Div.S)*(j)),length(data),1)')-repmat(data,nPoint/Div.S,1)))),2))'];
+        for j=1:setup.Div.S
+            pdf=[pdf ((1/n)*sum((repmat((Hi.^(-1/2)),nPoint/setup.Div.S,1).*Kn(repmat((Hi.^(-1/2)),nPoint/setup.Div.S,1).*((repmat(X((1+(nPoint/setup.Div.S)*(j-1)):(nPoint/setup.Div.S)*(j)),length(data),1)')-repmat(data,nPoint/setup.Div.S,1)))),2))'];
         end
     end
     
@@ -71,15 +71,15 @@ else
         
     else
         pdf=[];
-        for jj=1:Div.D
+        for jj=1:setup.Div.D
             pdfy=[];
-            for kk=1:Div.D
-                MH1= repmat((Hi(1,:).^(-1/2)),nPoint/Div.D,1);
-                MH2= repmat((Hi(2,:).^(-1/2)),nPoint/Div.D,1);
-                MD1 = repmat(data(1,:),nPoint/Div.D,1);
-                MD2 = repmat(data(2,:),nPoint/Div.D,1);
-                MX1=repmat(X(1,((1+(nPoint/Div.D)*(jj-1)):(nPoint/Div.D)*(jj))),length(data(1,:)),1)';
-                MX2=repmat(X(2,((1+(nPoint/Div.D)*(kk-1)):(nPoint/Div.D)*(kk))),length(data(2,:)),1)';
+            for kk=1:setup.Div.D
+                MH1= repmat((Hi(1,:).^(-1/2)),nPoint/setup.Div.D,1);
+                MH2= repmat((Hi(2,:).^(-1/2)),nPoint/setup.Div.D,1);
+                MD1 = repmat(data(1,:),nPoint/setup.Div.D,1);
+                MD2 = repmat(data(2,:),nPoint/setup.Div.D,1);
+                MX1=repmat(X(1,((1+(nPoint/setup.Div.D)*(jj-1)):(nPoint/setup.Div.D)*(jj))),length(data(1,:)),1)';
+                MX2=repmat(X(2,((1+(nPoint/setup.Div.D)*(kk-1)):(nPoint/setup.Div.D)*(kk))),length(data(2,:)),1)';
                 
                 pdf1=[(1/n)*(MH1.*Kn(MH1.*(MX1-MD1)))*(MH2.*Kn(MH2.*(MX2-MD2)))']';
                 pdfy=[pdfy; pdf1];

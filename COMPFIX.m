@@ -1,9 +1,9 @@
-function [COMP]= COMPFIX(data,type)
+function [COMP]= COMPFIX(setup,data,type)
 
 interp = 'nearest';
 
 if strcmp(type,'hist')
-    [COMP.hist.y,COMP.hist.x] = hist(data.evt,data.nPoint);
+    [COMP.hist.y,COMP.hist.x] = hist(data.evt,data.nPoint);    
     COMP.ash.y = interp1(data.pdf.ash.x,data.pdf.ash.y,COMP.hist.x,interp,'extrap');
     COMP.kde.y.fix = interp1(data.pdf.kde.x.fix,data.pdf.kde.y.fix,COMP.hist.x,interp,'extrap');
     COMP.kde.y.var = interp1(data.pdf.kde.x.var,data.pdf.kde.y.var,COMP.hist.x,interp,'extrap');
@@ -24,17 +24,52 @@ end
 if strcmp(type,'scan')
     i = 0;
     M = 15;
-    
-     if length(data.evt)>=69998
-        DIV = data.Div.L;
+    if length(data.evt)>=69998
+        DIV = setup.Div.L;
     else
-        DIV = data.Div.S;
+        DIV = setup.Div.S;
     end
     
-    nbin = DIV:DIV:200;
+    nbin = DIV:DIV:250;
     for bin = nbin
         i= i+1;
-        data.nPoint = bin;        
+        data.nPoint = bin;
+        COMP.x = data.pdf.truth.x;
+        
+        [data.pdf.hist.x,data.pdf.hist.y] = data_normalized(data.evt,bin);
+        [data.pdf.ash.x,data.pdf.ash.y] = ashGEN(data,M);
+        [data.pdf.kde.x.fix,data.pdf.kde.y.fix] = kdeGEN(setup,data,'Fixed');
+        [data.pdf.kde.x.var,data.pdf.kde.y.var] = kdeGEN(setup,data,'Variable');
+        
+%          [COMP.hist.x{i},COMP.hist.y{i}] = data_normalized(data.evt,bin);
+                
+         
+         
+        COMP.hist.y{i} = interp1(data.pdf.hist.x,data.pdf.hist.y,COMP.x,interp,'extrap');
+        COMP.ash.y{i} = interp1(data.pdf.ash.x,data.pdf.ash.y,COMP.x,interp,'extrap');
+        COMP.kde.y.fix{i} = interp1(data.pdf.kde.x.fix,data.pdf.kde.y.fix,COMP.x,interp,'extrap');
+        COMP.kde.y.var{i} = interp1(data.pdf.kde.x.var,data.pdf.kde.y.var,COMP.x,interp,'extrap');
+        COMP.truth.y{i} = interp1(data.pdf.truth.x,data.pdf.truth.y,COMP.x,interp,'extrap');
+%         COMP.x{i} = COMP.hist.x{i};
+        
+%         [COMP.hist.x{i},COMP.hist.y{i}] = data_normalized(data.evt,bin);
+%         COMP.ash.y{i} = interp1(data.pdf.ash.x,data.pdf.ash.y,COMP.hist.x{i},interp,'extrap');
+%         COMP.kde.y.fix{i} = interp1(data.pdf.kde.x.fix,data.pdf.kde.y.fix,COMP.hist.x{i},interp,'extrap');
+%         COMP.kde.y.var{i} = interp1(data.pdf.kde.x.var,data.pdf.kde.y.var,COMP.hist.x{i},interp,'extrap');
+%         COMP.truth.y{i} = interp1(data.pdf.truth.x,data.pdf.truth.y,COMP.hist.x{i},interp,'extrap');
+%         COMP.x{i} = COMP.hist.x{i}; 
+%         COMP.hist = rmfield(COMP.hist,'x');
+
+        COMP.bin = nbin;
+    end
+end
+
+if strcmp(type,'var')
+    
+    nbin = 0:0.1:1;
+    for bin = nbin
+        i= i+1;
+        data.nPoint = bin;
         [data.pdf.ash.x,data.pdf.ash.y] = ashGEN(data,M);
         [data.pdf.kde.x.fix,data.pdf.kde.y.fix] = kdeGEN(data,'Fixed');
         [data.pdf.kde.x.var,data.pdf.kde.y.var] = kdeGEN(data,'Variable');
@@ -42,12 +77,14 @@ if strcmp(type,'scan')
         [COMP.hist.x{i},COMP.hist.y{i}] = data_normalized(data.evt,bin);
         COMP.ash.y{i} = interp1(data.pdf.ash.x,data.pdf.ash.y,COMP.hist.x{i},interp,'extrap');
         COMP.kde.y.fix{i} = interp1(data.pdf.kde.x.fix,data.pdf.kde.y.fix,COMP.hist.x{i},interp,'extrap');
-        COMP.kde.y.var{i} = interp1(data.pdf.kde.x.var,data.pdf.kde.y.var,COMP.hist.x{i},interp,'extrap');        
+        COMP.kde.y.var{i} = interp1(data.pdf.kde.x.var,data.pdf.kde.y.var,COMP.hist.x{i},interp,'extrap');
         COMP.truth.y{i} = interp1(data.pdf.truth.x,data.pdf.truth.y,COMP.hist.x{i},interp,'extrap');
         COMP.x{i} = COMP.hist.x{i};
         COMP.hist = rmfield(COMP.hist,'x');
         COMP.bin = nbin;
     end
 end
+
+
 
 end
