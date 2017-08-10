@@ -28,10 +28,10 @@ bg.n.evt = N.EVT;
 [sg.evt,~] = randfit(sg.pdf.truth.x,sg.pdf.truth.y,sg.n.evt);
 [bg.evt,~] = randfit(bg.pdf.truth.x,bg.pdf.truth.y,bg.n.evt);
 
-sg = rmfield(sg,'g1');
-bg = rmfield(bg,'g1');
-
-sg = rmfield(sg,'g2');
-bg = rmfield(bg,'g2');
+% sg = rmfield(sg,'g1');
+% bg = rmfield(bg,'g1');
+% 
+% sg = rmfield(sg,'g2');
+% bg = rmfield(bg,'g2');
 
 end
