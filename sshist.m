@@ -1,5 +1,5 @@
-function [optN, optD, edges, C, N] = sshist(x,N)
-% [optN, optD, edges, C, N] =sshist(x,N)
+function [optN, C, N] = sshist(x,N)
+% [optN, C, N] = sshist(x,N)
 %
 % Function `sshist' returns the optimal number of bins in a histogram
 % used for density estimation.
@@ -30,7 +30,7 @@ function [optN, optD, edges, C, N] = sshist(x,N)
 % N (optinal):
 %       A vector that specifies the number of bins to be examined. 
 %       The optimal number of bins is selected from the elements of N.  
-%       Default value is N = 2:500.
+%       Default value is N = 2:50.
 %       * Do not search binwidths smaller than a sampling resolution of data.
 %
 % Output argument
@@ -39,7 +39,6 @@ function [optN, optD, edges, C, N] = sshist(x,N)
 % C:    Cost function of N.
 %
 % See also SSKERNEL
-%
 %
 % Copyright (c) 2009 2010, Hideaki Shimazaki All rights reserved.
 % http://2000.jukuin.keio.ac.jp/shimazaki
@@ -55,7 +54,7 @@ if nargin < 2
     dx = min(buf(logical(buf ~= 0)));
     N_MIN = 2;              % Minimum number of bins (integer)
                             % N_MIN must be more than 1 (N_MIN > 1).            
-    N_MAX = min(floor((x_max - x_min)/(2*dx)),500);
+    N_MAX = min(floor((x_max - x_min)/(2*dx)),50);
                             % Maximum number of bins (integer)
     N = N_MIN:N_MAX;        % # of Bins
 end
@@ -71,7 +70,7 @@ for i = 1: length(N)
        shift = linspace(0,D(i),SN);
        for p = 1 : SN
                edges = linspace(x_min+shift(p)-D(i)/2,...
-                 x_max+shift(p)-D(i)/2,N(i)+1);   % Bin edges
+                        x_max+shift(p)-D(i)/2,N(i)+1);   % Bin edges
 
                ki = histc(x,edges);               % Count # of events in bins
                ki = ki(1:end-1);
@@ -88,11 +87,6 @@ C = mean(Cs,2);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Optimal Bin Size Selectioin
 [Cmin idx] = min(C);
-optN = N(idx);                          % Optimal number of bins
-optD = D(idx);                         % *Optimal binwidth
-edges = linspace(x_min,x_max,optN+1);  % Optimal segmentation
-
-%[Cminp idxp] = min(Cs(idx,:));
-%shift = linspace(0,D(idx),SN);
-%edges = linspace(x_min+shift(idxp)-D(idx)/2,...
-%                        x_max+shift(idxp)-D(idx)/2,N(idx)+1);
+optN = N(idx);                         % Optimal number of bins
+%optD = D(idx);                         % *Optimal binwidth
+%edges = linspace(x_min,x_max,N(idx));  % Optimal segmentation

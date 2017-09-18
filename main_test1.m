@@ -4,15 +4,15 @@ clear variables; close all; clc
 
 
 
-for NV = 1:50
+for NV = 1:1
     tic
-    % bin=linspace(-0.05,0.05,50);
-    bin=10:1:120;
-    for nt = 1:50;
+    bin=linspace(-0.05,0.05,50);
+%     bin=10:1:120;
+    for nt = 1:5;
         
         [setup] = IN(10000);
         % CRIAR BANCO DE DADOS:
-        [sg,~] = datasetGenSingle(setup,'Bimodal');
+        [sg,~] = datasetGenSingle(setup,'Gauss');
         SCOTT(nt)= calcnbins(sg.evt,'scott');
         FD(nt)= calcnbins(sg.evt,'fd');
         %   SS(nt) =sshist(sg.evt);
@@ -22,17 +22,17 @@ for NV = 1:50
         for B=bin
             i=i+1;
             
-            [xh,yh] = data_normalized(sg.evt,B);
+%             [xh,yh] = data_normalized(sg.evt,B);
             % %         d = diff(xh); d=d(1)/2;
             xh2 = linspace(min(sg.evt),max(max(sg.evt)),1000);
-            yh2=interp1(xh,yh,xh2,'nearest','extrap');
-            yh2 = yh2/area2d(xh2,yh2);
-%             ytruth = [normpdf(xh2,sg.g1.mu,sg.g1.std)];             
-            ytruth = [normpdf(xh2,sg.g1.mu,sg.g1.std) + normpdf(xh2,sg.g2.mu,sg.g2.std)]/2;
-            [V] = DFSelect(yh2,ytruth,'norm');
-            %        [noise] = noiseADD(sg.pdf.truth.y,B,'gamma');
+%             yh2=interp1(xh,yh,xh2,'nearest','extrap');
+%             yh2 = yh2/area2d(xh2,yh2);
+            ytruth = [normpdf(xh2,sg.g1.mu,sg.g1.std)];             
+%             ytruth = [normpdf(xh2,sg.g1.mu,sg.g1.std) + normpdf(xh2,sg.g2.mu,sg.g2.std)]/2;
+%             [V] = DFSelect(yh2,ytruth,'norm');
+                   [noise] = noiseADD(sg.pdf.truth.y,B,'normal');
             %
-            %         [V] = DFSelect(noise,sg.pdf.truth.y,'norm');
+                    [V] = DFSelect(sg.pdf.truth.y+B,sg.pdf.truth.y,'norm');
             for div = 1:3
                 A{div}(i,nt) = V(div);
             end
@@ -59,9 +59,9 @@ for NV = 1:50
         %     close
         
     end
-    B= mean(A{b}');
-    indminnt = find(B==min(B),1);
-    IND(NV) = bin(indminnt);
+%     B= mean(A{b}');
+%     indminnt = find(B==min(B),1);
+%     IND(NV) = bin(indminnt);
 end
 %
 % M = mean(A{b}');
@@ -69,25 +69,25 @@ end
 % plot([bin(indmin) bin(indmin)],[0 max(mean(A{3}'))],':'); hold on
 % plot([round(mean(SCOTT)) round(mean(SCOTT))],[0 max(mean(A{3}'))],':')
 % legend('Bias','Variance','MISE','BIN MISE','BIN SCOTT')
-legend('Bias','Variance','MISE')
-%
-% % histogram(SS)
+% legend('Bias','Variance','MISE')
+% %
+% % % histogram(SS)
+% % % hold on
+% %
+% h = 3.5*sg.g1.std*length(sg.evt)^(-1/3);
+% bin_truth = ceil((max(sg.evt)-min(sg.evt))/h);
+% %
+% %
+% figure
+% 
+% x=linspace(1,max(bin),100000);
+% yfd = normpdf(x,mean(FD),std(FD));
+% ysc = normpdf(x,mean(SCOTT),std(SCOTT));
+% ymi = normpdf(x,mean(IND),std(IND));
+% plot(x,yfd,'r',x,ysc,'k',x,ymi,'b',bin_truth,0,'*g')
+% % histogram(FD)
 % % hold on
-%
-h = 3.5*sg.g1.std*length(sg.evt)^(-1/3);
-bin_truth = ceil((max(sg.evt)-min(sg.evt))/h);
-%
-%
-figure
-
-x=linspace(1,max(bin),100000);
-yfd = normpdf(x,mean(FD),std(FD));
-ysc = normpdf(x,mean(SCOTT),std(SCOTT));
-ymi = normpdf(x,mean(IND),std(IND));
-plot(x,yfd,'r',x,ysc,'k',x,ymi,'b',bin_truth,0,'*g')
-% histogram(FD)
-% hold on
-% histogram(SCOTT)
-% hold on
-% histogram(IND)
-legend('FD','SCOTT','MISE','TRUTH_{SCOTT}')
+% % histogram(SCOTT)
+% % hold on
+% % histogram(IND)
+% legend('FD','SCOTT','MISE','TRUTH_{SCOTT}')

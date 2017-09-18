@@ -18,8 +18,8 @@ bg.n.evt = N.EVT;
 sg.evt = random('Rayleigh',sg.b,1,sg.n.evt);
 bg.evt = random('Rayleigh',bg.b,1,bg.n.evt);
 
-sg = rmfield(sg,'b');
-bg = rmfield(bg,'b');
+% sg = rmfield(sg,'b');
+% bg = rmfield(bg,'b');
 
 
 

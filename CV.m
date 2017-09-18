@@ -1,7 +1,7 @@
 function [IND,TARGET] = CV(NEVT,NBLOCKS)
 
-P.TR = 0.25;
-P.TST = 0.50;
+P.TR = 0.5;
+P.TST = 0.25;
 
 N.TR=ceil(P.TR*NBLOCKS);
 N.TST=ceil(P.TST*NBLOCKS);

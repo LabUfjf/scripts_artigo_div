@@ -21,11 +21,11 @@ bg.n.evt = N.EVT;
 sg.evt = random('logn',sg.mu,sg.std,1,sg.n.evt);
 bg.evt = random('logn',bg.mu,bg.std,1,bg.n.evt);
 
-sg = rmfield(sg,'mu');
-bg = rmfield(bg,'mu');
-
-sg = rmfield(sg,'std');
-bg = rmfield(bg,'std');
+% sg = rmfield(sg,'mu');
+% bg = rmfield(bg,'mu');
+% 
+% sg = rmfield(sg,'std');
+% bg = rmfield(bg,'std');
 
 
 

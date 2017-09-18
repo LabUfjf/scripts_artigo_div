@@ -22,11 +22,11 @@ bg.n.evt = N.EVT;
 sg.evt = gamrnd(sg.A,sg.B,1,sg.n.evt);
 bg.evt = gamrnd(bg.A,bg.B,1,bg.n.evt);
 
-sg = rmfield(sg,'A');
-bg = rmfield(bg,'A');
-
-sg = rmfield(sg,'B');
-bg = rmfield(bg,'B');
+% sg = rmfield(sg,'A');
+% bg = rmfield(bg,'A');
+% 
+% sg = rmfield(sg,'B');
+% bg = rmfield(bg,'B');
 
 
 
