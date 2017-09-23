@@ -1,31 +1,24 @@
-function [xpdf,pdf,pdf2,xh,yh] = PoissonADD(sg,N,bin)
+function [pdf] = PoissonADD(yh,N)
 
-
-i=0;
-[~,xth]=hist(sg.evt,bin);
-xh = linspace(min(xth),max(xth),bin);
-yh = interp1(sg.pdf.truth.x,sg.pdf.truth.y,xh,'nearest','extrap');
+% [~,xth]=hist(sg.evt,bin);
+% xh = linspace(min(xth),max(xth),bin);
+% yh = interp1(sg.pdf.truth.x,sg.pdf.truth.y,xh,'nearest','extrap');
 yh = yh/(sum(yh));
 yh = yh*(N);
-% yh = round(yh);
 
+i=0;
 for m = yh;
     mN=m;
     i=i+1;
-  x = linspace(0,mN*10,5000);
-%  pdf(i) = poissrnd(mN,1,1);
+  x = linspace(0,mN*20,10000);
   y = exp(x * log(mN) - mN - gammaln(x+1));
-%   plot(x,y,'.'); hold on
-%   pause
   [out,~] = randfit(x,y,1);
-  pdf2(i)=round(out);    
-    pdf(i)=(out); 
+%   pdf2(i)=(out);
+  pdf(i)=round(out);    
+    
 end
-% figure
-% plot(pdf,'r')
+% xpdf = xh;
 pdf = (pdf/sum(pdf))*N;
-% hold on
-% plot(pdf,'k')
-% pause
-xpdf = xh;
+% pdf2 = (pdf2/sum(pdf2))*N;
+
 end
