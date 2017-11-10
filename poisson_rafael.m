@@ -1,7 +1,7 @@
 close all; clear; clc;
 
 
-[setup] = IN(1000);
+[setup] = IN(10000,10000);
 [sg,~] = datasetGenSingle(setup,'Gauss');
 
 

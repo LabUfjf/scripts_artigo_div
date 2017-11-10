@@ -25,8 +25,8 @@ bg.pdf.truth.y = [normpdf(bg.pdf.truth.x,bg.g1.mu,bg.g1.std) + normpdf(bg.pdf.tr
 sg.n.evt = N.EVT;
 bg.n.evt = N.EVT;
 
-[sg.evt,~] = randfit(sg.pdf.truth.x,sg.pdf.truth.y,sg.n.evt);
-[bg.evt,~] = randfit(bg.pdf.truth.x,bg.pdf.truth.y,bg.n.evt);
+[sg.evt,~] = randfit_old(sg.pdf.truth.x,sg.pdf.truth.y,sg.n.evt);
+[bg.evt,~] = randfit_old(bg.pdf.truth.x,bg.pdf.truth.y,bg.n.evt);
 
 % sg = rmfield(sg,'g1');
 % bg = rmfield(bg,'g1');

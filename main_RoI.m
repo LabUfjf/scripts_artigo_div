@@ -2,123 +2,152 @@
 
 clear variables; close all; clc
 
-Noise = 'normal';
-Nomalization = 'norm';
-
-% for name = {'Gauss','Bimodal','Rayleigh','Logn','Gamma'};
-
-name = {'Bimodal'};
-wb = waitbar(0,'Aguarde');
-for nt = 1:50;
+Noise = 'poisson';
+Nomalization = 'no';
+method = 'full';
+% load PT_int1000
+for name = {'Gauss','Bimodal','Rayleigh','Logn','Gamma'};
+    % name = {'Bimodal'};
+    wb = waitbar(0,'Aguarde');
+    nt_max = 100;
+    nbin = 5500;
+    load(['VAR_MEAN[' name{1} ']BIN[' num2str(5500) ']NORM[' Nomalization ']'],'VAR_MEAN')
     
-    [setup] = IN(1000);
-    [sg,~] = datasetGenSingle(setup,name{1});
-    
-    i = 0;
-    for RoI=1:setup.DIV
-        i=i+1;
-        xRoI.dy = sg.RoI.x.dy{RoI};
-        xRoI.py = sg.RoI.x.py{RoI};
-        xRoI.eq.dy = sg.RoI.x.eq.dy{RoI};
-        xRoI.eq.py = sg.RoI.x.eq.py{RoI};
+    for nt = 1:nt_max;
         
-        switch name{1}
-            case 'Gauss'
-                sinal.dy = [normpdf(xRoI.dy,sg.g1.mu,sg.g1.std)];
-                sinal.py = [normpdf(xRoI.py,sg.g1.mu,sg.g1.std)];
-                sinal.eq.dy = [normpdf(xRoI.eq.dy,sg.g1.mu,sg.g1.std)];
-                sinal.eq.py = [normpdf(xRoI.eq.py,sg.g1.mu,sg.g1.std)];
-            case 'Bimodal'
-                sinal.dy = [normpdf(xRoI.dy,sg.g1.mu,sg.g1.std) + normpdf(xRoI.dy,sg.g2.mu,sg.g2.std)]/2;
-                sinal.py = [normpdf(xRoI.py,sg.g1.mu,sg.g1.std) + normpdf(xRoI.py,sg.g2.mu,sg.g2.std)]/2;
-                sinal.eq.dy = [normpdf(xRoI.eq.dy,sg.g1.mu,sg.g1.std) + normpdf(xRoI.eq.dy,sg.g2.mu,sg.g2.std)]/2;
-                sinal.eq.py = [normpdf(xRoI.eq.py,sg.g1.mu,sg.g1.std) + normpdf(xRoI.eq.py,sg.g2.mu,sg.g2.std)]/2;
-            case 'Rayleigh'
-                sinal.dy = raylpdf(xRoI.dy,sg.b);
-                sinal.py = raylpdf(xRoI.py,sg.b);
-                sinal.eq.dy = raylpdf(xRoI.eq.dy,sg.b);
-                sinal.eq.py = raylpdf(xRoI.eq.py,sg.b);
-            case 'Logn'
-                sinal.dy = lognpdf(xRoI.dy,sg.mu,sg.std);
-                sinal.py = lognpdf(xRoI.py,sg.mu,sg.std);
-                sinal.eq.dy = lognpdf(xRoI.eq.dy,sg.mu,sg.std);
-                sinal.eq.py = lognpdf(xRoI.eq.py,sg.mu,sg.std);
-            case 'Gamma'
-                sinal.dy = gampdf(xRoI.dy,sg.A,sg.B);
-                sinal.py = gampdf(xRoI.py,sg.A,sg.B);
-                sinal.eq.dy = gampdf(xRoI.eq.dy,sg.A,sg.B);
-                sinal.eq.py = gampdf(xRoI.eq.py,sg.A,sg.B);
+        [setup] = IN(10000,nbin);
+        [sg,~] = datasetGenSingle(setup,name{1});
+        i = 0;
+        
+        for RoI=1:setup.DIV
+            i=i+1;
+            
+            xRoI.dy = sg.RoI.x.dy{RoI};
+            xRoI.py = sg.RoI.x.py{RoI};
+            xRoI.eq.dy = sg.RoI.x.eq.dy{RoI};
+            xRoI.eq.py = sg.RoI.x.eq.py{RoI};
+            
+            [xfull] = xRoIfull(setup,sg);
+            [yfull]= yGen(xfull,sg,name);
+            [sinal]= yGen(xRoI,sg,name);
+            
+            [AMP,N,sinal,yfull] = NoiseFix(VAR_MEAN(1),VAR_MEAN(2),sg,sinal,yfull,Noise);
+            
+            [noise.dy] = noiseADD(sinal.dy,yfull.dy,AMP,N,Noise);
+            [noise.py] = noiseADD(sinal.py,yfull.py,AMP,N,Noise);
+            [noise.eq.dy] = noiseADD(sinal.eq.dy,yfull.eq.dy,AMP,N,Noise);
+            [noise.eq.py] = noiseADD(sinal.eq.py,yfull.eq.py,AMP,N,Noise);
+            
+            [noise,signal] = MethodFix(xfull,yfull,xRoI,sinal,noise,method);
+            
+            signal.dy = signal.dy/area2d(xfull.dy,yfull.dy);
+            signal.py = signal.py/area2d(xfull.py,yfull.py);
+            signal.eq.dy = signal.eq.dy/area2d(xfull.eq.dy,yfull.eq.dy);
+            signal.eq.py = signal.eq.py/area2d(xfull.eq.py,yfull.eq.py);
+            
+            noise.dy = noise.dy/area2d(xfull.dy,yfull.dy);
+            noise.py = noise.py/area2d(xfull.py,yfull.py);
+            noise.eq.dy = noise.eq.dy/area2d(xfull.eq.dy,yfull.eq.dy);
+            noise.eq.py = noise.eq.py/area2d(xfull.eq.py,yfull.eq.py);
+            %         plot(signal.dy);
+            %         hold on
+            %         plot(noise.dy);
+            %         pause
+            for div = 1:15
+                
+                [V.dy] = DFSelect(noise.dy,signal.dy,Nomalization);
+                [V.py] = DFSelect(noise.py,signal.py,Nomalization);
+                [V.eq.dy] = DFSelect(noise.eq.dy,signal.eq.dy,Nomalization);
+                [V.eq.py] = DFSelect(noise.eq.py,signal.eq.py,Nomalization);
+                
+                A.dy{div}(RoI,nt) = V.dy(div);
+                A.py{div}(RoI,nt) = V.py(div);
+                A.eq.dy{div}(RoI,nt) = V.eq.dy(div);
+                A.eq.py{div}(RoI,nt) = V.eq.py(div);
+                
+            end
+            
+            NRoI.dy(RoI)=  length(xRoI.dy);
+            NRoI.py(RoI)=  length(xRoI.py);
+            NRoI.eq.dy(RoI)=  length(xRoI.eq.dy);
+            NRoI.eq.py(RoI)=  length(xRoI.eq.py);
         end
         
-        AMP = 0.1*max(sg.pdf.truth.y);
-        
-        [noise.dy] = noiseADD(sg.RoI.x.dy{RoI},AMP,'normal');
-        [noise.py] = noiseADD(sg.RoI.x.py{RoI},AMP,'normal');
-        [noise.eq.dy] = noiseADD(sg.RoI.x.eq.dy{RoI},AMP,'normal');
-        [noise.eq.py] = noiseADD(sg.RoI.x.eq.py{RoI},AMP,'normal');
-        
-        
-        [V.dy] = DFSelect(sinal.dy+noise.dy,sinal.dy,Nomalization);
-        [V.py] = DFSelect(sinal.py+noise.py,sinal.py,Nomalization);
-        [V.eq.dy] = DFSelect(sinal.eq.dy+noise.eq.dy,sinal.eq.dy,Nomalization);
-        [V.eq.py] = DFSelect(sinal.eq.py+noise.eq.py,sinal.eq.py,Nomalization);
-        
-        
-        for div = 1:15
-            A.dy{div}(RoI,nt) = V.dy(div);
-            A.py{div}(RoI,nt) = V.py(div);
-            A.eq.dy{div}(RoI,nt) = V.eq.dy(div);
-            A.eq.py{div}(RoI,nt) = V.eq.py(div);
-        end
+        waitbar(nt/nt_max)
     end
-    waitbar(nt/50)
-end
-close(wb)
-
-VL={'Bias','Variance','MISE','Linf','Lp','Sorensen','Gower','IP','Harmonic','Cosine','Hellinger','Squared','AddSym','Kullback','Kumar'};
-CL=['kkkggrrbbbcmmyk'];
-ML=[':::------------'];
-
-
-X = (1:setup.DIV)*setup.DIV;
-for b =1:15
+  
+    
+    VL={'Bias','Variance','MISE','Linf','Lp','Sorensen','Gower','IP','Harmonic','Cosine','Hellinger','Squared','AddSym','Kullback','Kumar'};
+    CL=['kkkggrrbbbkggrb'];
+    ML=[':::::::::::::::'];
+    
+    bin = linspace(0,1,setup.DIV+1);
+    d=diff(bin); d=d(1)/2;
+    
+    for b =1:15
+        
+        figure(1)
+        M.dy = (mean(real(A.eq.dy{b}')));
+        S.dy = (std(real(A.eq.dy{b}'))/sqrt(nt_max));
+        subplot(3,5,b); errorbar(bin(1:end-1)+d,M.dy,S.dy,['s' ML(b)  CL(b)],'MarkerSize',3); axis tight; grid on; set(gca,'GridLineStyle',':'); hold on;
+        subplot(3,5,b); plot([bin; bin],[ones(length(bin),1)*min(M.dy-S.dy) ones(length(bin),1)*max(M.dy+S.dy)]',':k'); axis tight;
+        title([VL{b} '(D)'])
+        xlabel('Max(%)')
+        ylabel('Divergencia')
+        
+        
+        figure(2)
+        M.py = (mean(real(A.py{b}')));
+        S.py = (std(real(A.py{b}'))/sqrt(nt_max));
+        subplot(3,5,b); errorbar(bin(1:end-1)+d,M.py,S.py,['s' ML(b)  CL(b)],'MarkerSize',3); axis tight; grid on; set(gca,'GridLineStyle',':'); hold on;
+        subplot(3,5,b); plot([bin; bin],[ones(length(bin),1)*min(M.py-S.py) ones(length(bin),1)*max(M.py+S.py)]',':k'); axis tight;
+        title([VL{b} '(P)'])
+        xlabel('Max(%)')
+        ylabel('Divergencia')
+        
+        figure(3)
+        M.eq.dy = (mean(real(A.eq.dy{b}')));
+        S.eq.dy = (std(real(A.eq.dy{b}'))/sqrt(nt_max));
+        subplot(3,5,b); errorbar(bin(1:end-1)+d,M.eq.dy,S.eq.dy,['s' ML(b)  CL(b)],'MarkerSize',3); axis tight; grid on; set(gca,'GridLineStyle',':'); hold on;
+        subplot(3,5,b); plot([bin; bin],[ones(length(bin),1)*min(M.eq.dy-S.eq.dy) ones(length(bin),1)*max(M.eq.dy+S.eq.dy)]',':k'); axis tight;
+        title([VL{b} '(ED)'])
+        xlabel('Max(%)')
+        ylabel('Divergencia')
+        
+        figure(4)
+        M.eq.py = (mean(real(A.eq.py{b}')));
+        S.eq.py = (std(real(A.eq.py{b}'))/sqrt(nt_max));
+        subplot(3,5,b); errorbar(bin(1:end-1)+d,M.eq.py,S.eq.py,['s' ML(b)  CL(b)],'MarkerSize',3); axis tight; grid on; set(gca,'GridLineStyle',':'); hold on;
+        subplot(3,5,b); plot([bin; bin],[ones(length(bin),1)*min(M.eq.py-S.eq.py) ones(length(bin),1)*max(M.eq.py+S.eq.py)]',':k'); axis tight;
+        title([VL{b} '(EP)'])
+        xlabel('Max(%)')
+        ylabel('Divergencia')
+        
+    end
+    
+    figure(5)
+    plot(bin(1:end-1)+d,NRoI.dy,'or');hold on
+    plot(bin(1:end-1)+d,NRoI.py,'pr');
+    plot(bin(1:end-1)+d,NRoI.eq.dy,'sk');
+    plot(bin(1:end-1)+d,NRoI.eq.py,'+k');
+    plot([bin; bin],[zeros(1,length(bin)); max([NRoI.dy NRoI.py NRoI.eq.dy NRoI.eq.py])*ones(1,length(bin))],':k'); axis tight
+    legend('D','P','ED','EP')
+    
     figure(1)
-    subplot(3,5,b);boxplot(real(A.dy{b}'),X,'colors',CL(b)); axis tight; grid on; set(gca,'GridLineStyle',':');
-    title([VL{b}])
-    xlabel('Max(%)')
-    ylabel('Divergencia')
-    
+    set(gcf, 'Position', get(0, 'Screensize'));
+    saveas(gcf,['BOX_ROI_PDF_' name{1} '_NOISE_' Noise '_DY_' Nomalization '_' method],'fig')
     figure(2)
-    subplot(3,5,b);boxplot(real(A.py{b}'),X,'colors',CL(b)); axis tight; grid on; set(gca,'GridLineStyle',':');
-    title([VL{b}])
-    xlabel('Max(%)')
-    ylabel('Divergencia')
-    
+    set(gcf, 'Position', get(0, 'Screensize'));
+    saveas(gcf,['BOX_ROI_PDF_' name{1} '_NOISE_' Noise '_PY_' Nomalization '_' method],'fig')
     figure(3)
-    subplot(3,5,b);boxplot(real(A.eq.dy{b}'),X,'colors',CL(b)); axis tight; grid on; set(gca,'GridLineStyle',':');
-    title([VL{b}])
-    xlabel('Max(%)')
-    ylabel('Divergencia')
-    
+    set(gcf, 'Position', get(0, 'Screensize'));
+    saveas(gcf,['BOX_ROI_PDF_' name{1} '_NOISE_' Noise '_EQDY_' Nomalization '_' method],'fig')
     figure(4)
-    subplot(3,5,b);boxplot(real(A.eq.py{b}'),X,'colors',CL(b)); axis tight; grid on; set(gca,'GridLineStyle',':');
-    title([VL{b}])
-    xlabel('Max(%)')
-    ylabel('Divergencia')
+    set(gcf, 'Position', get(0, 'Screensize'));
+    saveas(gcf,['BOX_ROI_PDF_' name{1} '_NOISE_' Noise '_EQPY_' Nomalization '_' method],'fig')
+    figure(5)
+    % set(gcf, 'Position', get(0, 'Screensize'));
+    saveas(gcf,['NEVT_ROI_PDF_' name{1} '_NOISE_' Noise '_' Nomalization '_' method],'fig')
+    close all
+    close(wb)  
 end
-
-figure(1)
-set(gcf, 'Position', get(0, 'Screensize'));
-saveas(gcf,['BOX_ROI_PDF_' name{1} '_NOISE_' Noise '_DY_' Nomalization],'fig')
-figure(2)
-set(gcf, 'Position', get(0, 'Screensize'));
-saveas(gcf,['BOX_ROI_PDF_' name{1} '_NOISE_' Noise '_PY_' Nomalization],'fig')
-figure(3)
-set(gcf, 'Position', get(0, 'Screensize'));
-saveas(gcf,['BOX_ROI_PDF_' name{1} '_NOISE_' Noise '_EQDY_' Nomalization],'fig')
-figure(4)
-set(gcf, 'Position', get(0, 'Screensize'));
-saveas(gcf,['BOX_ROI_PDF_' name{1} '_NOISE_' Noise '_EQPY_' Nomalization],'fig')
-close all
-
-% end

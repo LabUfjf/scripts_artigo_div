@@ -1,9 +1,9 @@
-function [out,pdf] = randfit(X,Y)
+function [out,pdf] = randfit_old(x,y,n)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%            Função para gerar dados à partir da PDF analítica
+%            Função para gerar dados à partir da PDF analítica 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ENTRADA :  f = função analítica (cfit)
-%            n = número de eventos que desejamos gerar
+%            n = número de eventos que desejamos gerar 
 %            range = mínimo e máximo valores da função analítica, ex: [-1 1]
 %            pts = número de pontos que desejamos discretizar a função
 %            analítica
@@ -22,53 +22,43 @@ function [out,pdf] = randfit(X,Y)
 % pdf.x = linspace(range(1),range(2),pts)';
 % aplicar na função analítica
 % pdf.y = f(pdf.x);
-pdf.x = X;
-pdf.y = Y;
+pdf.x = x;
+pdf.y = y;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% NORMALIZAR PDF
 % pela área
-A = area2d_new(pdf.x,pdf.y);
-pdfnorm = pdf.y./repmat(A,size(pdf.y,1),1);
+A = area2d(pdf.x,pdf.y);
+pdfnorm = pdf.y/A;
 % pela soma das probabilidades
 % DIV = sum(pdf.y);
-pdf1 = pdf.y./repmat(sum(pdf.y),size(pdf.y,1),1);
+pdf1 = pdf.y/sum(pdf.y);
 % figure
 % plot(pdf.x,pdf.y)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% CÁLCULAR CDF
 cdf = cumsum(pdf1);
 
-% cdf(mask) = NaN;
-% X(mask) = NaN;
-
+% Selecionar valores únicos para não dar erro na interpolação
+[~, mask] = unique(cdf);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% GERAR DADOS UNIFORMES
-n =size(Y,2);
-data_uniform = rand(1,n);
+data_uniform = rand(1, n);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% CRIAR A PROJEÇÃO DOS DADOS NA CDF
 % plot(pdf.x(mask), max(pdfnorm)*cdf(mask),':b')
 % pause
-
-% plot(pdf.x,cdf)
-% ind = reshape(1:n,1,n/1);
-% tic
-for i=1:n
-    [~, mask] = unique(cdf(:,i));
-    out(i) = interp1(cdf(mask,i), pdf.x(mask,i), data_uniform(i),'nearest','extrap');
-end
-% toc
+out = interp1(cdf(mask), pdf.x(mask), data_uniform,'nearest','extrap');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 pdf.y = pdfnorm;
 end
 
-function [ A ] = area2d_new( X,Y )
+function [ area ] = area2d( x,y )
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 %tbin=abs((x(2)-x(1)));
-tbin=min(diff(X)); tbin = tbin(1);
+tbin=min(diff(x));
 %area=trapz(x,y);
-A=sum(abs(Y))*tbin;
+area=sum(abs(y))*tbin;
 
 end
 

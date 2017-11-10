@@ -1,24 +1,13 @@
-function [pdf] = PoissonADD(yh,N)
+function [pdf] = PoissonADD(yh,yfull,N)
+[~,ind]=ismember(yh,yfull);
+yfull = yfull/(sum(yfull));
+yfull = yfull*(N);
+yfull(yfull==0) = min(yfull(yfull>0));
 
-% [~,xth]=hist(sg.evt,bin);
-% xh = linspace(min(xth),max(xth),bin);
-% yh = interp1(sg.pdf.truth.x,sg.pdf.truth.y,xh,'nearest','extrap');
-yh = yh/(sum(yh));
-yh = yh*(N);
 
-i=0;
-for m = yh;
-    mN=m;
-    i=i+1;
-  x = linspace(0,mN*20,10000);
-  y = exp(x * log(mN) - mN - gammaln(x+1));
-  [out,~] = randfit(x,y,1);
-%   pdf2(i)=(out);
-  pdf(i)=round(out);    
-    
-end
-% xpdf = xh;
-pdf = (pdf/sum(pdf))*N;
-% pdf2 = (pdf2/sum(pdf2))*N;
+out = random('Poisson',(yfull));
+pdf=out;
+
+pdf = pdf(ind);
 
 end

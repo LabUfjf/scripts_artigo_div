@@ -1,5 +1,7 @@
-function [V, RN, L1, IP, SQ, L2, SH, CO] = DFSelect(P,Q,normalized)
+function [V, RN, L1, IP, SQ, L2, SH, CO] = DFSelectDx(xgrid,P,Q,normalized)
 N = length(P);
+dx = diff(xgrid);
+dx = dx(1);
 % nv = 1;
 % sd = 0.0001;
 % [xpdf,ypdf]=getAnalytical(sg,bg,nv);
@@ -22,12 +24,12 @@ N = length(P);
 % RN.ISB=(mean(P)-mean(Q))/length(P);
 % RN.IV=var(Q)/length(P);
 
-RN.ISB=(sum(P-Q))/length(P);
+RN.ISB=(sum(P-Q))/N;
 % figure
 % subplot(1,2,1);bar(P-Q);subplot(1,2,2);bar(sum(P-Q))
 % pause
 % close
-RN.IV=(sum((P-Q).^2))/length(P);
+RN.IV=(sum((P-Q).^2))/N;
 % C = cov(P,Q);
 % RN.IV=C(1,2);
 % RN.ISE=((sum((P-Q).^2)))/length(P);
@@ -139,7 +141,7 @@ else
         abs(cell2mat(struct2cell(CO))')]);
 end
 
-V=abs(V);
+V=abs(V)*dx;
 end
 
 
