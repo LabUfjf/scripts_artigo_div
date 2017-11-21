@@ -11,8 +11,8 @@ for name = {'Gauss','Bimodal','Rayleigh','Logn','Gamma'};
     
 %     wb = waitbar(0,'Aguarde...');
     nt_max = 100;
-    vest = 10:10:2000;
-    vgrid = 10:100:10000;
+    vest = 10:100:2000;
+    vgrid = 10:1000:10000;
     
     for itp = {'nearest','linear'};
         %     for itp = {'nearest'};
@@ -38,17 +38,21 @@ for name = {'Gauss','Bimodal','Rayleigh','Logn','Gamma'};
                     ygrid = interp1(xest,yest,xgrid+(-nt_max/2)*d,itp{1},'extrap');
                     dgrid = diff(xgrid);
                     
-                    AT(nt)  = sum(abs((ytruth-ygrid).*abs(dgrid(1))));
-                    BT(nt)  = std(abs((ytruth-ygrid).*abs(dgrid(1))))/sqrt(nt_max);
-                    
+                    plot(xgrid_new,ygrid);hold on
+                     plot(xgrid_new,ytruth)
+                     pause
+                     close
+                    AT(nt)  = rsum(ytruth-ygrid,dgrid(1));        
                     [V{nt}] = DFSelectDx(xgrid,ygrid,ytruth,'no');
                     
                 end
-                
+                   
                 d = 0;
                 A(i,j) = mean(AT);
-                B(i,j)= mean(BT);
-                
+                B(i,j)= std(AT)/sqrt(nt_max);
+%                 plot(abs((ytruth-ygrid).*abs(dgrid(1))))
+%                     pause 
+%                 A(i,j)
                 for div = 1:15
                     for nt = 1:nt_max;
                         Mdiv{div}(nt) = V{nt}(div);
@@ -71,10 +75,10 @@ for name = {'Gauss','Bimodal','Rayleigh','Logn','Gamma'};
         subplot(1,2,1);plotSURF(vest,vgrid,A,'X_{EST}','X_{GRID}','Riemann Sum')
         subplot(1,2,2); plotSURF(vest,vgrid,B,'X_{EST}','X_{GRID}','Error')
         set(gcf, 'Position', get(0, 'Screensize'));
-        saveas(gcf,['MESH_HIST_ERROR[' name{1} ']INTERP[' itp{1} ']' ],'fig')
-        save(['MESH_HIST_ERROR[' name{1} ']INTERP[' itp{1} ']' ],'AT','BT','Adiv','Bdiv')
-        close
-        clear AT BT Mdiv Adiv Bdiv V
+%         saveas(gcf,['MESH_HIST_ERROR[' name{1} ']INTERP[' itp{1} ']' ],'fig')
+%         save(['MESH_HIST_ERROR[' name{1} ']INTERP[' itp{1} ']' ],'A','B','Adiv','Bdiv')
+%         close
+%         clear A B Mdiv Adiv Bdiv V
     end
 end
 % surf(vest,vgrid,B','FaceColor',[0.5 0.5 0.5],'EdgeColor','none')

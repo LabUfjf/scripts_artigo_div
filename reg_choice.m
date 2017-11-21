@@ -5,7 +5,6 @@ function [x,y] = reg_choice(xpdf,ypdf,div,Npt)
 % div = setup.DIV;
 % Npt = setup.PTS;
 
-
 h = diff(xpdf); h = h(1);
 dy = diff(ypdf)/h;
 dy = abs(dy/max(abs(dy)));

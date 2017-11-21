@@ -2,6 +2,8 @@ function [sg,bg] = datasetGenSingle(setup,name)
 
 % Generate Data
 switch name
+     case 'Uniforme'
+        [sg,bg] = M_Uniforme_Gen([],[],setup);
     case 'Gauss'
         [sg,bg] = M_Normal_Gen([],[],setup);
     case 'Bimodal'

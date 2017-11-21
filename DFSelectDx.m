@@ -1,4 +1,4 @@
-function [V, RN, L1, IP, SQ, L2, SH, CO] = DFSelectDx(xgrid,P,Q,normalized)
+function [V, RN, L1, IP, SQ, L2, SH, CO] = DFSelectDx(xgrid,P,Q)
 N = length(P);
 dx = diff(xgrid);
 dx = dx(1);
@@ -24,12 +24,12 @@ dx = dx(1);
 % RN.ISB=(mean(P)-mean(Q))/length(P);
 % RN.IV=var(Q)/length(P);
 
-RN.ISB=(sum(P-Q))/N;
+RN.ISB=(sum(P-Q))*dx;
 % figure
 % subplot(1,2,1);bar(P-Q);subplot(1,2,2);bar(sum(P-Q))
 % pause
 % close
-RN.IV=(sum((P-Q).^2))/N;
+RN.IV=(sum((P-Q).^2))*dx;
 % C = cov(P,Q);
 % RN.IV=C(1,2);
 % RN.ISE=((sum((P-Q).^2)))/length(P);
@@ -40,13 +40,13 @@ RN.MISE = RN.IV+(RN.ISB)^2;
 % LPL1 = sum(abs(P-Q));
 % LPL2 = sqrt(sum((P-Q).^2));
 LP.LInf = max(abs(P-Q));
-LP.L2N = (sqrt(sum((P-Q).^2)));
+LP.L2N = (sqrt(sum((P-Q).^2)))*dx;
 % LP.L2N = (sqrt(sum((P-Q).^2)/length(P)));
 
 %% L1 FAMILY
 
-L1.Sorensen = sum(abs(P-Q))/(sum(abs(P+Q)));
-L1.Gower = (sum(abs(P-Q)))/N;
+L1.Sorensen = (sum(abs(P-Q))/sum(abs(P+Q)))*dx;
+L1.Gower = sum(abs(P-Q))*dx;
 % L1.Gower = (sum(abs(P-Q)))/length(P);
 % L1Soergel = sum(abs(P-Q))/sum(max(P,Q));
 % L1Kulczynski = sum(abs(P-Q))/sum(min(P,Q));
@@ -64,11 +64,11 @@ L1.Gower = (sum(abs(P-Q)))/N;
 % INAC = common_area3(P,Q);
 
 %% INNER PRODUCT FAMILY
-IP.Innerproduct = sum(P.*Q);
+IP.Innerproduct = sum(P.*Q)*dx;
 
-IPf1 = ((P.*Q)./(P+Q));
-IP.Harmonic = 2*sum(IPf1(~isnan(IPf1)&~isinf(IPf1)));
-IP.Cosine = (1-((sum(P.*Q)/(sqrt(sum(P.^2))*sqrt(sum(Q.^2))))));
+IPf1 = ((P.*Q)./(P+Q))*dx;
+IP.Harmonic = 2*sum(IPf1(~isnan(IPf1)&~isinf(IPf1)))*dx;
+IP.Cosine = 1-(((sum(P.*Q)/(sqrt(sum(P.^2))*sqrt(sum(Q.^2))))))*dx;
 % IPKumar = sum(P.*Q)/(sum(P.^2)+sum(Q.^2)-sum(P.*Q));
 % IPJaccard = sum((P-Q).^2)/(sum(P.^2)+sum(Q.^2)-sum(P.*Q));
 % IPDice = sum((P-Q).^2)/(sum(P.^2)+sum(Q.^2));
@@ -76,7 +76,7 @@ IP.Cosine = (1-((sum(P.*Q)/(sqrt(sum(P.^2))*sqrt(sum(Q.^2))))));
 %% Squared-Chord Family
 % SQFidelity = sum(sqrt(P.*Q));
 % SQBhatta = -1*log(sum(sqrt(P.*Q)));
-SQ.Hellinger = sqrt((2*sum((sqrt(P)-sqrt(Q)).^2)));
+SQ.Hellinger = sqrt(((1/2)*sum((sqrt(P)-sqrt(Q)).^2))*dx);
 % SQ.Hellinger = sqrt((2*sum((sqrt(P)-sqrt(Q)).^2))/length(P));
 % SQMatusita = sqrt(2-sum(sqrt(P.*Q)));
 % SQSquared = sum((sqrt(P)-sqrt(Q)).^2);
@@ -85,8 +85,8 @@ SQ.Hellinger = sqrt((2*sum((sqrt(P)-sqrt(Q)).^2)));
 % L2Euclidean = (sum((P-Q).^2));
 % L2Pearson = sum(((P-Q).^2)./Q);
 % L2Neyman = sum(((P-Q).^2)./P);
-L2f=((P-Q).^2)./(P+Q);
-L2.Squared = sqrt(sum(L2f(~isnan(L2f)&~isinf(L2f))));
+L2f=(((P-Q).^2)./(P+Q))*dx;
+L2.Squared = sqrt(sum(L2f(~isnan(L2f)&~isinf(L2f)))*dx);
 % L2.Squared = sum(L2f(~isnan(L2f)&~isinf(L2f)))/length(P);
 % L2ProbSym = 2*sum(((P-Q).^2)./(P+Q));
 % L2Divergence = 2*sum(((P-Q).^2)./((P+Q).^2));
@@ -94,13 +94,13 @@ L2.Squared = sqrt(sum(L2f(~isnan(L2f)&~isinf(L2f))));
 L2f1 = P+Q;
 L2f2 = (P.*Q);
 L2f3 = (((P-Q).^2).*((L2f1(~isnan(L2f1)&~isinf(L2f1)))))./(L2f2(~isnan(L2f2)&~isinf(L2f2)));
-L2.AddSym = sum(L2f3(~isnan(L2f3)&~isinf(L2f3)));
+L2.AddSym = sum(L2f3(~isnan(L2f3)&~isinf(L2f3)))*dx;
 % L2.AddSym = sum((((P-Q).^2).*(P+Q))./(P.*Q));
 
 % L2.AddSym = sum((((P-Q).^2).*((P+Q).^2))/(P.*Q));
 %% Shannons entropy Family
 SHf=(Q.*log((Q./P)));
-SH.Kullback = sum(SHf(~isnan(SHf)&~isinf(SHf)));
+SH.Kullback = sum(SHf(~isnan(SHf)&~isinf(SHf)))*dx;
 % SH.Kullback = sum(SHf(~isnan(SHf)&~isinf(SHf)))/length(P);
 % SHJeffreys = sum((P-Q).*log(P./Q));
 % SHKdiv = sum((P).*log(2*P./(P+Q)));
@@ -112,36 +112,22 @@ SH.Kullback = sum(SHf(~isnan(SHf)&~isinf(SHf)));
 
 % COTaneja = sum(((P+Q)/2).*log((P+Q)./(2*sqrt(P.*Q))));
 COf=((P.^2-Q.^2).^2)./(2*(P.*Q).^(3/2));
-CO.Kumar = sum(COf(~isnan(COf)&~isinf(COf)));
+% plot(COf)
+CO.Kumar = sum(COf(~isnan(COf)&~isinf(COf)))*dx;
 % CO.Kumar = sum(COf(~isnan(COf)&~isinf(COf)))/length(P);
 
 % COAvg = sum(abs(P-Q)+max(abs(P-Q)))/2;
 
+V = ([(cell2mat(struct2cell(RN))') ...
+    abs(cell2mat(struct2cell(LP))') ...
+    abs(cell2mat(struct2cell(L1))') ...
+    abs(cell2mat(struct2cell(IP))') ...
+    abs(cell2mat(struct2cell(SQ))') ...
+    abs(cell2mat(struct2cell(L2))') ...
+    cell2mat(struct2cell(SH))' ...
+    abs(cell2mat(struct2cell(CO))')]);
 
-if strcmp(normalized,'norm')
-    
-    V = [RN.ISB abs(RN.IV) abs(RN.MISE) ...
-        abs(LP.LInf)/N abs(LP.L2N)/N ...
-        abs(L1.Sorensen)/N abs(L1.Gower)...
-        abs(IP.Innerproduct)/N  abs(IP.Harmonic)/N abs(IP.Cosine)/N...
-        abs(SQ.Hellinger)/N ...
-        abs(L2.Squared)/N abs(L2.AddSym)/N...
-        SH.Kullback/N  ...
-        abs(CO.Kumar)/N];
-    
-else
-    % V = [cell2mat(struct2cell(RN))' ...
-    V = ([(cell2mat(struct2cell(RN))') ...
-        abs(cell2mat(struct2cell(LP))') ...
-        abs(cell2mat(struct2cell(L1))') ...
-        abs(cell2mat(struct2cell(IP))') ...
-        abs(cell2mat(struct2cell(SQ))') ...
-        abs(cell2mat(struct2cell(L2))') ...
-        cell2mat(struct2cell(SH))' ...
-        abs(cell2mat(struct2cell(CO))')]);
-end
-
-V=abs(V)*dx;
+V=abs(V);
 end
 
 
