@@ -1,11 +1,8 @@
-function [xest,xgrid,yest,ygrid,ytruth] = FitFullFix(setup,sg,xsg,ireg,nest,name,itp,method)
+function [xest,xgrid,yest,ygrid,ytruth] = FitFullFix(setup,sg,xsg,ireg,nest,name,itp,method,type)
 
-
-% xest = linspace(xsg{ireg}(1),xsg{ireg}(end),nest);
-ind_est = round(linspace(1,length(xsg{ireg}),nest));
-xest = xsg{ireg}(ind_est);
+[xest] = GridEst(setup,sg.pdf.truth.x,sg.pdf.truth.y,ireg,type,nest);
 yest = GridNew(sg,xest,name);
-% plot(xest,yest,'-')
+% plot(xest,yest,'.')
 % pause
 
 if strcmp(method,'full')
@@ -19,6 +16,7 @@ if strcmp(method,'full')
             ygrid = [ygrid GridNew(sg,xsg{i},name);];
         end
     end
+    
     [~,ind]=sort(xgrid);
     xgrid = xgrid(ind);
     ygrid = ygrid(ind);
@@ -30,5 +28,5 @@ if strcmp(method,'fit')
     ygrid = interp1(xest,yest,xgrid,itp{1},'extrap');
     ytruth = GridNew(sg,xgrid,name);
 end
-
+    
 end

@@ -3,12 +3,12 @@ clear variables; close all; clc
 
 method = 'fit';
 
-for name = {'Bimodal'};
+for name = {'Gauss'};
     % for name = {'Gauss','Bimodal','Rayleigh','Logn','Gamma'};
     [setup] = IN(100,5000000);
     [sg,~] = datasetGenSingle(setup,name{1});
 %    vest = 100;
-    vest = 100:100:10000;
+    vest = 100:100:1000;
     wb = waitbar(0,'Aguarde...');
     
     %     for itp = {'nearest'};
@@ -20,14 +20,14 @@ for name = {'Bimodal'};
             for nest=vest
                 
                 iest = iest+1;
-                [xest,xgrid,yest,ygrid,ytruth] = FitFullFix(setup,sg,sg.RoI.x.dy,ireg,nest,name,itp,method);
+                [xest,xgrid,yest,ygrid,ytruth] = FitFullFix(setup,sg,sg.RoI.x.dy,ireg,nest,name,itp,method,'deriv');
                 
                 AT{iint}{ireg}(iest)  = rsum(xgrid,abs(ygrid-ytruth));
 %                 DIVT{iint}{ireg}(iest,:) = DFSelectDx(xgrid,ygrid,ytruth);
                 waitbar(iest/length(vest))
 %                 plot(xgrid,ygrid-ytruth,'.r')
-                plot(xgrid,ytruth,'.k',xgrid,ygrid,'.r')
-                pause
+%                 plot(xgrid,ytruth,'.k',xgrid,ygrid,'.r')
+%                 pause
 %                 close
             end
         end
