@@ -1,4 +1,4 @@
  function r=rsum(x,y)
-dx=diff(x); dx = dx(1);
-r = sum(abs(y))*abs(dx);
+dx=diff(x); 
+r = sum(abs(y(1:end-1)).*abs(dx));
 end

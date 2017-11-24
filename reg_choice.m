@@ -56,15 +56,12 @@ else
         
         Ipy= [jpy(INTpy)];
         Idy= [jdy(INTdy)];
+                                                                                                      
+        Ipy=Ipy(setdiff(1:length(Ipy),[find(diff(Ipy)<3) find(diff(Ipy)<3)+1]));
+        Idy=Idy(setdiff(1:length(Idy),[find(diff(Idy)<3) find(diff(Idy)<3)+1]));
         
-        
-        for k1dy=1:length(Idy)/2
-            xddy(k1dy)=abs((xpdf(Idy(1*k1dy)))-(xpdf(Idy(2*k1dy))));
-        end
-        for k1py=1:length(Ipy)/2
-            xdpy(k1py)=abs((xpdf(Ipy(1*k1py)))-(xpdf(Ipy(2*k1py))));
-        end
-        
+        xdpy = diff(xpdf(reshape(Ipy,2,length(Ipy)/2)));
+        xddy = diff(xpdf(reshape(Idy,2,length(Idy)/2)));     
         
         fdy = xddy/sum(xddy);
         fpy = xdpy/sum(xdpy);
