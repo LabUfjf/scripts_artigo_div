@@ -37,11 +37,8 @@ else
         x.dy{i} = xpdf(ind.dy{i});
         y.dy{i} = ypdf(ind.dy{i});
         x.py{i} = xpdf(ind.py{i});
-        y.py{i} = ypdf(ind.py{i});
-        
-        %         plot(x.dy{i},y.dy{i},'.'); hold on
-        
-        
+        y.py{i} = ypdf(ind.py{i});        
+        %         plot(x.dy{i},y.dy{i},'.'); hold on        
         Zpy=zeros(1,length(xpdf));
         Zdy=zeros(1,length(xpdf));
         Zdy(ind.dy{i})=1;
