@@ -1,4 +1,4 @@
-function [sg,bg] = datasetGenSingle(setup,name)
+function [sg,bg] = datasetGenSingle(setup,name,type)
 
 % Generate Data
 switch name
@@ -16,8 +16,10 @@ switch name
         [sg,bg] = M_Gamma_Gen([],[],setup);
 end
 
-[bg.RoI.x,bg.RoI.y] = reg_choice(bg.pdf.truth.x,bg.pdf.truth.y,setup.DIV,sg.n.x);
-[sg.RoI.x,sg.RoI.y] = reg_choice(sg.pdf.truth.x,sg.pdf.truth.y,setup.DIV,sg.n.x);
+if ~strcmp(type,'bipass')
+[bg.RoI.x,bg.RoI.y,bg.RoI.Xaxis] = reg_choice(bg.pdf.truth.x,bg.pdf.truth.y,setup.DIV,type);
+[sg.RoI.x,sg.RoI.y,sg.RoI.Xaxis] = reg_choice(sg.pdf.truth.x,sg.pdf.truth.y,setup.DIV,type);
+end
 
 sg = rmfield(sg,'n');
 bg = rmfield(bg,'n');
