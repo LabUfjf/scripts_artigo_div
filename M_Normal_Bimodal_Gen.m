@@ -3,8 +3,10 @@ function [sg,bg] = M_Normal_Bimodal_Gen(sg,bg,N)
 sg.n.x = N.PTS;
 bg.n.x = N.PTS;
 
-sg.pdf.truth.x = linspace(-3,3,sg.n.x);
-bg.pdf.truth.x = linspace(-3,3,bg.n.x);
+load(['TEST_MINMAX_PDF[' N.NAME ']'],'Vec');
+
+sg.pdf.truth.x = linspace(mean(Vec.Min.sg),mean(Vec.Max.sg),sg.n.x);
+bg.pdf.truth.x = linspace(mean(Vec.Min.bg),mean(Vec.Max.bg),bg.n.x);
 
 sg.g1.mu = 0;
 bg.g1.mu = 0;

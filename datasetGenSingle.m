@@ -16,7 +16,7 @@ switch name
         [sg,bg] = M_Gamma_Gen([],[],setup);
 end
 
-if ~strcmp(type,'bipass')
+if ~strcmp(type,'bypass')
 [bg.RoI.x,bg.RoI.y,bg.RoI.Xaxis] = reg_choice(bg.pdf.truth.x,bg.pdf.truth.y,setup.DIV,type);
 [sg.RoI.x,sg.RoI.y,sg.RoI.Xaxis] = reg_choice(sg.pdf.truth.x,sg.pdf.truth.y,setup.DIV,type);
 end

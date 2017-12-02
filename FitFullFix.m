@@ -3,7 +3,7 @@ function [xest,xgrid,yest,ygrid,ytruth,d] = FitFullFix(setup,sg,xsg,ireg,nest,na
 [xest,d] = GridEst(setup,sg.pdf.truth.x,sg.pdf.truth.y,ireg,type,nest);
 yest = GridNew(sg,xest,name);
 
-% [M] = ErrorMaxRS(xest,sg.pdf.truth.x,sg.pdf.truth.y);
+[M] = ErrorMaxRS(xest,sg.pdf.truth.x,sg.pdf.truth.y);
 
 if strcmp(method,'full')
     xgrid = [];
