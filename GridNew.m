@@ -1,7 +1,8 @@
 function [ytruth] = GridNew(sg,xh2,name)
 
   switch name{1}
-                case 'Gauss'
+      
+                case 'Gaussian'
                     ytruth = [normpdf(xh2,sg.g1.mu,sg.g1.std)];
                 case 'Bimodal'
                     ytruth = [normpdf(xh2,sg.g1.mu,sg.g1.std) + normpdf(xh2,sg.g2.mu,sg.g2.std)]/2;

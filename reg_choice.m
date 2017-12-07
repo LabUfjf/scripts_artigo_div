@@ -5,6 +5,7 @@ if ~strcmp(type,'bypass')
         i=1;
         x{i} = xpdf;
         y{i} = ypdf;
+        Xaxis = xpdf;
     else
         [ind,Xaxis]= LVector(xpdf,ypdf,div,type);
         for i = 1:div

@@ -2,21 +2,21 @@
 clear variables; close all; clc
 
 type = 'bypass';
+
 ires = 0;
-%  Nest = round(linspace(1000,1000000,100));
-for Nest = 10000000
+for Nest = round(linspace(10000,200000,20));
     ires = ires +1;
     
-    for name = {'Gauss'};
-        % for name = {'Gauss','Bimodal','Rayleigh','Logn','Gamma'};
+    for name = {'Gaussian'};
+        % for name = {'Gaussian','Bimodal','Rayleigh','Logn','Gamma'};
         [setup] = IN(10000,Nest); setup.DIV = 1;
         setup.NAME = name{1};
         [sg,~] = datasetGenSingle(setup,name{1},type);
         vest = 100:100:20000;
         wb = waitbar(0,'Aguarde...');
         i = 0;
-        for itp = {'nearest'};
-            %         for itp = {'nearest','linear'};
+        %         for itp = {'nearest'};
+        for itp = {'nearest','linear'};
             i=i+1;
             
             j=0;
@@ -27,12 +27,9 @@ for Nest = 10000000
                 yest = GridNew(sg,xest,name);
                 ygrid = interp1(xest,yest,xgrid,itp{1},'extrap');
                 ytruth = GridNew(sg,xgrid,name);
-                AT1{i}(j)  = rsum(xgrid,abs(ygrid-ytruth),'mid');
-                AT2{i}(j)  = rsum(xgrid,abs(ygrid-ytruth),'left');
-                AT3{i}(j)  = rsum(xgrid,abs(ygrid-ytruth),'right');
-                %                 [DIVT{i}(j,:)] = DFSelectDx(xgrid,ygrid,ytruth);
+                AT{i}(j)  = rsum(xgrid,abs(ygrid-ytruth),'mid');
+                [DIVT{i}(j,:)] = DFSelectDx(xgrid,ygrid,ytruth);
                 waitbar(j/length(vest))
-                [ERROR(j)] = ErrorMaxRS(xest,sg.pdf.truth.x,sg.pdf.truth.y);
             end
         end
         
@@ -41,28 +38,33 @@ for Nest = 10000000
     
     VL={'Bias','Variance','MISE','Linf','Lp','Sorensen','Gower','IP','Harmonic','Cosine','Hellinger','Squared','AddSym','Kullback','Kumar','Area'};
     CL=['kr'];
-    ML=[':::::::::::::::'];
-    %
+    ML=[':::::::::::::::'];    
     
-    %     figure
-    %     for fi = 1:2
-    %         DIVT{fi}(:,size(DIVT{fi},2)+1)=AT{fi};
-    % %         for d=1:16
-    % %             subplot(4,4,d);plot(vest,DIVT{fi}(:,d)',CL(fi));
-    % %             title([VL{d}])
-    % %             xlabel('X_{EST}')
-    % %             ylabel('Value')
-    % %             grid on
-    % %             set(gca,'GridLineStyle',':'); axis tight;
-    % %             hold on
-    % %             legend('Nearest','Linear')
-    % %             clc
-    % %         end
-    %     end
-    
-    %     Res.nearest{ires}=interp1(vest,DIVT{1},[2000 5000 10000 15000],'linear','extrap');
-    %     Res.linear{ires}=interp1(vest,DIVT{2},[2000 5000 10000 15000],'linear','extrap');
-    %     clear DIVT
-    
+    for fi = 1:2
+        DIVT{fi}(:,16)=AT{fi};
+    end
+    for d=1:16
+        Res{ires}{d}(1,:) = [2000 5000 10000 20000];
+        Res{ires}{d}(2,:)=interp1(vest,DIVT{1}(:,d),[2000 5000 10000 20000],'linear','extrap');
+        Res{ires}{d}(3,:)=interp1(vest,DIVT{2}(:,d),[2000 5000 10000 20000],'linear','extrap');
+    end
+
+    if ires == 10
+        figure
+        plot(vest,DIVT{1}(:,16)','k'); hold on
+        plot(vest,DIVT{2}(:,16)','r');
+        grid on
+        set(gca,'GridLineStyle',':'); axis tight;
+        legend({'|TRUTH-EST| Nearest','|TRUTH-EST| Linear'},'FontSize',12)
+        xlabel('Estimation Points','FontSize',14)
+        ylabel('Error','FontSize',14)
+        title(name{1},'FontSize',14)
+        saveas(gcf,['RES_PDF' name{1}],'fig')
+        saveas(gcf,['RES_PDF' name{1}],'png')
+        close
+    end
+    clear DIVT
 end
+
+    save(['RES_MATRIX' name{1}],'Res')
 

@@ -3,10 +3,12 @@ function [sg,bg] = M_Gamma_Gen(sg,bg,N)
 sg.n.x = N.PTS;
 bg.n.x = N.PTS;
 
-load(['TEST_MINMAX_PDF[' N.NAME ']'],'Vec');
+% load(['TEST_MINMAX_PDF[' N.NAME ']'],'Vec');
+% sg.pdf.truth.x = linspace(mean(Vec.Min.sg),mean(Vec.Max.sg),sg.n.x);
+% bg.pdf.truth.x = linspace(mean(Vec.Min.bg),mean(Vec.Max.bg),bg.n.x);
 
-sg.pdf.truth.x = linspace(mean(Vec.Min.sg),mean(Vec.Max.sg),sg.n.x);
-bg.pdf.truth.x = linspace(mean(Vec.Min.bg),mean(Vec.Max.bg),bg.n.x);
+sg.pdf.truth.x = linspace(0,50,sg.n.x);
+bg.pdf.truth.x = linspace(0,50,bg.n.x);
 
 sg.A = 5;
 bg.A = 5;
