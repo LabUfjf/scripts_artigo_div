@@ -1,4 +1,16 @@
-function r=rsum(x,y,method)
+function [r,E]=rsum(x,y,method,sg,name)
+
+xtruth =linspace(min(x),max(x),1e6);
+ytruth = GridNew(sg,xtruth,name);
+dxtruth=diff(xtruth);
+h = dxtruth(1);
+d1 = diff(ytruth)/h;
+d2 = diff(d1)/h;
+K = max(abs(d2));
+a = min(xtruth);
+b = max(xtruth);
+n=length(x);
+E=abs((K*((b-a)^3))/(24*(n^2)));
 
 dx=diff(x);
 

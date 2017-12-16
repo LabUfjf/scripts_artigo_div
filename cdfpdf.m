@@ -14,6 +14,6 @@ function [xlimit,A] = cdfpdf(sg,name,TH,ngrid)
     
     xest=linspace(xlimit(1),xlimit(2),ngrid);
     yest = GridNew(sg,xest,name);
-    A=rsum(xest,yest,'mid');
+    A=rsum(xest,yest,'mid',sg,name);
     
 end

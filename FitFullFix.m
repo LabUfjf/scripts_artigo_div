@@ -25,9 +25,7 @@ if strcmp(method,'fit')
     ytruth = GridNew(sg,xgrid,name);
 end
 
-% plot(sg.pdf.truth.x,sg.pdf.truth.y,'-g',xest,yest,'.k',xgrid,ygrid,'.r',sg.RoI.x{ireg},sg.RoI.y{ireg},'.b');
-% legend('Truth','Est','Grid','RoI')
-% pause
-% close
+
+
 
 end

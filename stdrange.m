@@ -5,5 +5,5 @@ xlimit(2)=mean(sg.evt)+(n*std(sg.evt));
 
 xest=linspace(xlimit(1),xlimit(2),ngrid);
 yest = GridNew(sg,xest,name);
-A=rsum(xest,yest,'mid');
+A=rsum(xest,yest,'mid',sg,name);
 end
