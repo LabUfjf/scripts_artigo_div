@@ -25,15 +25,20 @@ dx = dx(1);
 % RN.IV=var(Q)/length(P);
 
 RN.ISB=(sum(P-Q))*dx;
+% DRN.ISB=(sum(P-Q))*(1/N);
 % figure
 % subplot(1,2,1);bar(P-Q);subplot(1,2,2);bar(sum(P-Q))
 % pause
 % close
-RN.IV=(sum((P-Q).^2))*dx;
-% C = cov(P,Q);
+% fxi=(P);
+% u=sum(xgrid.*fxi*dx);
+% RN.IV = sum((xgrid.^2).*fxi*dx)-u^2;
+RN.IV=(sum((P-Q).^2))*(dx);
+% % C = cov(P,Q);
 % RN.IV=C(1,2);
 % RN.ISE=((sum((P-Q).^2)))/length(P);
 RN.MISE = RN.IV+(RN.ISB)^2;
+% RN.MISE = mean(sum(fxi.^2)*dx);
 % RN.MISE2 = immse(P,Q);
 %% FAMILIA LP MINKOWSKI
 % LPBias = sum(P-Q);

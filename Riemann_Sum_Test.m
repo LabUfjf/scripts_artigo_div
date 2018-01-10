@@ -13,7 +13,7 @@ for Nest = 1000000;
         [setup] = IN(10000,Nest); setup.DIV = 1;
         setup.NAME = name{1};
         [sg,~] = datasetGenSingle(setup,name{1},type);
-        vest = round(linspace(2,2000,1000));
+        vest = round(linspace(50,2000,1000));
         wb = waitbar(0,'Aguarde...');
         i = 0;
         %         for itp = {'nearest'};
@@ -28,9 +28,15 @@ for Nest = 1000000;
                 yest = GridNew(sg,xest,name);
                 ygrid = interp1(xest,yest,xgrid,itp{1},'extrap');
                 ytruth = GridNew(sg,xgrid,name);
-                [AT{i}(j),E{i}(j)]  = rsum(xgrid,abs(ygrid-ytruth),'mid');
+                [AT{i}(j),E{i}(j)]  = rsum(xgrid,abs(ygrid-ytruth),'mid',sg,name,0);
                 [DIVT{i}(j,:)] = DFSelectDx(xgrid,ygrid,ytruth);
                 waitbar(j/length(vest))
+                plot(xgrid,ytruth,'k');hold on
+                plot(xgrid,ygrid,'r')
+                legend('Truth','Rieman Sum')
+                xlabel('Amplitude')
+                ylabel('Probability Density')
+                pause
             end
         end
         

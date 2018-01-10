@@ -5,7 +5,7 @@ clear variables; close all; clc
 doPlot.Shape = 1;
 Noise = 'poisson';
 Nomalization = 'no';
-
+type = 'bypass';
 Nevt=linspace(5500,1000000,1000);
 % Nevt=1000;
 Nbins = 5500;
@@ -41,7 +41,7 @@ for name = {'Gauss'};
 %                         pause
 %                         close
             signal = signal/area2d(xh2,signal);
-            [V] = DFSelect(signal,ytruth,Nomalization);
+            [V] = DFSelectDx(xh2,signal,ytruth);
 %             plot(signal);hold on
 %             plot(ytruth)
 %             pause
@@ -73,8 +73,7 @@ for name = {'Gauss'};
             VCTPOISSON.STD(b+1,:) = (std((A{b}')));
                 
             end
-en
-d
+end
        VCTPOISSON.MEAN(1,:) = Nevt;
         VCTPOISSON.STD(1,:) = Nevt;
         save(['VCTPOISSON' num2str(Nbins)],'VCTPOISSON')
