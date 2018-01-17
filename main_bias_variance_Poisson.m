@@ -6,11 +6,11 @@ doPlot.Shape = 1;
 Noise = 'poisson';
 Nomalization = 'no';
 type = 'bypass';
-Nevt=linspace(5500,1000000,1000);
+Nevt=linspace(10000,1000000,1000);
 % Nevt=1000;
-Nbins = 5500;
+Nbins = 2000;
 
-for name = {'Gauss'};
+for name = {'Gaussian'};    
     %     for name = {'Gauss','Bimodal','Rayleigh','Logn','Gamma'}; 
     for nt = 1:50;
         wb = waitbar(0,'Aguarde');
@@ -18,11 +18,12 @@ for name = {'Gauss'};
         for N=Nevt;                
             i=i+1;
             [setup] = IN(10000,Nbins);
-            [sg,~] = datasetGenSingle(setup,name{1});            
+            setup.NAME = name{1};
+            [sg,~] = datasetGenSingle(setup,name{1},type);            
             xh2 = linspace(min(sg.evt),max(max(sg.evt)),Nbins);
             
             switch name{1}
-                case 'Gauss'
+                case 'Gaussian'
                     ytruth = [normpdf(xh2,sg.g1.mu,sg.g1.std)];
                 case 'Bimodal'
                     ytruth = [normpdf(xh2,sg.g1.mu,sg.g1.std) + normpdf(xh2,sg.g2.mu,sg.g2.std)]/2;
@@ -36,16 +37,17 @@ for name = {'Gauss'};
             
             [signal] = noiseADD(ytruth,ytruth,[],N,'poisson');
 %             [signal] = PoissonADD(ytruth,N);
-%                         stairs(xh2,ytruth,'k'); hold on
-%                         stairs(xh2,signal/area2d(xh2,signal),'r');
-%                         pause
-%                         close
+                        stairs(xh2,ytruth,'k'); hold on
+                        stairs(xh2,signal/area2d(xh2,signal),'r');
+                        pause
+                        close
             signal = signal/area2d(xh2,signal);
+            
             [V] = DFSelectDx(xh2,signal,ytruth);
-%             plot(signal);hold on
-%             plot(ytruth)
-%             pause
-%             close
+            plot(signal);hold on
+            plot(ytruth)
+            pause
+            close
             
             for div = 1:15
                 A{div}(i,nt) = V(div);

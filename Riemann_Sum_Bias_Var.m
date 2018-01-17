@@ -2,11 +2,9 @@
 clear variables; close all; clc
 
 method = 'full';
-type = 'prob';
-
-for name = {'Rayleigh'};
+type = 'dist';
+for name = {'Gaussian'};
     % for name = {'Gaussian','Bimodal','Rayleigh','Logn','Gamma'};
-    
     [setup] = IN(100,1000000);
     setup.NAME = name{1};
     [sg,~] = datasetGenSingle(setup,name{1},type);
@@ -18,17 +16,18 @@ for name = {'Rayleigh'};
         for itp = {'linear'};
             iint=iint+1;
             iest=0;
-            for v=linspace(0,0.1,20)
+            for v=linspace(0.1,1,20)
+                %             for v=linspace(100000000,1000000,20)
                 iest = iest+1;
-                [xest,xgrid,yest,ygrid,ytruth] = FitFullFix(setup,sg,sg.RoI.x,ireg,nest,name,itp,method,type,v,'bias');
-%                 ygrid = ygrid+v*(max(ytruth))*randn(length(ygrid),1)';
-%                 plot(ygrid)
-%                 pause
-%                 close
-%                  ygrid = ygrid+v;
-%                 [AT{iint}{ireg}(iest),E{iint}{ireg}(iest)]  = rsum(xgrid,abs(ygrid-ytruth),'mid',sg,name,0);
+                [xest,xgrid,yest,ygrid,ytruth] = FitFullFix_Noise(setup,sg,sg.RoI.x,ireg,nest,name,itp,method,type,v,'normal',10);
+                stairs(xgrid,ygrid,'.r'); hold on
+                stairs(xgrid,ytruth,'.k')
+                pause
+                close
+                %                  ygrid = ygrid+v;
+                %                 [AT{iint}{ireg}(iest),E{iint}{ireg}(iest)]  = rsum(xgrid,abs(ygrid-ytruth),'mid',sg,name,0);
                 DIVT{iint}{ireg}(iest,:) = DFSelectDx(xgrid,ygrid,ytruth);
-                waitbar(iest/length(linspace(0.1,1,50)))  
+                waitbar(iest/length(linspace(0.1,1,20)))
                 clear ygrid
             end
         end
