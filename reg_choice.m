@@ -1,4 +1,4 @@
-function [x,y,Xaxis] = reg_choice(xpdf,ypdf,div,type)
+function [x,y,Xaxis,ind] = reg_choice(xpdf,ypdf,div,type)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if ~strcmp(type,'bypass')
     if div ==1

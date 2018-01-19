@@ -17,8 +17,8 @@ switch name
 end
 
 if ~strcmp(type,'bypass')
-    [bg.RoI.x,bg.RoI.y,bg.RoI.Xaxis] = reg_choice(bg.pdf.truth.x,bg.pdf.truth.y,setup.DIV,type);
-    [sg.RoI.x,sg.RoI.y,sg.RoI.Xaxis] = reg_choice(sg.pdf.truth.x,sg.pdf.truth.y,setup.DIV,type);
+    [bg.RoI.x,bg.RoI.y,bg.RoI.Xaxis,bg.RoI.ind] = reg_choice(bg.pdf.truth.x,bg.pdf.truth.y,setup.DIV,type);
+    [sg.RoI.x,sg.RoI.y,sg.RoI.Xaxis,sg.RoI.ind] = reg_choice(sg.pdf.truth.x,sg.pdf.truth.y,setup.DIV,type);
 end
 % sg = rmfield(sg,'n');
 % bg = rmfield(bg,'n');

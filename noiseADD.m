@@ -9,5 +9,9 @@ if strcmp(noisetype,'poisson');
     noise = noise/area2d(xpdf,noise);
 end
 
+if strcmp(noisetype,'no');
+    noise = ypdf;
+end
+
 end
 
