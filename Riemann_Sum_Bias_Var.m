@@ -2,14 +2,14 @@
 clear variables; close all; clc
 
 method = 'fit';
-type = 'dist';
+type = 'prob';
 name = {'Gaussian'};
 errortype = 'poisson';
 itp = {'linear'};
 % for name = {'Gaussian','Bimodal','Rayleigh','Logn','Gamma'};
 
 
-[setup] = IN(100,100000);
+[setup] = IN(100,1000000);
 setup.NAME = name{1};
 [sg,~] = datasetGenSingle(setup,name{1},type);
 nest = 1000;

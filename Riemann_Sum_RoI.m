@@ -13,7 +13,7 @@ itp = {'nearest'};
 setup.NAME = name{1};
 [sg,~] = datasetGenSingle(setup,name{1},type);
 nt_max = 1;
-vest = 100:10:2000;
+vest = 100:5:2000;
 % rnoise = linspace(0.00001,0.0005,100);
 
 wb = waitbar(0,['Aguarde[' name{1} ']']);
@@ -23,13 +23,13 @@ for nest= vest
     MDiv = zeros(setup.DIV,15);
     [xest,xgrid,yest,ygrid,ytruth] = Method_ADDNoise(setup,sg,nest,0,name,itp,method,errortype);
     %             plot(ygrid(10,:)-ytruth(10,:),'.r');
-%     plot(xgrid(10,:),ygrid(10,:),'.r'); hold on
-%         plot(xgrid(25,:),ygrid(25,:),'.r'); hold on
-%     plot(xgrid(10,:),ytruth(10,:),'.k')
-%     pause
-%     close
-%     MT(iest)=sum(ygrid(10,:)-ytruth(10,:));
-        DIVT{iest} = DFSelectDx(xgrid,ygrid,ytruth);
+    %     plot(xgrid(10,:),ygrid(10,:),'.r'); hold on
+    %         plot(xgrid(25,:),ygrid(25,:),'.r'); hold on
+    %     plot(xgrid(10,:),ytruth(10,:),'.k')
+    %     pause
+    %     close
+    %     MT(iest)=sum(ygrid(10,:)-ytruth(10,:));
+    DIVT{iest} = DFSelectDx(xgrid,ygrid,ytruth);
     waitbar(iest/length(vest))
 end
 %     end

@@ -3,9 +3,8 @@ function [xest,xgrid,yest,ygrid,ytruth] = Method_ADDNoise(setup,sg,nest,f,name,i
 xRoI=cell2mat(sg.RoI.x);
 yRoI=cell2mat(sg.RoI.y);
 
-IndRoI= reshape(cell2mat(sg.RoI.ind),setup.PTS/setup.DIV,setup.DIV);
-
-IndRoI2= reshape(1:setup.PTS,setup.PTS/setup.DIV,setup.DIV);
+% IndRoI= reshape(cell2mat(sg.RoI.ind),setup.PTS/setup.DIV,setup.DIV);
+IndRoI= reshape(1:setup.PTS,setup.PTS/setup.DIV,setup.DIV);
 
 xest = linspace(min(xRoI),max(xRoI),nest);
 yest = GridNew(sg,xest,name);
@@ -20,7 +19,7 @@ if strcmp(method,'full')
     MyRoI = repmat(yRoI,setup.DIV,1);
     MxRoI = repmat(xRoI,setup.DIV,1);
     for i=1:setup.DIV
-        MyRoI(i,IndRoI2(:,i)) = ygridM(i,:);
+        MyRoI(i,IndRoI(:,i)) = ygridM(i,:);
     end
     [~,ind]=sort(xRoI);
     xgrid = MxRoI(:,ind);
