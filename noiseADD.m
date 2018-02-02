@@ -1,7 +1,7 @@
 function [noise] = noiseADD(xpdf,ypdf,f,noisetype)
 
 if strcmp(noisetype,'normal');
-    noise=ypdf+f*randn(1,length(ypdf));
+    noise=ypdf+(f*max(ypdf))*randn(1,length(ypdf));
 end
 
 if strcmp(noisetype,'poisson');
