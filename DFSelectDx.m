@@ -7,10 +7,12 @@ dx = diff(xgrid');
 %% Divergencia entre duas funções
 
 %% FAMILIA RAFAEL
-RN.ISB=sum((P-Q).*dx);
-RN.IV=sum(((P-Q).^2).*dx);
-RN.MISE = RN.IV+(RN.ISB).^2;
-
+% RN.ISB=sum((P-Q).*dx);
+% RN.IV=sum(((P-Q).^2).*dx);
+% RN.MISE = RN.IV+(RN.ISB).^2;
+C = 1- corr(P,Q);
+RN.Pearson = C(1,:);
+RN.MISE = sum(((P-Q).^2).*dx);
 %% FAMILIA LP MINKOWSKI
 LP.LInf = max(abs(P-Q));
 LP.L2N = sqrt(sum(((P-Q).^2).*dx));
@@ -47,6 +49,11 @@ SH.Kullback = sum(SHf.*dx);
 
 
 %% Combinations Family
+Cot = ((P+Q)/2).*log((P+Q)./(2*sqrt(P.*Q)));
+Cot(isnan(Cot)|isinf(Cot))=0;
+CO.Taneja = sum(Cot.*dx);
+
+
 COf=((P.^2-Q.^2).^2)./(2*(P.*Q).^(3/2));
 COf(isnan(COf)|isinf(COf))=0;
 CO.Kumar = sum(COf.*dx);

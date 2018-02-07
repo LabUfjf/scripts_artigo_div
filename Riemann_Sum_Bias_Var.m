@@ -3,9 +3,9 @@ clear variables; close all; clc
 
 name = {'Gaussian'};
 itp = {'linear'};
-for method = {'fit','full'};
+for method = {'full','fit'};
     for type = {'dist','prob','deriv'};
-        for errortype = {'poisson','normal'};
+        for errortype = {'poisson','poisson'};
             % for name = {'Gaussian','Bimodal','Rayleigh','Logn','Gamma'};
             [setup] = IN(100,100000);
             setup.NAME = name{1};
@@ -23,7 +23,7 @@ for method = {'fit','full'};
                     [xest,xgrid,yest,ygrid,ytruth] = Method_ADDNoise(setup,sg,nest,rn,name,itp,method,errortype);
                     MD(nt,:,:) = DFSelectDx(xgrid,ygrid,ytruth);
                     waitbar(iest/length(rnoise))
-                end
+                 end
                 M3D.mean = mean(MD);
                 M3D.max = max(MD);
                 M3D.min = min(MD);
@@ -43,7 +43,7 @@ for method = {'fit','full'};
             end
             
             close(wb)
-            VL={'Bias²','Variance','MISE','Linf','L2','Sorensen','Gower/Area','IP','Harmonic','Cosine','Hellinger','Squared','AddSym','Kullback','Kumar','Area'};
+            VL={'Pearson','MISE','Linf','L2','Sorensen','Gower/Area','IP','Harmonic','Cosine','Hellinger','Squared','AddSym','Kullback','Taneja','Kumar'};
             
             for reg = 1:length(rnoise)
                 for div = 1:15
@@ -68,12 +68,12 @@ for method = {'fit','full'};
                 grid on
                 set(gca,'GridLineStyle',':')
             end
-            
-            %     set(gcf, 'Position', get(0, 'Screensize'));
+            pause
+            % set(gcf, 'Position', get(0, 'Screensize'));
             saveas(gcf,[pwd '\TRUTH\TEST_BIAS_VAR\VAR_PDF[' name{1} ']METHOD[' method{1} ']ROI[' type{1} ']ERROR[' errortype{1} ']INTERP[' itp{1} ']NEST[' num2str(nest) ']'],'fig')
             save([pwd '\TRUTH\TEST_BIAS_VAR\MVAR[' name{1} ']METHOD[' method{1} ']ROI[' type{1} ']ERROR[' errortype{1} ']INTERP[' itp{1} ']NEST[' num2str(nest) ']'],'M')
             close all
-           
+            
         end
     end
 end

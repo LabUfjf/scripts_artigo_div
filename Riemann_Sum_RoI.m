@@ -33,7 +33,7 @@ for type = {'dist','prob','deriv'};
         %     end
         
         close(wb)
-        VL={'Bias','Variance','MISE','Linf','L2','Sorensen','Gower/Area','IP','Harmonic','Cosine','Hellinger','Squared','AddSym','Kullback','Kumar','Area'};
+        VL={'Bias','Variance','MISE','Linf','L2','Sorensen','Gower/Area','IP','Harmonic','Cosine','Hellinger','Squared','AddSym','Kullback','Kumar'};
         CL=['kr'];
         ML=[':::::::::::::::'];
         

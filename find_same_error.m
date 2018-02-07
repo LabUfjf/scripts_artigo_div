@@ -17,7 +17,7 @@ nt_max = 50;
 if strcmp(errortype,'normal')
     rnoise = linspace(0,0.01,1000);
 else
-    rnoise = linspace(1000000000,100000,1000);
+    rnoise = linspace(100000000000,100000000,1000);
 end
 
 wb = waitbar(0,['Aguarde[' name{1} ']']);
