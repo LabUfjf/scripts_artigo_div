@@ -1,12 +1,12 @@
 % RIEMANN SUM TEST
 clear variables; close all; clc
 
-name = {'Gaussian'};
-itp = {'linear'};
-for method = {'full','fit'};
+for name = {'Gaussian','Bimodal','Rayleigh','Logn','Gamma'};
+    itp = {'linear'};
+    
     for type = {'dist','prob','deriv'};
-        for errortype = {'poisson','poisson'};
-            % for name = {'Gaussian','Bimodal','Rayleigh','Logn','Gamma'};
+        for errortype = {'normal','poisson'};
+            
             [setup] = IN(100,100000);
             setup.NAME = name{1};
             [sg,~] = datasetGenSingle(setup,name{1},type);
@@ -20,10 +20,9 @@ for method = {'full','fit'};
                 iest = iest+1;
                 MDiv = zeros(setup.DIV,15);
                 for nt = 1:nt_max
-                    [xest,xgrid,yest,ygrid,ytruth] = Method_ADDNoise(setup,sg,nest,rn,name,itp,method,errortype);
-                    MD(nt,:,:) = DFSelectDx(xgrid,ygrid,ytruth);
+                    MD(nt,:,:) = DFSelectDx(setup,sg,nest,rn,name,itp,errortype);
                     waitbar(iest/length(rnoise))
-                 end
+                end
                 M3D.mean = mean(MD);
                 M3D.max = max(MD);
                 M3D.min = min(MD);
@@ -68,10 +67,10 @@ for method = {'full','fit'};
                 grid on
                 set(gca,'GridLineStyle',':')
             end
-            pause
+         
             % set(gcf, 'Position', get(0, 'Screensize'));
-            saveas(gcf,[pwd '\TRUTH\TEST_BIAS_VAR\VAR_PDF[' name{1} ']METHOD[' method{1} ']ROI[' type{1} ']ERROR[' errortype{1} ']INTERP[' itp{1} ']NEST[' num2str(nest) ']'],'fig')
-            save([pwd '\TRUTH\TEST_BIAS_VAR\MVAR[' name{1} ']METHOD[' method{1} ']ROI[' type{1} ']ERROR[' errortype{1} ']INTERP[' itp{1} ']NEST[' num2str(nest) ']'],'M')
+            saveas(gcf,[pwd '\TRUTH\TEST_BIAS_VAR\VAR_PDF[' name{1} ']METHOD[full-fit]ROI[' type{1} ']ERROR[' errortype{1} ']INTERP[' itp{1} ']NEST[' num2str(nest) '][25]'],'fig')
+            save([pwd '\TRUTH\TEST_BIAS_VAR\MVAR[' name{1} ']METHOD[full-fit]ROI[' type{1} ']ERROR[' errortype{1} ']INTERP[' itp{1} ']NEST[' num2str(nest) '][25]'],'M')
             close all
             
         end

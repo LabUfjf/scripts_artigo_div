@@ -1,10 +1,8 @@
-function [V, RN, L1, IP, SQ, L2, SH, CO] = DFSelectDx(setup,sg,nest,rn,name,itp,errortype)
+function [V, RN, L1, IP, SQ, L2, SH, CO] = DFSelectDx_old(xgrid,P,Q)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FULL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-[~,xgrid,~,ygrid,ytruth] = Method_ADDNoise(setup,sg,nest,rn,name,itp,'full',errortype);        
-P = ygrid;
-Q = ytruth;
+
 P=P(:,1:end-1)';
 Q=Q(:,1:end-1)';
 dx = diff(xgrid');
@@ -23,55 +21,43 @@ IPf1 = ((P.*Q)./(P+Q));
 IPf1(isnan(IPf1)|isinf(IPf1))=0;
 IP.Harmonic = 2*sum(IPf1.*dx);%X
 IP.Cosine = (sum(P.*Q.*dx)./(sqrt(sum((P.^2).*dx)).*sqrt(sum((Q.^2).*dx))));%X
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FIT
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear P Q dx xgrid ygrid ytruth
-[~,xgrid,~,ygrid,ytruth] = Method_ADDNoise(setup,sg,nest,rn,name,itp,'fit',errortype);   
-clear setup sg
-Pfit = ygrid;
-Qfit = ytruth;
-
-Pfit=Pfit(:,1:end-1)';
-Qfit=Qfit(:,1:end-1)';
-dxfit = diff(xgrid');
 
 %% FAMILIA LP MINKOWSKI
-LP.LInf = max(abs(Pfit-Qfit));
-LP.L2N = sqrt(sum(((Pfit-Qfit).^2).*dxfit));
+LP.LInf = max(abs(P-Q));
+LP.L2N = sqrt(sum(((P-Q).^2).*dx));
 
 %% L1 FAMILY
-L1.Gower = sum(abs(Pfit-Qfit).*dxfit);
+L1.Gower = sum(abs(P-Q).*dx);
 
 %% Squared-Chord Family
-SQ.Hellinger = sqrt(((1/2)*sum(((sqrt(Pfit)-sqrt(Qfit)).^2).*dxfit)));
+SQ.Hellinger = sqrt(((1/2)*sum(((sqrt(P)-sqrt(Q)).^2).*dx)));
 
 %% Squared L2 Family
-L2.MISE = sum(((Pfit-Qfit).^2).*dxfit);
+L2.MISE = sum(((P-Q).^2).*dx);
 
-L2f=(((Pfit-Qfit).^2)./(Pfit+Qfit)).*dxfit;
+L2f=(((P-Q).^2)./(P+Q)).*dx;
 L2f(isnan(L2f)|isinf(L2f))=0;
 L2.Squared = sqrt(sum(L2f));
 
-L2f3 = (((Pfit-Qfit).^2).*((Pfit+Qfit)))./Pfit.*Qfit;
+L2f3 = (((P-Q).^2).*((P+Q)))./P.*Q;
 L2f3(isnan(L2f3)|isinf(L2f3))=0;
-L2.AddSym = sum(L2f3.*dxfit); %X
+L2.AddSym = sum(L2f3.*dx); %X
 
 %% Shannons entropy Family
-SHf=(Qfit.*log((Qfit./Pfit)));
+SHf=(Q.*log((Q./P)));
 SHf(isnan(SHf)|isinf(SHf))=0;
-SH.Kullback = sum(SHf.*dxfit);
+SH.Kullback = sum(SHf.*dx);
 
 
 %% Combinations Family
-Cot = ((Pfit+Qfit)/2).*log((Pfit+Qfit)./(2*sqrt(Pfit.*Qfit)));
+Cot = ((P+Q)/2).*log((P+Q)./(2*sqrt(P.*Q)));
 Cot(isnan(Cot)|isinf(Cot))=0;
-CO.Taneja = sum(Cot.*dxfit); %X
+CO.Taneja = sum(Cot.*dx); %X
 
 
-COf=((Pfit.^2-Qfit.^2).^2)./(2*(Pfit.*Qfit).^(3/2));
+COf=((P.^2-Q.^2).^2)./(2*(P.*Q).^(3/2));
 COf(isnan(COf)|isinf(COf))=0;
-CO.Kumar = sum(COf.*dxfit); %X
+CO.Kumar = sum(COf.*dx); %X
 
 
 V = ([(cell2mat(struct2cell(RN))') ...

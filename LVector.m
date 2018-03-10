@@ -26,6 +26,19 @@ if strcmp(type,'deriv')
     end  
 end
 
+if strcmp(type,'deriv2')
+    h = diff(xpdf);
+    deriv = diff(ypdf)./h;
+    deriv2 = diff(deriv);
+    deriv = [deriv2 deriv2(end) deriv2(end)];
+    Mderiv = deriv(IND);
+    X = mean(abs(Mderiv));
+    [~,ideriv]=sort(X);
+    for i = 1:div
+        indreg{i}= IND(:,ideriv(i));       
+    end  
+end
+
 if strcmp(type,'prob')
     X = mean(ypdf(IND));
     [~,iprob]=sort(X);

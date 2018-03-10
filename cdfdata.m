@@ -9,5 +9,5 @@ xlimit(2) = interp1(cdf(ind),x(ind),1-TH,'linear','extrap');
 
 xest=linspace(xlimit(1),xlimit(2),ngrid);
 yest = GridNew(sg,xest,name);
-A=rsum(xest,yest,'mid',sg,name);
+A=rsum(xest,yest,'mid',sg,name,0);
 end

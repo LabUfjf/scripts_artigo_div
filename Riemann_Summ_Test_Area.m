@@ -43,19 +43,19 @@ for i=1:6
     A(i,:)=abs(AT{i});
 %     B(i,:)=Integ(i)-abs(AT{i});
 %     C(i,:)= abs(E{i});
-    %     plot(vest, Integ(i)-abs(AT{i}{1})); hold on
+        plot(vest, Integ(i)-abs(AT{i}{1})); hold on
     
 end
 % bar3(A); axis tight
-name = {'Uniform','Gaussian','Bimodal','Rayleigh','Logn','Gamma'};
-bar3(A'); axis tight
-set(gca,'XTickLabel',name)
-set(gca,'YTickLabel',vest)
-grid on; set(gca,'GridLineStyle',':'); axis tight;
-xlabel('Distance')
-ylabel('Grid Points')
-zlabel('Error')
-
-legend({'Uniform','Gaussian','Bimodal','Rayleigh','Logn','Gamma'})
+% name = {'Uniform','Gaussian','Bimodal','Rayleigh','Logn','Gamma'};
+% bar3(A'); axis tight
+% set(gca,'XTickLabel',name)
+% set(gca,'YTickLabel',vest)
+% grid on; set(gca,'GridLineStyle',':'); axis tight;
+% xlabel('Distance')
+% ylabel('Grid Points')
+% zlabel('Error')
+% 
+% legend({'Uniform','Gaussian','Bimodal','Rayleigh','Logn','Gamma'})
 
 
