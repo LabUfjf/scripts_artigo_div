@@ -3,16 +3,16 @@ function [sg,bg] = M_LogN_Gen(sg,bg,N,range_minmax)
 sg.n.x = N.PTS;
 bg.n.x = N.PTS;
 
-sg.mu = log(2);
+sg.mu = 2;
 bg.mu = log(1);
-sg.std = 1.25;
+sg.std = 0.6;
 bg.std = 1;
 
 if range_minmax == 1;
     load([pwd '\MINMAX\TEST_MINMAX_PDF[' N.NAME ']'],'Vec');
-    sg.pdf.truth.x = linspace(Vec.Min.sg,Vec.Max.sg,sg.n.x);
+    sg.pdf.truth.x = linspace(Vec.Min.sg,50,sg.n.x);
     bg.pdf.truth.x = linspace(Vec.Min.bg,Vec.Max.bg,bg.n.x);
-    [sg.Integral] = PDF_integral(sg,Vec.Min.sg,Vec.Max.sg,'Logn');
+    [sg.Integral] = PDF_integral(sg,Vec.Min.sg,50,'Logn');
     [bg.Integral] = PDF_integral(bg,Vec.Min.bg,Vec.Max.bg,'Logn');
 else
     sg.pdf.truth.x = linspace(0,300,sg.n.x);
