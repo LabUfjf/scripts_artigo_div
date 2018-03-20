@@ -2,14 +2,17 @@ function [V] = DFSelectDx(setup,sg,nest,rn,name,itp,errortype)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FULL
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+bias = 0;
+
 DFLAG = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1];
 % DFLAG = [0 0 0 0 0 0 0 0 0 0 1 0 0 1 0];
 if DFLAG(1)+DFLAG(2)+DFLAG(3)+DFLAG(4)+DFLAG(5)~=0
 [~,xgrid,~,ygrid,ytruth] = Method_ADDNoise(setup,sg,nest,rn,name,itp,'full',errortype);
 P = ygrid;
 Q = ytruth;
-P=P(:,1:end-1)';
-Q=Q(:,1:end-1)';
+P=P(:,1:end-1)'+bias;
+Q=Q(:,1:end-1)'+bias;
 dx = diff(xgrid');
 end
 
@@ -49,8 +52,8 @@ clear setup sg
 Pfit = ygrid;
 Qfit = ytruth;
 
-Pfit=Pfit(:,1:end-1)';
-Qfit=Qfit(:,1:end-1)';
+Pfit=Pfit(:,1:end-1)'+bias;
+Qfit=Qfit(:,1:end-1)'+bias;
 dxfit = diff(xgrid');
 
 

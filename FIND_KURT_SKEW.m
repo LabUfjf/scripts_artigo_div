@@ -1,9 +1,9 @@
-function [KT,SK,PB] = FIND_KURT_SKEW(sg,xgrid,xest,yest,rn,errortype,name)
+function [KT,SK,PB,PT_ROI] = FIND_KURT_SKEW(sg,xgrid,xest,yest,rn,errortype,name)
 
 M = [min(xgrid'); max(xgrid')];
 
 
-ntmax = 500;
+ntmax = 100;
 
 for i = 1:size(xgrid,1)
     PT_ROI{i} = [];
@@ -21,7 +21,7 @@ for j=1:ntmax;
         
         Yest_ROI_noise{i} = signal(IND_ROI{i});
         
-        PT_ROI{i} = [PT_ROI{i} Yest_ROI{i}-Yest_ROI_noise{i}];
+        PT_ROI{i} = [PT_ROI{i} Yest_ROI_noise{i}-Yest_ROI{i}];
     
     end
     
