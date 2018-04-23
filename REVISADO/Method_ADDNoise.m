@@ -1,25 +1,22 @@
 function [xest,xgrid,yest,ygrid,ytruth] = Method_ADDNoise(setup,DATA,f)
-
+%==========================================================================
+% Objetivo: * Adicionar Diferentes Tipos de Ruído por RoI
+%           * Fazer Normalização adequada
+%           * Estipular a Estimação escolhida
+%==========================================================================
+%% => Definir os índices
 xRoI=cell2mat(DATA.sg.RoI.x);
 yRoI=cell2mat(DATA.sg.RoI.y);
-
 [IndRoI] = INDGEN(DATA.sg.pdf.truth.x,setup.DIV);
-
-
-% NPTS= length(cell2mat(DATA.sg.RoI.x));
-% 
-% % IndRoI= reshape(cell2mat(sg.RoI.ind),setup.PTS/setup.DIV,setup.DIV);
-% IndRoI= reshape(1:NPTS,NPTS/setup.DIV,setup.DIV);
-% IndRoI(end+1,:)=[IndRoI(1,2:end) length(NPTS)];
-
+%% => Estimar e adicionar ruído
 xest = linspace(min(xRoI),max(xRoI),setup.EST);
 yest = GridNew(DATA.sg,xest,setup.TYPE.NAME);
 signal = noiseADD(xest,yest,f,setup.TYPE.NOISE);
-
-
+%% => Definir o Grid após a estimação
 xgridM = xRoI(IndRoI)';
 ygridM = interp1(xest,signal,xgridM,setup.TYPE.INTERP,'extrap');
 
+%% => Organizar os resultados em matriz de acordo com as especificações do setup
 if setup.DIV == 1
     xgrid = DATA.sg.pdf.truth.x;
     ygrid = interp1(xest,signal,xgrid,setup.TYPE.INTERP,'extrap');

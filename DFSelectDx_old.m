@@ -37,9 +37,9 @@ L2.MISE = sum(((P-Q).^2).*dx);
 
 L2f=(((P-Q).^2)./(P+Q)).*dx;
 L2f(isnan(L2f)|isinf(L2f))=0;
-L2.Squared = sqrt(sum(L2f));
+L2.Squared = sum(L2f);
 
-L2f3 = (((P-Q).^2).*((P+Q)))./P.*Q;
+L2f3 = (((P-Q).^2).*((P+Q)))./(P.*Q);
 L2f3(isnan(L2f3)|isinf(L2f3))=0;
 L2.AddSym = sum(L2f3.*dx); %X
 

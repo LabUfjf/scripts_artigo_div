@@ -7,7 +7,6 @@ DFLAG = [1 1 1 1 1 1 1 1 1 1 1 1 1 1 1];
 
 [xpdf,xgrid,ypdf,ygrid,ytruth] = Method_ADDNoise(setup,sg,nest,rn,name,itp,'full',errortype);
 
-
 P = ygrid;
 Q = ytruth;
 P=P(:,1:end-1)';
