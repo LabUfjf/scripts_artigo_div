@@ -6,9 +6,9 @@ load modelfit
 %=========================================================================
 % PARÂMETROS INICIAIS - ADDSYM
 %=========================================================================
-errortype = 'none';
-norm = 'fit';
-nt = 2;
+errortype = 'poisson';
+norm = 'full';
+nt = 10;
 nRoI = 100;
 nGrid= 1e5;
 nEst = 1000;

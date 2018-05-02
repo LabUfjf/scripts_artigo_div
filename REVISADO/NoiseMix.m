@@ -9,10 +9,10 @@ for i = 1:nt
 end
 
 % save xest noiseP
-modelfit = fit(xest',std(noiseP)','smoothingspline','smoothingparam',0.9999);
-% plot(modelfit,xest',std(noiseP)');
-% pause
-% filename = ['NOISEMIX[' name{1} ']'];
+% modelfit = fit(xest',std(noiseP)','smoothingspline','smoothingparam',0.9999);
+% % plot(modelfit,xest',std(noiseP)');
+% % pause
+% filename = ['NOISEMIX[Gaussian]'];
 % save(filename, 'modelfit') 
 % pause
 % save modelfit modelfit
