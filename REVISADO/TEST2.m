@@ -5,7 +5,7 @@ VCTEST = 100;
 
 for name = {'Gaussian'};
     % for name = {'Gaussian','Bimodal','Rayleigh','Logn','Gamma'};
-    [setup] = IN(name{1},'sg','normal','deriv','linear','mix',10,1e5,100,20); % Definir os Parâmetros Iniciais
+    [setup] = IN(name{1},'sg','poisson','dist','linear','mix',10,1e5,1000,100); % Definir os Parâmetros Iniciais
     [DATA] = datasetGenSingle(setup);                                            % Gerar os Dados à partir desses Parâmetros
     wb = waitbar(0,['Aguarde[' name{1} ']']);
 %     
@@ -34,7 +34,7 @@ for name = {'Gaussian'};
     for i=1:15
         % subplot(4,4,1);mesh(sg.pdf.truth.x,sg.pdf.truth.y,'k'); axis tight
         %         figure(i)
-        subplot(5,3,i);mesh(VCTEST,DATA.sg.RoI.Xaxis,M2{i}'); axis tight
+        subplot(5,3,i);plot(DATA.sg.RoI.Xaxis,M2{i}','.:k'); axis tight
         title([setup.TYPE.MD{i}])
 %         ylabel(type)
 %         xlabel('X_{EST}')

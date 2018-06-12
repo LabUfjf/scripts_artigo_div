@@ -5,12 +5,12 @@ function [M] = MD(setup,DATA)
 %           * Calcular as Medidas de Distância por RoI
 %==========================================================================
 setup.TYPE.NORM = 'full';
-[X.EST,X.GRID,Y.EST,Y.GRID,Y.TRUTH] = Method_ADDNoise(setup,DATA,setup.RANGE.NOISE(1));
+[X.EST,X.GRID,Y.EST,Y.GRID,Y.TRUTH] = Method_ADDNoise(setup,DATA,setup.RANGE.NOISE(end));
 [RN,L1,IP] = MDFULL(X.GRID,Y.GRID,Y.TRUTH);
 
 
 setup.TYPE.NORM = 'fit';
-[X.EST,X.GRID,Y.EST,Y.GRID,Y.TRUTH] = Method_ADDNoise(setup,DATA,setup.RANGE.NOISE(1));
+[X.EST,X.GRID,Y.EST,Y.GRID,Y.TRUTH] = Method_ADDNoise(setup,DATA,setup.RANGE.NOISE(end));
 [M] = MDFIT(RN,L1,IP,X.GRID,Y.GRID,Y.TRUTH);
 
 % MD_DEBUG(X.GRID,Y.GRID,Y.TRUTH,'Taneja','do');
