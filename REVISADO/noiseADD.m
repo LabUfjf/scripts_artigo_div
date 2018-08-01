@@ -15,15 +15,27 @@ end
 
 if strcmp(noisetype,'noisemix');
     load modelfit
-%     modelfit=NoiseMix(xpdf,ypdf,fc);
+    %     modelfit=NoiseMix(xpdf,ypdf,fc);
     ind=find(f.poisson==fc);
-    noise = ypdf+(modelfit{ind}(xpdf)'.*randn(1,length(ypdf)));    
-%     noise = ypdf+((ypdf/max(ypdf))*(f*max(ypdf))).*randn(1,length(ypdf));   
+    noise = ypdf+(modelfit{ind}(xpdf)'.*randn(1,length(ypdf)));
+    %     noise = ypdf+((ypdf/max(ypdf))*(f*max(ypdf))).*randn(1,length(ypdf));
+end
+
+if strcmp(noisetype,'biasn');
+    noise = ypdf+(fc*max(ypdf));
+end
+
+if strcmp(noisetype,'biasp');
+    load modelfit
+    ind=find(f.poisson==fc);
+    noise = ypdf+(modelfit{ind}(xpdf)');
 end
 
 if strcmp(noisetype,'none');
     noise = ypdf;
 end
+
+
 
 end
 

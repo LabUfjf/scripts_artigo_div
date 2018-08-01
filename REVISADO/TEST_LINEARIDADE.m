@@ -1,4 +1,4 @@
-% TEST BIAS- VARIANCE
+% TEST LINEARIDADE
 clear variables;  clc; close all;
 %=========================================================================
 % DESCRIÇÃO:
@@ -7,7 +7,7 @@ clear variables;  clc; close all;
 %=========================================================================
 % PARÂMETROS INICIAIS - ADDSYM
 %=========================================================================
-norm = 'fit';
+norm = 'full';
 nt = 10;
 nRoI = 50;
 nGrid= 1e5;
@@ -30,6 +30,8 @@ for j=1:100
         [X.EST,X.GRID,Y.EST,Y.GRID,Y.TRUTH] = Method_ADDNoise(setup,DATA,setup.RANGE.NOISE(j));
         [P,Q,dx] = fixPQ(X.GRID,Y.GRID,Y.TRUTH);
         MN(i,j,:) = sum(MATRIXMD(P,Q,dx,mod)')';
+        MN2 = max(MATRIXMD(P,Q,dx,mod)')';
+        MN(i,j,2) = MN2(2);
     end
     waitbar(j/100)
 end

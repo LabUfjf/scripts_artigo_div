@@ -14,8 +14,8 @@ yest = GridNew(DATA.sg,xest,setup.TYPE.NAME);
 signal = noiseADD(xest,yest,f,setup.TYPE.NOISE);
 %% => Definir o Grid após a estimação
 xgridM = xRoI(IndRoI)';
-ygridM = interp1(xest,signal,xgridM,setup.TYPE.INTERP,'extrap');
-
+% ygridM = interp1(xest,signal,xgridM,setup.TYPE.INTERP,'extrap');
+[ygridM] = ADD_BG_REGION(xest,yest,signal,xgridM,setup);
 %% => Organizar os resultados em matriz de acordo com as especificações do setup
 if setup.DIV == 1
     xgrid = DATA.sg.pdf.truth.x;
