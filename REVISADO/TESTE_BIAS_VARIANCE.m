@@ -19,7 +19,7 @@ for errortype = {'normal','poisson','noisemix'};
     %=========================================================================
     wb = waitbar(0,'Aguarde...');
     for nt = 1:2500
-        for NRANGE = 1
+        for NRANGE = 100
             [setup] = IN('Gaussian','sg',errortype,'dist',inter,norm,1,nGrid,nEst,nRoI);   % Definir os Parâmetros Iniciais
             [DATA] = datasetGenSingle(setup);
             [X.EST,X.GRID,Y.EST,Y.GRID,Y.TRUTH] = Method_ADDNoise(setup,DATA,setup.RANGE.NOISE(NRANGE));
@@ -31,10 +31,12 @@ for errortype = {'normal','poisson','noisemix'};
     close(wb)
     
     
-    
-    
-    MV=reshape(mean(MN),15,nRoI);
+    Mmax = reshape(max(MN),15,nRoI);
+    M = reshape(mean(MN),15,nRoI);
+    M(2,:) = Mmax(2,:);
+    MV=reshape(M,15,nRoI);
     SV=reshape(std(MN),15,nRoI);
+%     pause
     
     % for i = 1:15
     %     for j=1:100
@@ -71,7 +73,7 @@ for errortype = {'normal','poisson','noisemix'};
     set(gcf,'units','normalized','outerposition',[0 0 1 1])
     saveas(gcf,[pwd '\MD_STD\STD-ERROR[' errortype{1} ']VAR[' num2str(NRANGE) ']'],'fig')
     close all
-    
+%     pause
     % %
     % for NDIV = 1:15
     %     subplot_tight(3, 5, NDIV, [0.05]);mesh(1:nRoI,setup.RANGE.NOISE,MESHMN{NDIV});
