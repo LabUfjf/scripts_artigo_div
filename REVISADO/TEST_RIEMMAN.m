@@ -38,7 +38,7 @@ for nEst = vEst;
 end
 
 close(wb)
-plot(vGrid,(A'))
+plot(vGrid,abs(A'-Integ'))
 % mesh(vEst,vGrid,abs(A'-Integ'))
 % plot(X.GRID,Y.GRID,'.r',X.GRID,Y.TRUTH,'-k'); axis tight
 

@@ -14,6 +14,8 @@ switch setup.TYPE.NAME
         [DATA] = M_Normal_Gen(setup,range);
     case 'Bimodal'
         [DATA] = M_Normal_Bimodal_Gen(setup,range);
+    case 'Trimodal'
+        [DATA] = M_Normal_Trimodal_Gen(setup,range);
     case 'Rayleigh'
         [DATA] = M_Rayleigh_Gen(setup,range);
     case 'Logn'

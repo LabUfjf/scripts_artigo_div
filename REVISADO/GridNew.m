@@ -9,6 +9,8 @@ switch name
         ytruth = normpdf(x,sg.g1.mu,sg.g1.std);
     case 'Bimodal'
         ytruth = (normpdf(x,sg.g1.mu,sg.g1.std) + normpdf(x,sg.g2.mu,sg.g2.std))/2;
+         case 'Trimodal'
+        ytruth = (normpdf(x,sg.g1.mu,sg.g1.std) + normpdf(x,sg.g2.mu,sg.g2.std) + normpdf(x,sg.g3.mu,sg.g3.std))/3;
     case 'Rayleigh'
         ytruth = raylpdf(x,sg.b);
     case 'Logn'

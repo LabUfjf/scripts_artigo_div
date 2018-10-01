@@ -29,6 +29,19 @@ if strcmp(type,'Bimodal')
     [~,ind] = unique(ycdf);
 end
 %%=========================================================================
+%% Bimodal
+%%=========================================================================
+if strcmp(type,'Trimodal')
+    pd.g1 = makedist('Normal',sg.g1.mu,sg.g1.std);
+    pd.g2 = makedist('Normal',sg.g2.mu,sg.g2.std);
+    pd.g3 = makedist('Normal',sg.g3.mu,sg.g3.std);
+    ycdf1 = cdf(pd.g1,xest);
+    ycdf2 = cdf(pd.g2,xest);
+    ycdf3 = cdf(pd.g3,xest);
+    ycdf = (ycdf1+ycdf2+ycdf3)/3;
+    [~,ind] = unique(ycdf);
+end
+%%=========================================================================
 %% Rayleigh
 %%=========================================================================
 if strcmp(type,'Rayleigh')
