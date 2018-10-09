@@ -57,6 +57,15 @@ if strcmp(type,'Gamma')
     f=(1/((sg.B^sg.A)*gamma(sg.A)))*(x^(sg.A-1))*exp((-x)/sg.B);
     I=double(int(f, xi, xs));
 end
+%%=========================================================================
+%% Laplace
+%%=========================================================================
+if strcmp(type,'Laplace')
+    b = sg.std / sqrt(2);
+    f = (1/(2*b))*exp(-(abs(x-sg.mu)/b));
+    I=double(int(f, xi, xs));
+end
+
 
 
 end

@@ -65,6 +65,14 @@ if strcmp(type,'Gamma')
     ycdf = cdf(pd,xest);
     [~,ind] = unique(ycdf);
 end
+%%=========================================================================
+%% Laplace
+%%=========================================================================
+if strcmp(type,'Laplace')
+    ycdf = laplacecdf(xest,sg.mu,sg.std);
+    [~,ind] = unique(ycdf);
+end
+
 
 
 end

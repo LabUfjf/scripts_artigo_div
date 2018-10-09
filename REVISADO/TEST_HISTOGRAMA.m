@@ -9,21 +9,25 @@ errortype = 'none';
 mod = 'abs';
 j=0;
 cl = ['yrbgkmc'];
-% for name = {'Uniform','Gaussian','Bimodal','Trimodal','Rayleigh','Logn','Gamma'};
-name = {'Trimodal'};
-nEVT = 50000;
+% for name = {'Uniform','Gaussian','Bimodal','Trimodal','Rayleigh','Logn','Gamma','Laplace'};
+name = {'Gamma'};
+nEVT = 5000;
 nEST = 10;
 nROI = 1;
 nGRID = 10^5;
-binmax = 1000;
+binmax = 500;
 ntmax = 30;
-
-out = [25];
+out = [0];
 
 [setup] = IN(name{1},'sg',errortype,'dist',inter,norm,nEVT,nGRID,nEST,nROI);   % Definir os Parâmetros Iniciais
 [DATA] = datasetGenSingle(setup);
 
-bin=calcnbins([DATA.sg.evt; out],'all');
+[bin,C]=calcnbins([reshape(DATA.sg.evt,length(DATA.sg.evt),1); out],'all');
+
+
+
+
+
 [bin.truth,info,nbin] =binopt(DATA,out,ntmax,name,setup);
 % bin.Posterior = optBINS(DATA.sg.evt,binmax);
 
@@ -46,3 +50,10 @@ xlabel('Número de Bins')
 ylabel('Área do Erro')
 set(gca,'gridlinestyle',':','xscale','log','yscale','log','FontSize',12)
 
+
+rb=20:length(C.shimazaki+1);
+figure
+subplot(1,2,1);plot(rb,C.shimazaki(rb-1),'-k'); legend('SS'); hold on; grid on; axis tight
+set(gca,'gridlinestyle',':','xscale','log','FontSize',12)
+subplot(1,2,2);plot(rb,C.rudemo(rb-1),'-k'); legend('Rudemo'); hold on; grid on; axis tight
+set(gca,'gridlinestyle',':','xscale','log','FontSize',12)

@@ -16,7 +16,7 @@ n=length(Weight);
 cp = cvpartition(length(Weight),'LeaveOut');
 for j=1:length(uu)
       % compute log likelihood for test data based on training data
-      loglik = @(xtr,xte) (n^(-1))*sum(log(ksdensity(xtr,xte,'width',uu(j))))-log((n-1)*uu(j));
+      loglik = @(xtr,xte) (n^(-1))*sum(log(ksdensity(xtr,xte,'width',uu(j))));
       % sum across all train/test partitions
       v(j) = sum(crossval(loglik,Weight,'partition',cp));
       % plot the fit to the full dataset

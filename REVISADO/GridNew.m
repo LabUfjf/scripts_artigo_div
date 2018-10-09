@@ -17,6 +17,8 @@ switch name
         ytruth = lognpdf(x,sg.mu,sg.std);
     case 'Gamma'
         ytruth = gampdf(x,sg.A,sg.B);
+            case 'Laplace'
+        ytruth = laplacecdf(x,sg.mu,sg.std);
 end
 
 end

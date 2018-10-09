@@ -1,13 +1,28 @@
-function [bin,q]=Rudemo(DATA)
+function [bin,mq]=Rudemo(DATA)
 
-for nbin=2:1000
+% nbs=10;
+% [~,ind] = bootstrp(nbs,@(x)[mean(x) std(x)],DATA);
+% for i=1:nbs
+SN = 30;                    % # of partitioning positions for shift average
+
+
+
+for nbin=2:100
+    edge=linspace(min(DATA),max(DATA),nbin);  
+    D = (max(DATA) - min(DATA)) ./ nbin;   % Bin Size Vector
+    shift = linspace(0,D,SN);
+    for s=1:SN
     N=length(DATA);
-    [yh,xh]=hist(DATA,nbin);
+    [yh,xh]=hist(DATA,edge+shift(s));
     h=diff(xh); h=h(1);
-    q(nbin)=(2/((N-1)*h))-(((N+1)/((N-1)*h*N^2))*sum(yh.^2));
+    mq(nbin,s)=(2/((N-1)*h))-(((N+1)/((N-1)*h*N^2))*sum(yh.^2));
+    end
 end
+%     Q(:,i) = q;
+% end
 
-bin = round(find(q(2:end)==min(q(2:end))));
+mq = mean(mq');
+bin = round(find(mq(2:end)==min(mq(2:end))));
 bin = bin+1;
-q=q(2:end);
+mq=mq(2:end);
 end

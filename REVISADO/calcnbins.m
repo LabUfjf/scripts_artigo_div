@@ -1,4 +1,4 @@
-function nbins = calcnbins(x, method, minimum, maximum)
+function [nbins,C] = calcnbins(x, method, minimum, maximum)
 % Calculate the "ideal" number of bins to use in a histogram, using a
 % choice of methods.
 %
@@ -151,8 +151,8 @@ switch(method)
         nbins.scott = calcscott(x);
         nbins.sturges = calcsturges(x);
         nbins.doane = calcdoane(x);
-        nbins.shimazaki = calcshimazaki(x);
-        nbins.rudemo = calcrudemo(x);
+        [nbins.shimazaki,C.shimazaki] = calcshimazaki(x);
+        [nbins.rudemo,C.rudemo] = calcrudemo(x);
     case 'middle'
         nbins = median([calcfd(x) calcscott(x) calcsturges(x)]);
 end
@@ -194,13 +194,13 @@ end
         nbins = confine2range(nbins, minimum, maximum);
     end
 
-    function nbins = calcshimazaki(x)
-        [nbins, ~, ~] = sshist(x);
+    function [nbins,C] = calcshimazaki(x)
+        [nbins,C, ~] = sshist(x);
         nbins = confine2range(nbins, minimum, maximum);
     end
 
-    function nbins = calcrudemo(x)
-        [nbins,~]=Rudemo(x);
+    function [nbins,C] = calcrudemo(x)
+        [nbins,C]=Rudemo(x);
         nbins = confine2range(nbins, minimum, maximum);
     end
 
