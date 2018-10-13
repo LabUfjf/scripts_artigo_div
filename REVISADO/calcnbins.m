@@ -172,7 +172,7 @@ end
     end
 
     function nbins = calcscott(x)
-        h = 3.5*std(x)*length(x)^(-1/3);
+        h = ((24*sqrt(pi))^(1/3))*std(x)*length(x)^(-1/3);
         if h > 0
             nbins = ceil((max(x)-min(x))/h);
         else

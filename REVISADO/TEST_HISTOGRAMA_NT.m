@@ -63,6 +63,7 @@ errorbar(vEVT,mean(BTR)-mean(BSS),(std(BTR)+std(BSS))/sqrt(ntmax),'*:g','markers
 errorbar(vEVT,mean(BTR)-mean(BRU),(std(BTR)+std(BRU))/sqrt(ntmax),'*:m','markersize',4);
 ylabel('Erro de Estimação dos Bins')
 xlabel('Amostras')
+
 axis tight
 grid on
 set(gca,'gridlinestyle',':','FontSize',12)

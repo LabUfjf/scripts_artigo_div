@@ -3,11 +3,11 @@ function [bin,mq]=Rudemo(DATA)
 % nbs=10;
 % [~,ind] = bootstrp(nbs,@(x)[mean(x) std(x)],DATA);
 % for i=1:nbs
-SN = 30;                    % # of partitioning positions for shift average
+SN = 50;                    % # of partitioning positions for shift average
+binmax= 150;
 
 
-
-for nbin=2:100
+for nbin=2:binmax
     edge=linspace(min(DATA),max(DATA),nbin);  
     D = (max(DATA) - min(DATA)) ./ nbin;   % Bin Size Vector
     shift = linspace(0,D,SN);

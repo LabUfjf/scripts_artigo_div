@@ -48,18 +48,18 @@ function [optN, C, N] = sshist(x,N)
 x = reshape(x,1,numel(x));
 x_min = min(x);
 x_max = max(x);
-
+binmax= 150;
 if nargin < 2
     buf = abs(diff(sort(x)));
     dx = min(buf(logical(buf ~= 0)));
     N_MIN = 2;              % Minimum number of bins (integer)
                             % N_MIN must be more than 1 (N_MIN > 1).            
-    N_MAX = min(floor((x_max - x_min)/(2*dx)),100);
+    N_MAX = min(floor((x_max - x_min)/(2*dx)),binmax);
                             % Maximum number of bins (integer)
     N = N_MIN:N_MAX;        % # of Bins
 end
     
-SN = 30;                    % # of partitioning positions for shift average
+SN = 50;                    % # of partitioning positions for shift average
 D = (x_max - x_min) ./ N;   % Bin Size Vector
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

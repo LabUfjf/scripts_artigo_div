@@ -1,5 +1,5 @@
 function [bin,info,nbin] =binopt(out,ntmax,setup)
-binmax=100;
+binmax=500;
 wb = waitbar(0,'Doing Optimal Binning...');
 for nt=1:ntmax
 [DATA] = datasetGenSingle(setup);
@@ -20,4 +20,4 @@ for i = 1:size(MA,2)
 end
 info.SA = std(A(nbin,:)');
 info.MA = mean(A(nbin,:)'); 
-bin=ind;
+bin=round(mean(ind));

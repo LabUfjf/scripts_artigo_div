@@ -1,19 +1,22 @@
-function [bin,Ah]=simplex(DATA,xgrid,binmax)
-% f = 1.7863; %1.4826;% 1.4306
-f=1.4826;
-% f=1;
-ygrid_old = zeros(size(xgrid));
-for nbin=2:binmax    
-    [yh,xh]=hist(DATA,nbin);
-    yh = yh/area2d(xh,yh);
-    yhgrid= ygrid_old - interp1(xh,yh,xgrid,'nearest','extrap');
-%     plot(DATA.sg.pdf.truth.x,ygrid_old,'r',DATA.sg.pdf.truth.x,interp1(xh,yh,DATA.sg.pdf.truth.x,'nearest','extrap'),'k')
-%     pause
-%     close
-    Ah(nbin) = area2d(xgrid,yhgrid);
-    ygrid_old=interp1(xh,yh,xgrid,'nearest','extrap');
+function [BIN,nbin,Ah]=simplex(DATA,binmax)
+ygrid_old = zeros(size(DATA.sg.pdf.truth.x));
+SN=50;
+for nbin=1:binmax
+    R = linspace(min(DATA.sg.evt),max(DATA.sg.evt),nbin+1);
+    h=diff(R); h=h(1);
+    step = linspace(0,h,SN);
+    for s=1:SN
+        [xh,yh]=data_normalized(DATA.sg.evt,R+step(s));
+        yhgrid= ygrid_old - interp1(xh,yh,DATA.sg.pdf.truth.x,'nearest','extrap');
+        %     plot(DATA.sg.pdf.truth.x,ygrid_old,'r',DATA.sg.pdf.truth.x,interp1(xh,yh,DATA.sg.pdf.truth.x,'nearest','extrap'),'k')
+        %     pause
+        %     close
+        Ah(nbin,s) = area2d(DATA.sg.pdf.truth.x,yhgrid);
+        ygrid_old=interp1(xh,yh,DATA.sg.pdf.truth.x,'nearest','extrap');
+    end
 end
-bin = round(find(Ah(2:end)==min(Ah(2:end)))/f);
-bin=bin-1;
+nbin=1:binmax;
+Ah=Ah(nbin);
 
-end
+ind = find(Ah==min(Ah));
+BIN=nbin(ind);
