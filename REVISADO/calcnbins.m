@@ -116,7 +116,7 @@ if ~ischar(method)
     error('calcnbins:invalidMethod', 'The method argument must be a char array.');
 end
 
-validmethods = {'fd'; 'scott'; 'sturges'; 'doane'; 'all'; 'middle'};
+validmethods = {'fd'; 'scott'; 'sturges'; 'doane'; 'shimazaki'; 'rudemo'; 'LHM'; 'all'; 'middle'};
 methodmatches = strmatch(lower(method), validmethods);
 nmatches = length(methodmatches);
 if nmatches~=1
@@ -146,6 +146,11 @@ switch(method)
         nbins = calcshimazaki(x);
     case 'rudemo'
         nbins = calcrudemo(x);
+    case 'LHM'
+        nbins = calcLHM(x);
+%     case 'truth'
+%         nbins = calctruth(x);
+        
     case 'all'
         nbins.fd = calcfd(x);
         nbins.scott = calcscott(x);
@@ -153,6 +158,8 @@ switch(method)
         nbins.doane = calcdoane(x);
         [nbins.shimazaki,C.shimazaki] = calcshimazaki(x);
         [nbins.rudemo,C.rudemo] = calcrudemo(x);
+        [nbins.LHM,C.LHM] = calcLHM(x);
+%         [nbins.truth,C.truth] = calctruth(x,150);
     case 'middle'
         nbins = median([calcfd(x) calcscott(x) calcsturges(x)]);
 end
@@ -204,6 +211,16 @@ end
         nbins = confine2range(nbins, minimum, maximum);
     end
 
+    function [nbins,C] = calcLHM(x)
+        [nbins,~,C]= LHM(x,'nearest');
+        nbins = confine2range(nbins, minimum, maximum);
+    end
+
+%     function [nbins,C] = calctruth(x)
+%         [nbins,C,~]=bintruth(x,binmax);
+%         nbins = confine2range(nbins, minimum, maximum);
+%     end
+
     function y = confine2range(x, lower, upper)
         y = ceil(max(x, lower));
         y = floor(min(y, upper));
@@ -236,3 +253,6 @@ end
         y = interp1q((1:lenx)', sortx, posn);
     end
 end
+
+
+

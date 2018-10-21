@@ -59,7 +59,7 @@ if nargin < 2
     N = N_MIN:N_MAX;        % # of Bins
 end
     
-SN = 50;                    % # of partitioning positions for shift average
+SN = 30;                    % # of partitioning positions for shift average
 D = (x_max - x_min) ./ N;   % Bin Size Vector
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

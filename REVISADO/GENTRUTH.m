@@ -9,15 +9,15 @@ else
     disp('Criando Arquivo...')
     norm = 'fit';
     errortype = 'none';
-    ntmax=100;
+    ntmax=50;
     nEST = 2;
     nROI = 1;
     nGRID = 10^5;
     inter = 'nearest';
     wb=waitbar(0,['Aguarde[' name ']']);
     Csum = 0;
-    for i=1:ntmax
-        [setup] = IN(name,'sg',errortype,'dist',inter,norm,nEVT,nGRID,nEST,nROI);   % Definir os Parâmetros Iniciais
+    [setup] = IN(name,'sg',errortype,'dist',inter,norm,nEVT,nGRID,nEST,nROI);   % Definir os Parâmetros Iniciais
+    for i=1:ntmax        
         [DATA] = datasetGenSingle(setup);
         if strcmp(method,'HIST')
             [~,C,nbin]=bintruth(DATA,binmax);

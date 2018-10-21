@@ -1,10 +1,11 @@
-function [x,y] = ASHmethods(DATA,M,BIN)
+function [x,y] = ASHmethods(DATA,M,inter,BIN)
 
-[x.fd,y.fd] = ashN(DATA,M,BIN.fd);
-[x.scott,y.scott] = ashN(DATA,M,BIN.scott);
-[x.sturges,y.sturges] = ashN(DATA,M,BIN.sturges);
-[x.doane,y.doane] = ashN(DATA,M,BIN.doane);
-[x.shimazaki,y.shimazaki] = ashN(DATA,M,BIN.shimazaki);
-[x.rudemo,y.rudemo] = ashN(DATA,M,BIN.rudemo);
-[x.truth,y.truth] = ashN(DATA,M,BIN.truth);
+[x.fd,y.fd] = ashN(DATA,M,inter,BIN.fd);
+[x.scott,y.scott] = ashN(DATA,M,inter,BIN.scott);
+[x.sturges,y.sturges] = ashN(DATA,M,inter,BIN.sturges);
+[x.doane,y.doane] = ashN(DATA,M,inter,BIN.doane);
+[x.shimazaki,y.shimazaki] = ashN(DATA,M,inter,BIN.shimazaki);
+[x.rudemo,y.rudemo] = ashN(DATA,M,inter,BIN.rudemo);
+[x.LHM,y.LHM] = ashN(DATA,M,inter,BIN.LHM);
+[x.truth,y.truth] = ashN(DATA,M,inter,BIN.truth);
 end

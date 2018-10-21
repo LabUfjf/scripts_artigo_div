@@ -3,7 +3,7 @@ function [bin,mq]=Rudemo(DATA)
 % nbs=10;
 % [~,ind] = bootstrp(nbs,@(x)[mean(x) std(x)],DATA);
 % for i=1:nbs
-SN = 50;                    % # of partitioning positions for shift average
+SN = 30;                    % # of partitioning positions for shift average
 binmax= 150;
 
 

@@ -3,6 +3,6 @@ function [ area ] = area2d( x,y )
 % Objetivo: * Calcular a área 
 %==========================================================================
 tbin=diff(x);
-area=sum(abs(y(1:end-1)).*abs(tbin));
+area=sum((y(1:end-1)).*abs(tbin));
 
 end

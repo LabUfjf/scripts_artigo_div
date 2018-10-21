@@ -90,18 +90,12 @@ function [y,t,optw,gs,C,confb95,yb] = ssvkernel(x,tin)
 %
 % Hideaki Shimazaki 
 % http://2000.jukuin.keio.ac.jp/shimazaki
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Parameters Settings
 M = 80;            %Number of bandwidths examined for optimization.
-
 WinFunc = 'Boxcar'; %Window function ('Gauss','Laplace','Cauchy') 
-
 nbs = 1*1e2;        %number of bootstrap samples
-
 x = reshape(x,1,numel(x));
-
 if nargin == 1
     T = max(x) - min(x);
     [mbuf,nbuf,dt_samp] = find( sort(diff(sort(x))),1,'first');
@@ -112,7 +106,6 @@ else
     T = max(tin) - min(tin);
     x_ab = x( logical((x >= min(tin)) .*(x <= max(tin))) ) ;
     [mbuf,nbuf,dt_samp] = find( sort(diff(sort(x_ab))),1,'first');
-
     if dt_samp > min(diff(tin))
         t = linspace(min(tin),max(tin), min(ceil(T/dt_samp),1e3));
     else
@@ -121,27 +114,20 @@ else
 end
 clear mbuf nbuf;
 dt = min(diff(t));
-
 % Compute a globally optimal fixed bandwidth
 %[yf,~,optWg] = sskernel(x,t);
-
 % Create a finest histogram
 y_hist = histc(x_ab,t-dt/2)/dt;
 L = length(y_hist);
 N = sum(y_hist*dt);
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Computing local MISEs and optimal bandwidths
 disp('computing local bandwidths...');
-
 %logexp = @(x) log(1+exp(x)); 
 %ilogexp = @(x) log(exp(x)-1);
-
 %Window sizes
 WIN = logexp(linspace(ilogexp(max(5*dt)),ilogexp(1*T),M));
-
 W = WIN;        %Bandwidths
-
 c = zeros(M,L);
 for j = 1:M
     w = W(j);
@@ -149,8 +135,6 @@ for j = 1:M
     %computing local cost function
     c(j,:) = yh.^2 - 2*yh.*y_hist + 2/sqrt(2*pi)/w*y_hist;
 end
-
-
 optws = zeros(M,L);
 for i = 1:M
     Win = WIN(i);
@@ -165,23 +149,17 @@ for i = 1:M
     [mbuf,n] = min(C_local,[],1); %find optw at t=1...L
     optws(i,:) = W(n);
 end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Golden section search of the stiffness parameter of variable bandwidths.
 % Selecting a bandwidth w/W = g. 
-
 disp('adapting local bandwidths...');
-
 % Initialization
 tol = 10^-5; 
 a = 1e-12; b = 1;
 %a = 1.1; b = 1.11;
-
 phi = (sqrt(5) + 1)/2;  %golden ratio
-
 c1 = (phi-1)*a + (2-phi)*b;
 c2 = (2-phi)*a + (phi-1)*b;
-
 f1 = CostFunction(y_hist,N,t,dt,optws,WIN,WinFunc,c1);
 f2 = CostFunction(y_hist,N,t,dt,optws,WIN,WinFunc,c2);
     
@@ -216,15 +194,11 @@ while  ( abs(b-a) > tol*(abs(c1)+abs(c2)) ) && k < 30
     k = k + 1;
 end
 disp('optimization completed.');
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bootstrap Confidence Interval
 if nargout == 0 || nargout >= 6 || nargin >= 3
     disp('computing bootstrap confidence intervals...');
-
     yb = zeros(nbs,length(tin));
-
     for i = 1: nbs, %disp([i nbs])
         Nb = poissrnd(N);
         %Nb = N;
@@ -243,7 +217,6 @@ if nargout == 0 || nargout >= 6 || nargin >= 3
         yb(i,:) = interp1(t,yb_buf,tin);
         
     end
-
     ybsort = sort(yb);
     y95b = ybsort(floor(0.05*nbs),:);
     y95u = ybsort(floor(0.95*nbs),:); 
@@ -252,34 +225,26 @@ if nargout == 0 || nargout >= 6 || nargin >= 3
     
     disp('done');
 end
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Return results
 y = interp1(t,yopt,tin);
 optw = interp1(t,optw,tin);
 t = tin;
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Display results
 if nargout == 0
 	hold on;
-
 	line([t; t],[y95b; y95u]...
         ,'Color',[7 7 7]/8,'LineWidth',1 );
 	plot(t,y95b,'Color',[7 7 7]/9,'LineWidth',1);
 	plot(t,y95u,'Color',[7 7 7]/9,'LineWidth',1);
-
 	plot(t,y,'Color',[0.9 0.2 0.2],'LineWidth',2);
-
 	grid on;
 	ylabel('density');
 	set(gca,'TickDir','out');    
 end
-
-
 function [Cg yv optwp] = CostFunction(y_hist,N,t,dt,optws,WIN,WinFunc,g)
 %Selecting w/W = g bandwidth
-
 L = length(y_hist);
 optwv = zeros(1,L);
 for k = 1: L
@@ -297,7 +262,6 @@ for k = 1: L
         end
     end
 end
-
 %Nadaraya-Watson kernel regression
 optwp = zeros(1,L);
 for k = 1: L
@@ -307,33 +271,27 @@ end
         
 %optwp = optwv;
 %Density estimation with the variable bandwidth
-
 % Baloon estimator
 %yv = zeros(1,L);
 %for k = 1: L
 %    yv(k) = sum( y_hist*dt.*Gauss(t(k)-t,optwp(k),PI) ) / N;    
 %end
 %yv = yv / sum(yv*dt);
-
 % Baloon estimator (speed optimized)
 idx = find(y_hist ~= 0);
 y_hist_nz = y_hist(idx); 
 t_nz = t(idx);
-
 yv = zeros(1,L);
 for k = 1: L
     yv(k) = sum( y_hist_nz*dt.*Gauss(t(k)-t_nz,optwp(k)));    
 end
 yv = yv *N/sum(yv*dt); %rate
-
 % Sample points estimator
 %yv = zeros(1,L);
 %for k = 1: L
 %    yv(k) = sum( y_hist_nz*dt.*Gauss(t(k)-t_nz,optwp(idx)) ) / N;    
 %end
-
 %yv = yv / sum(yv*dt);
-
 % Kernel regression
 %for k = 1: L
 %	yv(k) = sum(y_hist.*Gauss(t(k)-t,optwp))...
@@ -341,50 +299,35 @@ yv = yv *N/sum(yv*dt); %rate
 %end
 %yv = yv *N/ sum(yv*dt);
 %end
-
 %yv = zeros(1,L);
 %for k = 1: L
 %    yv(k) = sum( y_hist.*Gauss(t(k),optwp).*Boxcar(t(k)-t,optwp/g) ) ...
 %        / sum(Gauss(t(k),optwp).*Boxcar(t(k)-t,optwp/g));    
 %end
-
 %Cost function of the estimated density
 cg = yv.^2 - 2*yv.*y_hist + 2/sqrt(2*pi)./optwp.*y_hist;
 Cg = sum(cg*dt);
-
-
 function [y] = fftkernel(x,w)
 L = length(x);
 Lmax = L+3*w; %take 3 sigma to avoid aliasing 
-
 %n = 2^(nextpow2(Lmax)); 
 n = 2^(ceil(log2(Lmax))); 
-
 X = fft(x,n);
-
 f = [-(0:n/2) (n/2-1:-1:1)]/n;
-
 % Gauss
 K = exp(-0.5*(w*2*pi*f).^2);
-
 % Laplace
 %K = 1 ./ ( 1+ (w*2*pi*f).^2/2 );
-
 y = ifft(X.*K,n);
 y = y(1:L);
-
 function [y] = fftkernelWin(x,w,WinFunc)
 L = length(x);
 Lmax = L+3*w; %take 3 sigma to avoid aliasing 
-
 %n = 2^(nextpow2(Lmax)); 
 n = 2^(ceil(log2(Lmax)));
-
 X = fft(x,n);
-
 f = [-(0:n/2) (n/2-1:-1:1)]/n;
 t = 2*pi*f;
-
 if strcmp(WinFunc,'Boxcar')
     % Boxcar
     a = sqrt(12)*w;
@@ -401,39 +344,27 @@ else
     % Gauss
     K = exp(-0.5*(w*2*pi*f).^2);
 end
-
 y = ifft(X.*K,n);
 y = y(1:L);
-
 function y = Gauss(x,w) 
 y = 1/sqrt(2*pi)./w.*exp(-x.^2/2./w.^2);
-
 function y = Laplace(x,w)
 y = 1./sqrt(2)./w.*exp(-sqrt(2)./w.*abs(x));
-
 function y = Cauchy(x,w) 
 y = 1./(pi*w.*(1+ (x./w).^2));
-
 function y = Boxcar(x,w)
 a = sqrt(12)*w;
 %y = 1./a .* ( x < a/2 ) .* ( x > -a/2 );
 %y = 1./a .* ( abs(x) < a/2 );
 y = 1./a; y(abs(x) > a/2) = 0; %speed optimization
-
-
 function y = logexp(x)
 idx = x<1e2;  
 y(idx) = log(1+exp(x(idx)));
-
 idx = x>=1e2; 
 y(idx) = x(idx);
-
 function y = ilogexp(x)
 %ilogexp = @(x) log(exp(x)-1);
 idx = x<1e2;  
 y(idx) = log(exp(x(idx))-1);
-
 idx = x>=1e2; 
 y(idx) = x(idx);
-
-

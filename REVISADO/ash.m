@@ -46,7 +46,10 @@ h=(max(data)-min(data))/bin;
 t0=linspace(0,(h-(h/m)),m)';
 
 for j=1:m
-    gridx(j,:)=(min(data)+t0(j)):h:(max(data)+t0(j));
+    G=(min(data)+t0(j)):h:(max(data)+t0(j));
+%     disp(num2str([length(G) bin]))
+%     pause
+    gridx(j,:)=G(1:bin);
     for i=1:bin-1
         fa(j,i)=length(find(data>=gridx(j,i) & data<=(gridx(j,i+1))));
         xa(j,i)=(gridx(j,i)+gridx(j,i+1))/2;

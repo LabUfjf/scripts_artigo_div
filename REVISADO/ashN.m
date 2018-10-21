@@ -1,5 +1,5 @@
-function [x,y] = ashN(x,M,bin)
-[xh,yh]= ash(x,M,'linear',bin);
+function [x,y] = ashN(x,M,inter,bin)
+[xh,yh]= ash(x,M,inter,bin);
 ah= area2d(xh,yh);
 x = xh;
 y=yh/ah;

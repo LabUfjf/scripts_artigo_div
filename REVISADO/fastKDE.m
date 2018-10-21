@@ -1,4 +1,4 @@
-function [X,pdf] = fastKDE(data,nPoint,f,Div,type)
+function [X,pdf] = fastKDE(data,nPoint,f,Div,h,type)
 
 %% fastKDE Compute kernel density or distribution estimate using matricial
 %%           way
@@ -24,24 +24,30 @@ doNorm = 0;
 
 %-------------------------------------------------------------------------%
 %% PreAllocation
-X=zeros(nd,nPoint); 
-h=zeros(1,nd);
+X=zeros(nd,nPoint);
+% h=zeros(1,nd);
 
 %-------------------------------------------------------------------------%
 
 if nd ==1
     [hist_pdf,Xedges,~] = histcounts(data,'Normalization', 'pdf','BinMethod','fd');
     xh = (Xedges(1:end-1) + Xedges(2:end))/2;
-%     optN = length(hist_pdf);
+%     M=10;
+%     [BIN.rudemo] = calcnbins(data, 'rudemo');
+%     [xh,hist_pdf] = ashN(data,M,'linear',BIN.rudemo);
+%     ds = diff(xh); ds=ds/2;
+%     xh = xh(1:end-1)+ds;
+    
+%       xh = (xh(1:end-1) + xh(2:end))/2;
+    
     proby=interp1(xh(hist_pdf~=0),hist_pdf(hist_pdf~=0),data,'linear','extrap');           %cálculo das probabilidades dos eventos de kernel
     lambda=exp((length(data)^-1)*sum(log(proby(proby~=0)))); %calculo do lambda otimo pela teoria do paper
-    h =((4/(nd+2))^(1/(nd+4)))*std(data)*n^(-1/(nd+4)); % cálculo do h("rule-of-thumb") ótimo pelo AMISE
     X = linspace(min(data),max(data),nPoint); %range X do kernel
+    probky=interp1(xh(hist_pdf~=0),hist_pdf(hist_pdf~=0),X,'linear','extrap');
 else
     [hist_pdf,Xedges,Yedges,~] = histcounts2(data(1,:),data(2,:),'Normalization', 'pdf','BinMethod','fd');
     xh = (Xedges(1:end-1) + Xedges(2:end))/2;
     yh = (Yedges(1:end-1) + Yedges(2:end))/2;
-%     optN = length(hist_pdf);
     proby=interp2(xh,yh,hist_pdf',data(1,:),data(2,:),'linear',min(min(hist_pdf(hist_pdf>0))));           %cálculo das probabilidades dos eventos de kernel
     lambda=exp((length(data)^-1)*sum(log(proby(proby~=0)))); %calculo do lambda otimo pela teoria do paper
     for i=1:nd
@@ -58,9 +64,12 @@ switch type
             h = ones(1,length(data))*h;
             Hi =h.^2;
         end
-    case 'variable'
+    case 'sse'
         [hi] = hihj(h,lambda,proby,n);         % cálculo da banda variável
         Hi =hi.^2;
+    case 'be'
+        [hk] = hkfct(h,lambda,probky,nPoint);
+        Hk =hk.^2;
     otherwise
         disp('Kernel Bandwidth not selected')
 end
@@ -74,35 +83,20 @@ if nd ==1
     %     if length(data)>=69998
     pdf=zeros(1,nPoint);
     for j=1:Div
-        pdf(1,(1+(nPoint/Div)*(j-1)):(nPoint/Div)*(j))=(((1/n)*sum((repmat((Hi.^(-1/2)),nPoint/Div,1).*Kn(repmat((Hi.^(-1/2)),nPoint/Div,1).*((repmat(X((1+(nPoint/Div)*(j-1)):(nPoint/Div)*(j)),length(data),1)')-repmat(data,nPoint/Div,1)))),2))');
+        if strcmp(type,'be')
+            ind = (1+(nPoint/Div)*(j-1)):(nPoint/Div)*(j);
+            pdf(1,ind)=(((1/n)*sum((repmat((Hk(ind).^(-1/2))',1,n).*Kn(repmat((Hk(ind).^(-1/2))',1,n).*((repmat(X(ind),length(data),1)')-repmat(data,nPoint/Div,1)))),2))');
+        else
+            pdf(1,(1+(nPoint/Div)*(j-1)):(nPoint/Div)*(j))=(((1/n)*sum((repmat((Hi.^(-1/2)),nPoint/Div,1).*Kn(repmat((Hi.^(-1/2)),nPoint/Div,1).*((repmat(X((1+(nPoint/Div)*(j-1)):(nPoint/Div)*(j)),length(data),1)')-repmat(data,nPoint/Div,1)))),2))');
+        end
     end
-    %     else
-    %         pdf=[];
-    %         for j=1:Div.S
-    %             pdf=[pdf ((1/n)*sum((repmat((Hi.^(-1/2)),nPoint/Div.S,1).*Kn(repmat((Hi.^(-1/2)),nPoint/Div.S,1).*((repmat(X((1+(nPoint/Div.S)*(j-1)):(nPoint/Div.S)*(j)),length(data),1)')-repmat(data,nPoint/Div.S,1)))),2))'];
-    %         end
-    %     end
     
     if doNorm == 1
         [A]= area2d(X,pdf);
         pdf = pdf/A;
     end
 else
-    %% Dimensões > 1
-    %     if length(data)<=20000
-    %         MH1= repmat((Hi(1,:).^(-1/2)),nPoint,1);
-    %         MH2= repmat((Hi(2,:).^(-1/2)),nPoint,1);
-    %         MD1 = repmat(data(1,:),nPoint,1);
-    %         MD2 = repmat(data(2,:),nPoint,1);
-    %         MX1=repmat(X(1,:),length(data(1,:)),1)';
-    %         MX2=repmat(X(2,:),length(data(2,:)),1)';
-    %
-    %         pdf=[(1/n)*(MH1.*Kn(MH1.*(MX1-MD1)))*(MH2.*Kn(MH2.*(MX2-MD2)))']';
-    %         if doNorm == 1
-    %             [V]= volume_pts(X(1,:),X(2,:),pdf,nPoint);
-    %             pdf = pdf/V;
-    %         end
-    %     else
+    
     pdf=zeros(nPoint,nPoint);
     for jj=1:Div
         
@@ -115,18 +109,13 @@ else
             MX2=repmat(X(2,((1+(nPoint/Div)*(kk-1)):(nPoint/Div)*(kk))),length(data(2,:)),1)';
             
             pdf(((1+(nPoint/Div)*(jj-1)):(nPoint/Div)*(jj)),((1+(nPoint/Div)*(kk-1)):(nPoint/Div)*(kk)))=((1/n)*(MH1.*Kn(MH1.*(MX1-MD1)))*(MH2.*Kn(MH2.*(MX2-MD2)))')';
-%             pdfy=[pdfy; pdf1];
         end
-%         pdf=[pdf pdfy];
+        
     end
     if doNorm == 1
         [V]= volume_pts(X(1,:),X(2,:),pdf,nPoint);
         pdf = pdf/V;
     end
-    
-    %     end
-    
-    
     
 end
 
@@ -146,24 +135,24 @@ end
 
 end
 
-
 function [hi] = hihj(h,lambda,fpi,n)
-% hi1=zeros(length(lambda),n);
 for i=1:n
-    hi(:,i)=abs((h).*(sqrt(lambda./fpi(i))));
+    hi(i)=abs((h).*(sqrt(lambda./fpi(i))));
+%         hi(:,i)=abs((h).*(sqrt(1./fpi(i))));
+end
+end
+
+
+function [hk] = hkfct(h,lambda,fpk,nPoint)
+for i=1:nPoint
+    hk(i)=abs((h).*(sqrt(lambda./fpk(i))));
+%     hk(i)=abs((h)./(sqrt(fpk(i))));
 end
 end
 
 function [K]=Kn(u)
 K=((2*pi)^(-1/2))*exp((-(u.^2)/2)); %Gaussian
 end
-
-% function [x,y] = data_normalized(x,bin)
-% [yh,xh]= hist(x,bin);
-% ah= area2d(xh,yh);
-% x = xh;
-% y=yh/ah;
-% end
 
 function [ area ] = area2d(x,y)
 tbin=min(diff(x));
