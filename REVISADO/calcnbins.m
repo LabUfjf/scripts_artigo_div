@@ -1,4 +1,4 @@
-function [nbins,C] = calcnbins(x, method, minimum, maximum)
+function [nbins] = calcnbins(x, method, minimum, maximum)
 % Calculate the "ideal" number of bins to use in a histogram, using a
 % choice of methods.
 %

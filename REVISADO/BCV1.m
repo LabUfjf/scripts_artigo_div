@@ -3,7 +3,7 @@ function CV=BCV1(x,h,r,type)
 % h is the bandwidth
 syms u
 n=length(x);
-
+term = 0;
 % [d2k] = kernel_fun_der(type,2*r);
 
 [dk] = kernel_fun_der(type,r);

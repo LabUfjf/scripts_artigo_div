@@ -22,7 +22,9 @@ cmap = [128,128,128;
 aboxplot(DATA,'labels',vEVT,'Colormap',cmap(1:length(DATA),:),'colorrev',false,'OutlierMarker','+')
 xlabel(xtag); % Set the X-axis label
 ylabel(ytag); % Set the X-axis label
-L = [{'[PI]SV'};{'[CV]MLCV'};{'SS'};{'[SV]BE'};{'[SV]SSE'};{'[MLCV]BE'};{'[MLCV]SSE'}];
+
+L = [{'[PI]SV'};{'[PI]SVM1'};{'[PI]SVM2'};{'[PI]SJ'};{'[PI]SC'};{'[CV]MLCV'};{'[CV]UCV'};{'[CV]BCV1'};{'[CV]BCV2'};{'[CV]CCV'};{'[CV]MCV'};{'[CV]TCV'};{'[CV]LSCV'};{'TRUTH'}];
+
 legend([L(1:length(DATA))],'Location','SouthWest');
 
 end

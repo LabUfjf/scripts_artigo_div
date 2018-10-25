@@ -15,14 +15,15 @@ cmap = [128,128,128;
     61, 149, 6;
     0, 48, 0;
     0, 0, 255;
-    0, 0, 86;
+    0, 0, 86;    
     204, 0, 153;
+    255,255,255;
     255, 128, 223;
     255,255,255]/255;
 aboxplot(DATA,'labels',vEVT,'Colormap',cmap(1:length(DATA),:),'colorrev',false,'OutlierMarker','+')
 xlabel(xtag); % Set the X-axis label
 ylabel(ytag); % Set the X-axis label
-L = [{'[PI]SV'};{'[PI]SVM1'};{'[PI]SVM2'};{'[PI]SJ'};{'[PI]SC'};{'[CV]MLCV'};{'[CV]UCV'};{'[CV]BCV1'};{'[CV]BCV2'};{'[CV]CCV'};{'[CV]MCV'};{'[CV]TCV'};{'[CV]LSCV'};{'[CV]BE'};{'[CV]SSE'}];
+L = [{'[PI]SV'};{'[PI]SVM1'};{'[PI]SVM2'};{'[PI]SJ'};{'[PI]SC'};{'[CV]MLCV'};{'[CV]UCV'};{'[CV]BCV1'};{'[CV]BCV2'};{'[CV]CCV'};{'[CV]MCV'};{'[CV]TCV'};{'[CV]LSCV'};{'TRUTH'}];
 legend([L(1:length(DATA))],'Location','SouthWest');
 
 end

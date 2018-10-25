@@ -1,6 +1,5 @@
 function [x,y] = ASHmethods(DATA,M,inter,BIN)
 
-[x.fd,y.fd] = ashN(DATA,M,inter,BIN.fd);
 [x.scott,y.scott] = ashN(DATA,M,inter,BIN.scott);
 [x.sturges,y.sturges] = ashN(DATA,M,inter,BIN.sturges);
 [x.doane,y.doane] = ashN(DATA,M,inter,BIN.doane);

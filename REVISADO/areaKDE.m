@@ -14,6 +14,7 @@ function [A,X,pdf] = areaKDE(DATA,nPoint,h,inter,band)
 [X.MCV,pdf.MCV] = fastKDE(DATA.sg.evt,nPoint,1,2,h.CV.MCV,band);
 [X.TCV,pdf.TCV] = fastKDE(DATA.sg.evt,nPoint,1,2,h.CV.TCV,band);
 [X.LSCV,pdf.LSCV] = fastKDE(DATA.sg.evt,nPoint,1,2,h.CV.LSCV,band);
+[X.TRUTH,pdf.TRUTH] = fastKDE(DATA.sg.evt,nPoint,1,2,h.truth,band);
 % [X.BE,pdf.BE] = fastKDE(DATA.sg.evt,nPoint,1,2,h.PI.SJ,'be');
 % [X.SSE,pdf.SSE] = fastKDE(DATA.sg.evt,nPoint,1,2,h.PI.SJ,'sse');
 
@@ -30,11 +31,12 @@ ygrid(9,:)=interp1(X.BCV2,pdf.BCV2,DATA.sg.pdf.truth.x,inter,0);
 ygrid(10,:)=interp1(X.CCV,pdf.CCV,DATA.sg.pdf.truth.x,inter,0); 
 ygrid(11,:)=interp1(X.MCV,pdf.MCV,DATA.sg.pdf.truth.x,inter,0); 
 ygrid(12,:)=interp1(X.TCV,pdf.TCV,DATA.sg.pdf.truth.x,inter,0); 
-ygrid(13,:)=interp1(X.LSCV,pdf.LSCV,DATA.sg.pdf.truth.x,inter,0); 
+ygrid(13,:)=interp1(X.LSCV,pdf.LSCV,DATA.sg.pdf.truth.x,inter,0);
+ygrid(14,:)=interp1(X.TRUTH,pdf.TRUTH,DATA.sg.pdf.truth.x,inter,0); 
 % ygrid(14,:)=interp1(X.BE,pdf.BE,DATA.sg.pdf.truth.x,inter,0); 
 % ygrid(15,:)=interp1(X.SSE,pdf.SSE,DATA.sg.pdf.truth.x,inter,0); 
 
-for i=1:13
+for i=1:14
 ygrid(i,(ygrid(i,:)<0))=0;
 A(i) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(i,:)-DATA.sg.pdf.truth.y));
 end

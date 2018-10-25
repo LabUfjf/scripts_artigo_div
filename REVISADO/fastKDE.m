@@ -30,11 +30,11 @@ X=zeros(nd,nPoint);
 %-------------------------------------------------------------------------%
 
 if nd ==1
-    [hist_pdf,Xedges,~] = histcounts(data,'Normalization', 'pdf','BinMethod','fd');
-    xh = (Xedges(1:end-1) + Xedges(2:end))/2;
-%     M=10;
-%     [BIN.rudemo] = calcnbins(data, 'rudemo');
-%     [xh,hist_pdf] = ashN(data,M,'linear',BIN.rudemo);
+%     [hist_pdf,Xedges,~] = histcounts(data,'Normalization', 'pdf','BinMethod','fd');
+%     xh = (Xedges(1:end-1) + Xedges(2:end))/2;
+    M=10;
+    [BIN.rudemo] = calcnbins(data, 'rudemo');
+    [xh,hist_pdf] = ashN(data,M,'linear',BIN.rudemo);
 %     ds = diff(xh); ds=ds/2;
 %     xh = xh(1:end-1)+ds;
     
