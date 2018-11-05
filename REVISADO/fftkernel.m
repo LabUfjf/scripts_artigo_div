@@ -1,4 +1,4 @@
-function [y] = fftkernel(x,w)
+function [x,y] = fftkernel(x,w)
 L = length(x);
 Lmax = L+3*w; %take 3 sigma to avoid aliasing 
 %n = 2^(nextpow2(Lmax)); 

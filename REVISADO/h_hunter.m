@@ -1,10 +1,8 @@
-function [h]=h_hunter(DATA,nPoint,method)
+function [h]=h_hunter(DATA,nPoint,r,method)
 
 type = 'Gaussian';
 [~,n,x]= format_data(DATA.sg.evt);
-% x = x';
-r = 0;
-ho = ((4/3)^(1/5))*(std(DATA.sg.evt)*DATA.sg.n.evt^(-1/5));
+ho = ((4/3)^(1/5))*(std(DATA.sg.evt)*n^(-1/5));
 hv=linspace(0.15*ho,2*ho,100);
 
 wb=waitbar(0,'Aguarde[CV]...');

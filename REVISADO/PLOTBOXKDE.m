@@ -1,4 +1,4 @@
-function [] = PLOTBOXKDE(DATA,vEVT,xtag,ytag)
+function [] = PLOTBOXKDE(DATA,vEVT,xtag,ytag,legpos)
 % Create a cell array with the data for each group
 % vEVT = [100,500,1000,2000,5000];
 % colormap('prism')
@@ -24,7 +24,8 @@ aboxplot(DATA,'labels',vEVT,'Colormap',cmap(1:length(DATA),:),'colorrev',false,'
 xlabel(xtag); % Set the X-axis label
 ylabel(ytag); % Set the X-axis label
 L = [{'[PI]SV'};{'[PI]SVM1'};{'[PI]SVM2'};{'[PI]SJ'};{'[PI]SC'};{'[CV]MLCV'};{'[CV]UCV'};{'[CV]BCV1'};{'[CV]BCV2'};{'[CV]CCV'};{'[CV]MCV'};{'[CV]TCV'};{'[CV]LSCV'};{'TRUTH'}];
-legend([L(1:length(DATA))],'Location','SouthWest');
-
+legend([L(1:length(DATA))],'Location',legpos);
+grid minor
+set(gca,'Gridlinestyle',':')
 end
 

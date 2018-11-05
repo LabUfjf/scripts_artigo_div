@@ -8,7 +8,7 @@ set(a(end),'facecolor',[.9 .9 1])
 [f0,x0,u] = ksdensity(Weight);
 line(x0,f0,'color','b')
 % try other bandwidths
-uu = linspace(u/10,10*u,50);
+uu = linspace(u/10,10*u,5);
 subplot(2,2,3);
 v = zeros(size(uu));
 n=length(Weight);

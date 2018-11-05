@@ -1,4 +1,4 @@
-function [f g] = bkde(x,h,M)
+function [g,f] = bkde(x,h,M)
 %============= BINNED KERNEL DENSITY ESTIMATE WITH GAUSSIAN KERNEL =============
 %Uses a good approximation method to quickly calculate the 1D kernel density
 %estimate for a data set x at m evenly-spaced points, using a gaussian kernel

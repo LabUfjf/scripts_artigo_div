@@ -15,7 +15,7 @@ if strcmp(setup.TYPE.DATA,'sg') || strcmp(setup.TYPE.DATA,'both')
     end
     sg.pdf.truth.y = raylpdf(sg.pdf.truth.x,sg.b);
     sg.n.evt = setup.EVT;
-    sg.evt = random('Rayleigh',sg.b,1,sg.n.evt);
+    sg.evt = random('Rayleigh',sg.b,1,sg.n.evt)';
     DATA.sg = sg;
 end
 
@@ -34,7 +34,7 @@ if strcmp(setup.TYPE.DATA,'bg') || strcmp(setup.TYPE.DATA,'both')
     end
     bg.pdf.truth.y = raylpdf(bg.pdf.truth.x,bg.b);
     bg.n.evt = setup.EVT;
-    bg.evt = random('Rayleigh',bg.b,1,bg.n.evt);
+    bg.evt = random('Rayleigh',bg.b,1,bg.n.evt)';
     DATA.bg = bg;
 end
 

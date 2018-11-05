@@ -1,4 +1,7 @@
-function [X,ff] = KDEfixed(x,X,H,nPoint,n,nd)
+function [X,ff] = KDEfixed(x,H,nPoint)
+[nd,n,x]= format_data(x);
+H = ones(1,length(x))*H;
+X=linspace(min(x),max(x),nPoint);
 
 if nd==1;
     for j=1:nPoint(1)
@@ -9,7 +12,7 @@ else
     
     for j=1:nPoint(1)
         for i=1:n(1)
-            Kf(i,j,:)=H^(-1/2)*Kn(H^(-1/2)*(X(:,j)-x(:,i)));
+            Kf(i,j,:)=H.^(-1/2)*Kn(H.^(-1/2)*(X(:,j)-x(:,i)));
         end
     end
     

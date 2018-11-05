@@ -1,11 +1,9 @@
 function [hk] = hBE(h,lambda,fpk,data,X)
 
-d = diff(X); d=d(1);
-dr = diff(fpk)
-dr = [dr dr(end)];
-%          dx = diff(X1); dx=dx(1);
-%             
-%             plot(X1(1:end-1),diff(f1)/dx)
+% d = diff(X); d=d(1);
+% dr = diff(fpk)/d
+% dr2 = diff(dr)/d;
+% dr2 = [dr2 dr2(end) dr2(end)];
 
 % type = 'Gaussian';
 % r=0;
@@ -17,10 +15,11 @@ dr = [dr dr(end)];
 
 
 for k=1:length(fpk)
-%         [~,D] = knnsearch(X(k),data','Distance','Euclidean');
-%         hk(k)=mean(D);
+        [~,D] = knnsearch(X(k),data','Distance','Euclidean');
+        hk(k)=min(D);
+%         hk(k)=(fpk(k)/dr2(k)^2)^(1/5);
     %     hk(k)= ((Rdk*fpk(k))/(length(data)*mu2*dfpk2(k)))^(1/5);
-        hk(k)=abs((h)./(dr(k)));
+%         hk(k)=abs((h)./(fpk(k)));
 %     hk(k)= abs(h/sqrt(2*length(data)*fpk(k)));
     %     hk(k)=abs(1/(length(data)*fpk(k)));
 end

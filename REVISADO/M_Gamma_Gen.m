@@ -16,7 +16,7 @@ if strcmp(setup.TYPE.DATA,'sg') || strcmp(setup.TYPE.DATA,'both')
     end
     sg.pdf.truth.y = gampdf(sg.pdf.truth.x,sg.A,sg.B);
     sg.n.evt = setup.EVT;
-    sg.evt = random('Gamma',sg.A,sg.B,1,sg.n.evt);
+    sg.evt = random('Gamma',sg.A,sg.B,1,sg.n.evt)';
     %sg.evt = gamrnd(sg.A,sg.B,1,sg.n.evt);
     DATA.sg = sg;
 end
@@ -38,7 +38,7 @@ if strcmp(setup.TYPE.DATA,'bg') || strcmp(setup.TYPE.DATA,'both')
     bg.pdf.truth.y = gampdf(bg.pdf.truth.x,bg.A,bg.B);
     bg.n.evt = setup.EVT;
     
-    bg.evt = random('Gamma',bg.A,bg.B,1,bg.n.evt);
+    bg.evt = random('Gamma',bg.A,bg.B,1,bg.n.evt)';
     %bg.evt = gamrnd(bg.A,bg.B,1,bg.n.evt);
     DATA.bg = bg;
 end

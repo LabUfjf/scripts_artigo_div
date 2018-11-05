@@ -5,8 +5,7 @@ vTH=linspace(0.01*ho,5*ho,500);
 wb = waitbar(0,'Calculating [h] truth...');
 for TH = 1:length(vTH)
     h=vTH(TH)^2;  
-    X = linspace(min(DATA.sg.evt),max(DATA.sg.evt),nPoint);
-    [X,f] = KDEfixed(reshape(DATA.sg.evt,1,DATA.sg.n.evt),X,h,nPoint,DATA.sg.n.evt,nd);
+    [X,f] = KDEfixed(reshape(DATA.sg.evt,1,DATA.sg.n.evt),h,nPoint);
     ygrid = interp1(X,f,DATA.sg.pdf.truth.x,'linear',0);
     C(TH)=sum(abs(ygrid-DATA.sg.pdf.truth.y));
     waitbar(TH/length(vTH))

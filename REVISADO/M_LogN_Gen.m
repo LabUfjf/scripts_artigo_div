@@ -16,7 +16,7 @@ if strcmp(setup.TYPE.DATA,'sg') || strcmp(setup.TYPE.DATA,'both')
     end
     sg.pdf.truth.y = lognpdf(sg.pdf.truth.x,sg.mu,sg.std);
     sg.n.evt = setup.EVT;
-    sg.evt = random('logn',sg.mu,sg.std,1,sg.n.evt);
+    sg.evt = random('logn',sg.mu,sg.std,1,sg.n.evt)';
     DATA.sg = sg;
 end
 
@@ -36,7 +36,7 @@ if strcmp(setup.TYPE.DATA,'bg') || strcmp(setup.TYPE.DATA,'both')
     end
     bg.pdf.truth.y = lognpdf(bg.pdf.truth.x,bg.mu,bg.std);
     bg.n.evt = setup.EVT;
-    bg.evt = random('logn',bg.mu,bg.std,1,bg.n.evt);
+    bg.evt = random('logn',bg.mu,bg.std,1,bg.n.evt)';
     DATA.bg = bg;
 end
 

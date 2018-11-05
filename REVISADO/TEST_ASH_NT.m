@@ -20,25 +20,22 @@ ntmax = 5;
 out = [];
 vEVT = [100 500 1000 2000 5000];
 wb=waitbar(0,'Aguarde...');
-
 for j = 1:length(vEVT)
     nEVT = round(vEVT(j));
     for i = 1:ntmax
         [setup] = IN(name{1},'sg',errortype,'dist',inter,norm,nEVT,nGRID,nEST,nROI);   % Definir os Parâmetros Iniciais
         [DATA] = datasetGenSingle(setup);
-        [BIN,C]=calcnbins([reshape(DATA.sg.evt,length(DATA.sg.evt),1); out],'all');
-        [BIN.LHM,~,~] = LHM(DATA.sg.evt,inter);
-        [BIN.truth,MA,nbin]=ASHtruth(DATA,m,binmax,inter);
-        [x,y] = ASHmethods(DATA.sg.evt,m,inter,BIN);        
+        bin = bin_hunter(DATA,'all','ASH');
+        [x,y] = ASHmethods(DATA.sg.evt,m,inter,bin);
         
-        BFD(i,j) = BIN.fd;
-        BSC(i,j) = BIN.scott;
-        BST(i,j) = BIN.sturges;
-        BDO(i,j) = BIN.doane;
-        BSS(i,j) = BIN.shimazaki;
-        BRU(i,j) = BIN.rudemo;
-        BLH(i,j) = BIN.LHM;
-        BTR(i,j) = BIN.truth;
+        BIN.FD(i,j) = bin.fd;
+        BIN.SC(i,j) = bin.scott;
+        BIN.ST(i,j) = bin.sturges;
+        BIN.DO(i,j) = bin.doane;
+        BIN.SS(i,j) = bin.shimazaki;
+        BIN.RU(i,j) = bin.rudemo;
+        BIN.LH(i,j) = bin.LHM;
+        BIN.TR(i,j) = bin.truth;
         
         ygrid(1,:)=interp1(x.fd,y.fd,DATA.sg.pdf.truth.x,inter,0);
         ygrid(2,:)=interp1(x.scott,y.scott,DATA.sg.pdf.truth.x,inter,0);
@@ -49,31 +46,46 @@ for j = 1:length(vEVT)
         ygrid(7,:)=interp1(x.LHM,y.LHM,DATA.sg.pdf.truth.x,inter,0);
         ygrid(8,:)=interp1(x.truth,y.truth,DATA.sg.pdf.truth.x,inter,0);
         
-        ABFD(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(1,:)-DATA.sg.pdf.truth.y));
-        ABSC(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(2,:)-DATA.sg.pdf.truth.y));
-        ABST(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(3,:)-DATA.sg.pdf.truth.y));
-        ABDO(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(4,:)-DATA.sg.pdf.truth.y));
-        ABSS(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(5,:)-DATA.sg.pdf.truth.y));
-        ABRU(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(6,:)-DATA.sg.pdf.truth.y));
-        ABLH(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(7,:)-DATA.sg.pdf.truth.y));
-        ABTR(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(8,:)-DATA.sg.pdf.truth.y));
+        AREA.FD(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(1,:)-DATA.sg.pdf.truth.y));
+        AREA.SC(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(2,:)-DATA.sg.pdf.truth.y));
+        AREA.ST(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(3,:)-DATA.sg.pdf.truth.y));
+        AREA.DO(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(4,:)-DATA.sg.pdf.truth.y));
+        AREA.SS(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(5,:)-DATA.sg.pdf.truth.y));
+        AREA.RU(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(6,:)-DATA.sg.pdf.truth.y));
+        AREA.LH(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(7,:)-DATA.sg.pdf.truth.y));
+        AREA.TR(i,j) = area2d(DATA.sg.pdf.truth.x,abs(ygrid(8,:)-DATA.sg.pdf.truth.y));
         
     end
     waitbar(j/length(vEVT))
 end
 close(wb)
 
-figure(1)
-DADOS = {BFD-BTR;BSC-BTR;BST-BTR;BDO-BTR;BSS-BTR;BRU-BTR;BLH-BTR};
-figure(1)
-PLOTBOX(DADOS,vEVT,'Eventos','Erro (Bins)'); hold on
-plot([0 5000],[0 0],':k')
-grid minor
-set(gca,'Gridlinestyle',':')
 
-DADOS_AREA = {ABFD;ABSC;ABST;ABDO;ABSS;ABRU;ABLH;ABTR};
-figure(2)
-PLOTBOX(DADOS_AREA,vEVT,'Eventos','Erro (Àrea)'); hold on
+DADOS_BIN = {BIN.FD-BIN.TR;BIN.SC-BIN.TR;BIN.ST-BIN.TR;BIN.DO-BIN.TR;BIN.SS-BIN.TR;BIN.RU-BIN.TR;BIN.LH-BIN.TR};
+DADOS_AREA = {AREA.FD;AREA.SC;AREA.ST;AREA.DO;AREA.SS;AREA.RU;AREA.LH;AREA.TR};
+
+figure(1)
+PLOTBOX(DADOS_BIN,vEVT,'Eventos','Erro(Bins)','NorthWest'); hold on
 plot([0 5000],[0 0],':k')
 grid minor
 set(gca,'Gridlinestyle',':')
+% set(gcf, 'Position', get(0, 'Screensize'));
+saveas(gcf,[pwd '\DESENVOLVIMENTO\ASH[BIN][' name{1} ']'],'fig');
+saveas(gcf,[pwd '\DESENVOLVIMENTO\ASH[BIN][' name{1} ']'],'eps');
+saveas(gcf,[pwd '\DESENVOLVIMENTO\ASH[BIN][' name{1} ']'],'png');
+close(1)
+
+figure(2)
+PLOTBOX(DADOS_AREA,vEVT,'Eventos','Erro(Área)','NorthEast'); hold on
+grid minor
+set(gca,'Gridlinestyle',':')
+% set(gcf, 'Position', get(0, 'Screensize'));
+saveas(gcf,[pwd '\DESENVOLVIMENTO\ASH[AREA][' name{1} ']'],'fig');
+saveas(gcf,[pwd '\DESENVOLVIMENTO\ASH[AREA][' name{1} ']'],'eps');
+saveas(gcf,[pwd '\DESENVOLVIMENTO\ASH[AREA][' name{1} ']'],'png');
+close(2)
+
+save([pwd '\DESENVOLVIMENTO\ASH[BIN][' name{1} ']'],'BIN');
+save([pwd '\DESENVOLVIMENTO\ASH[AREA][' name{1} ']'],'AREA');
+
+

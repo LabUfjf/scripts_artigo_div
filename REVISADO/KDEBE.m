@@ -1,7 +1,8 @@
-function [X,fv] = KDEBE(x,X,Hk,nPoint,n,nd)
+function [X,fv] = KDEBE(x,X,hk,nPoint,n,nd)
 %==========================================================================
 % Fazendo os Cálculos do KERNEL ND de banda Fixa e Variável
 %==========================================================================
+[~,Hk] = h_adjust([],hk,nd);
 % h=waitbar(0','[KDEND]WORKANDO...');
 if nd==1;
     Hk=cell2mat(Hk);

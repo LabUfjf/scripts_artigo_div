@@ -28,8 +28,8 @@ for name = {'Gaussian'};
         for i=1:ntmax
             [setup] = IN(name{1},'sg',errortype,'dist',inter,norm,nEVT,nGRID,nEST,nROI);   % Definir os Parâmetros Iniciais
             [DATA] = datasetGenSingle(setup);
-            [BIN,C]=calcnbins([reshape(DATA.sg.evt,length(DATA.sg.evt),1); out],'all');
-            
+            [BIN]=calcnbins([reshape(DATA.sg.evt,length(DATA.sg.evt),1); out],'all');
+            BIN.scott = round(range([reshape(DATA.sg.evt,length(DATA.sg.evt),1); out])/(2.57*std([reshape(DATA.sg.evt,length(DATA.sg.evt),1); out])*DATA.sg.n.evt^(-1/5)));
             for m=1:mmax
                  [BIN.truth,MA,nbin]=ASHtruth(DATA,m,binmax,inter);
                 [x,y] = ASHmethods(DATA.sg.evt,m,inter,BIN);

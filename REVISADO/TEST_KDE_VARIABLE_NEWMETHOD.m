@@ -11,11 +11,11 @@ r=0;
 j=0;
 cl = ['yrbgkmc'];
 band = 'fix';
-% vEVT = [1000];
-vEVT = [100 500 1000 5000];
+vEVT = [500];
+% vEVT = [100 500 1000 2000];
 % vEVT = [5000];
 nPoint = 1000;
-mod='dist';
+mod='deriv';
 % for name = {'Gaussian','Bimodal','Trimodal','Rayleigh','Logn','Gamma','Laplace'};
 for name = {'Trimodal'};
     %     wb = waitbar(0,'Aguarde...');
@@ -32,13 +32,10 @@ for name = {'Trimodal'};
             [setup] = IN(name{1},'sg',errortype,'dist',inter,norm,nEVT,nGRID,nEST,nROI);   % Definir os Parâmetros Iniciais
             [DATA] = datasetGenSingle(setup);
             
-            [A{j}(i,:),xgrid,ygrid{j}{i}] = areaKDE_METHODS(DATA,nPoint,inter,'ASH','Rudemo','MLCV','SSE',1);
-%             ho=h_hunter(DATA,[],0,'SV');
+            [A{j}(i,:),xgrid,ygrid{j}{i}] = areaKDE_NEWMETHOD(DATA,nPoint,inter,'ASH','Rudemo','MLCV','SSE',1);
 
-%          [X,df] = dKDE(DATA,ho,1,nPoint)
-  
             
-            for ik = 1:3
+            for ik = 1:4
                 K{ik}(i,j)=A{j}(i,ik);
 %                 K2{ik}(i,j)=A2{j}(i,ik);
             end
@@ -55,9 +52,9 @@ end
 % plot(X{1,1}(1).SSE2,pdf{1,1}(1).SSE2,'k')
 % plot(DATA.sg.pdf.truth.x,DATA.sg.pdf.truth.y,'g')
 
-[D] = KDEMAP(DATA,xgrid,ygrid{2},nROI);
+[D] = KDEMAP(DATA,xgrid,ygrid{end},nROI);
 
-DADOS = {K{1};K{2};K{3}};
+DADOS = {K{1};K{2};K{3};K{4}};
 
 figure
 PLOTBOXKDE_VAR(DADOS,vEVT,'Eventos','Erro (Área)'); hold on

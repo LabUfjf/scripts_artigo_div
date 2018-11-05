@@ -1,8 +1,13 @@
-function [X,fv] = KDESSE(x,X,Hi,nPoint,n,nd)
+function [X,fv,Hi] = KDESSE(x,hi,nPoint)
 %==========================================================================
 % Fazendo os Cálculos do KERNEL ND de banda Fixa e Variável
 %==========================================================================
 % h=waitbar(0','[KDEND]WORKANDO...');
+[nd,n,x]= format_data(x);
+X = linspace(min(x),max(x),nPoint);
+[Hi,~] = h_adjust(hi,[],nd);
+
+
 if nd==1;
     Hi=cell2mat(Hi);
     for j=1:nPoint(1)

@@ -14,6 +14,9 @@ function [A,X,pdf] = areaKDE(DATA,nPoint,h,inter,band)
 [X.MCV,pdf.MCV] = fastKDE(DATA.sg.evt,nPoint,1,2,h.CV.MCV,band);
 [X.TCV,pdf.TCV] = fastKDE(DATA.sg.evt,nPoint,1,2,h.CV.TCV,band);
 [X.LSCV,pdf.LSCV] = fastKDE(DATA.sg.evt,nPoint,1,2,h.CV.LSCV,band);
+% [~,pdf.DIF,X.DIF,~]=dkde(DATA.sg.evt,nPoint,min(DATA.sg.evt),max(DATA.sg.evt));
+
+
 [X.TRUTH,pdf.TRUTH] = fastKDE(DATA.sg.evt,nPoint,1,2,h.truth,band);
 % [X.BE,pdf.BE] = fastKDE(DATA.sg.evt,nPoint,1,2,h.PI.SJ,'be');
 % [X.SSE,pdf.SSE] = fastKDE(DATA.sg.evt,nPoint,1,2,h.PI.SJ,'sse');

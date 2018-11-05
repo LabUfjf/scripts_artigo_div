@@ -1,5 +1,7 @@
 function [A,X,pdf] = areaKDE_VAR(DATA,nPoint,inter,est,bin_method,type,dolambda)
-
+ bin = bin_hunter(DATA,method,est);
+ h = h_methods(DATA,nPoint);
+ 
 [X.SV,pdf.SV] = kernelND(DATA,nPoint,est,bin_method,'SV',type,dolambda);
 [X.SVM1,pdf.SVM1] = kernelND(DATA,nPoint,est,bin_method,'SVM1',type,dolambda);
 [X.SVM2,pdf.SVM2] = kernelND(DATA,nPoint,est,bin_method,'SVM2',type,dolambda);
