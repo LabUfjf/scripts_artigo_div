@@ -24,7 +24,7 @@ for name = {'Trimodal'};
         nEST = 10;
         nROI = 100;
         nGRID = 10^5;
-        ntmax = 25;
+        ntmax = 2;
         mmax = 5;
         
         [setup] = IN(name{1},'sg',errortype,mod,inter,norm,nEVT,nGRID,nEST,nROI);   % Definir os Parâmetros Iniciais

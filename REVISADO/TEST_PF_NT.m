@@ -9,15 +9,17 @@ errortype = 'none';
 mod = 'abs';
 j=0;
 cl = ['yrbgkmc'];
-% for name = {'Uniform','Gaussian','Bimodal','Trimodal','Rayleigh','Logn','Gamma','Laplace'};
-name = {'Bimodal'};
 nEST = 10;
 nROI = 1;
 nGRID = 10^5;
 binmax = 100;
-ntmax = 5;
+ntmax = 50;
 out = [];
 vEVT = [100 500 1000 2000 5000];
+
+for name = {'Uniform','Gaussian','Bimodal','Trimodal','Rayleigh','Logn','Gamma','Laplace'};
+% name = {'Bimodal'};
+
 
 wb=waitbar(0,'Aguarde...');
 for j = 1:length(vEVT)
@@ -77,4 +79,4 @@ close(2)
 save([pwd '\DESENVOLVIMENTO\PF[BIN][' name{1} ']'],'BIN');
 save([pwd '\DESENVOLVIMENTO\PF[AREA][' name{1} ']'],'AREA');
 
-
+end
